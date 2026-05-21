@@ -1,15 +1,13 @@
 FROM node:24-alpine
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY package.json package-lock.json ./
+RUN npm ci
 
 EXPOSE 3000
 
 # Source is bind-mounted at runtime via docker-compose volumes.
 # Anonymous volume on /app/node_modules prevents the host mount from
 # shadowing the container's installed packages.
-CMD ["pnpm", "dev", "--hostname", "0.0.0.0"]
+CMD ["npm", "run", "dev", "--", "--hostname", "0.0.0.0"]
