@@ -16,7 +16,8 @@
       "Read(//c/Users/atigr/AppData/Local/npm-cache/_logs/**)",
       "PowerShell($env:PATH = \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\.bin;\" + $env:PATH; cd \"d:\\\\velobits\\\\velobits-website\"; pnpm install 2>&1 | Select-Object -Last 8)",
       "PowerShell($env:PATH = \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\.bin;\" + $env:PATH; cd \"d:\\\\velobits\\\\velobits-website\"; pnpm approve-builds 2>&1)",
-      "PowerShell($env:PATH = \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\.bin;\" + $env:PATH; cd \"d:\\\\velobits\\\\velobits-website\"; pnpm install --frozen-lockfile 2>&1 | Select-Object -Last 10)"
+      "PowerShell($env:PATH = \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\.bin;\" + $env:PATH; cd \"d:\\\\velobits\\\\velobits-website\"; pnpm install --frozen-lockfile 2>&1 | Select-Object -Last 10)",
+      "PowerShell($env:PATH = \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\.bin;\" + $env:PATH; cd \"d:\\\\velobits\\\\velobits-website\"; pnpm add -D prettier 2>&1 | Select-Object -Last 5)"
     ]
   }
 }
