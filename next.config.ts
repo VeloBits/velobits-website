@@ -1,18 +1,7 @@
 import type { NextConfig } from "next";
 
-const allowedOrigins = [
-  "velobits.dev",
-  "www.velobits.dev",
-  "velobits.vercel.app",
-  "localhost:3000",
-];
-
 const nextConfig: NextConfig = {
   output: "standalone",
-
-  serverActions: {
-    allowedOrigins,
-  },
 
   async headers() {
     const cspFrameAncestors = [
