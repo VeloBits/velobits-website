@@ -11,7 +11,7 @@ export default function Home() {
       <main className="flex-1 px-6 py-12" />
 
       <footer className="px-6 py-4 border-t border-zinc-200 dark:border-zinc-800 text-sm text-zinc-500 dark:text-zinc-400">
-        © {new Date().getFullYear()} Velobits
+        © {new Date().getFullYear()} Velobits | Develop
       </footer>
     </>
   );
