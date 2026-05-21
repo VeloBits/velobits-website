@@ -1,0 +1,52 @@
+# velobits-website — unified compose file with profiles.
+#
+# Profiles:
+#   dev   development stack  (hot reload, source volumes)
+#   prod  production stack   (standalone Next.js build)
+#
+# Usage:
+#   docker compose --profile dev up --build     # dev
+#   docker compose --profile prod up --build    # prod
+
+services:
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # DEV — profile: dev
+  # ══════════════════════════════════════════════════════════════════════════
+  velobits-dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: velobits-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # PROD — profile: prod
+  # ══════════════════════════════════════════════════════════════════════════
+  velobits-prod:
+    profiles: ["prod"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    container_name: velobits-prod
+    restart: unless-stopped
+    ports:
+      - "80:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.github
+coverage
+e2e/test-results
+e2e/playwright-report
+playwright-report
+*.local
+.env*
+.DS_Store
+docs

@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm add *)",
+      "PowerShell(Get-Command node, npm, npx)",
+      "PowerShell(node --version)",
+      "PowerShell(npm --version)",
+      "PowerShell(npx --version)",
+      "PowerShell(npx pnpm --version 2>&1)",
+      "PowerShell(npm install -g pnpm 2>&1)",
+      "PowerShell($env:PATH = \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\.bin;\" + $env:PATH; pnpm --version)",
+      "PowerShell($env:PATH = \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\.bin;\" + $env:PATH; cd \"d:\\\\velobits\\\\velobits-website\"; pnpm add -D vitest @vitejs/plugin-react @vitest/coverage-v8 @testing-library/react @testing-library/user-event @testing-library/jest-dom jsdom @playwright/test 2>&1)",
+      "PowerShell($env:PATH = \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\.bin;\" + $env:PATH; cd \"d:\\\\velobits\\\\velobits-website\"; pnpm vitest run app/__tests__/page.test.tsx 2>&1 | Select-Object -Last 20)",
+      "PowerShell($env:PATH = \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\.bin;\" + $env:PATH; cd \"d:\\\\velobits\\\\velobits-website\"; pnpm test:ci 2>&1 | Select-Object -Last 25)",
+      "PowerShell($env:PATH = \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\.bin;\" + $env:PATH; cd \"d:\\\\velobits\\\\velobits-website\"; pnpm test:ci 2>&1 | Select-Object -Last 20)"
+    ]
+  }
+}
