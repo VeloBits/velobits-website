@@ -76,22 +76,22 @@ export default function Products() {
       <div className="container">
 
         {/* Header */}
-        <div style={{ marginBottom: "3.5rem", display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+        <div className="mb-14 flex flex-wrap items-end justify-between gap-4">
           <div className="reveal">
             <span className="eyebrow">Our Products</span>
-            <h2 className="display display-lg" style={{ marginTop: "0.65rem" }}>
+            <h2 className="display display-lg mt-[0.65rem]">
               Tools that{" "}
-              <span style={{ color: "var(--accent)" }}>actually</span> work.
+              <span className="text-accent">actually</span> work.
             </h2>
           </div>
-          <p className="reveal reveal-delay-2" style={{ color: "var(--text-muted)", fontSize: "0.9rem", lineHeight: 1.75, maxWidth: "36ch" }}>
+          <p className="reveal reveal-delay-2 max-w-[36ch] text-[0.9rem] leading-[1.75] text-muted">
             Every Velobits product starts with a real problem. No bloat. No vaporware.
             Just bits that matter.
           </p>
         </div>
 
         {/* Card grid */}
-        <div className="products-grid" style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr", gap: "1.25rem", alignItems: "start" }}>
+        <div className="products-grid grid grid-cols-[1.6fr_1fr_1fr] items-start gap-5">
           {products.map((p, idx) => (
             <ProductCard key={p.id} product={p} idx={idx} />
           ))}
@@ -108,6 +108,12 @@ export default function Products() {
 
 function ProductCard({ product: p, idx }: { product: (typeof products)[0]; idx: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const statusClass =
+    p.id === "fixmytext"
+      ? "bg-[rgba(200,241,53,0.09)] border-[rgba(200,241,53,0.25)] text-accent"
+      : p.id === "mystery"
+        ? "bg-[rgba(102,102,102,0.09)] border-[rgba(102,102,102,0.25)] text-[#666]"
+        : "bg-[rgba(68,68,68,0.09)] border-[rgba(68,68,68,0.25)] text-[#444]";
 
   const tilt = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current;
@@ -115,10 +121,13 @@ function ProductCard({ product: p, idx }: { product: (typeof products)[0]; idx: 
     const { left, top, width, height } = card.getBoundingClientRect();
     const x = (e.clientX - left) / width - 0.5;
     const y = (e.clientY - top) / height - 0.5;
-    card.style.transform = `perspective(700px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg) translateY(-4px)`;
+    card.setAttribute(
+      "style",
+      `transform: perspective(700px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg) translateY(-4px);`
+    );
   };
   const resetTilt = () => {
-    if (cardRef.current) cardRef.current.style.transform = "";
+    if (cardRef.current) cardRef.current.setAttribute("style", "");
   };
 
   const delayClass = `reveal-delay-${idx + 1}`;
@@ -126,76 +135,43 @@ function ProductCard({ product: p, idx }: { product: (typeof products)[0]; idx: 
   return (
     <div
       ref={cardRef}
-      className={`card card-glow reveal ${delayClass} ${!p.featured && p.id === "mystery" ? "dashed-card" : ""}`}
       onMouseMove={tilt}
       onMouseLeave={resetTilt}
-      style={{
-        padding: p.featured ? "2rem" : "1.75rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "1.2rem",
-        transition: "transform 0.35s ease, border-color 0.3s ease, box-shadow 0.35s ease",
-        opacity: p.id === "suite" ? 0.6 : 1,
-        position: "relative",
-        overflow: "hidden",
-      }}
+      className={`card card-glow reveal ${delayClass} ${!p.featured && p.id === "mystery" ? "dashed-card" : ""} relative flex flex-col gap-[1.2rem] overflow-hidden transition-[transform,border-color,box-shadow] duration-[350ms] ease-in-out ${p.featured ? "p-8" : "p-7"} ${p.id === "suite" ? "opacity-60" : "opacity-100"}`}
     >
       {/* Accent left stripe on featured */}
       {p.featured && (
-        <div style={{
-          position: "absolute", top: 0, left: 0,
-          width: 3, height: "100%",
-          background: "linear-gradient(180deg, var(--accent), rgba(200,241,53,0.2))",
-          borderRadius: "24px 0 0 24px",
-        }} />
+        <div className="absolute top-0 left-0 h-full w-[3px] rounded-l-[24px] bg-[linear-gradient(180deg,var(--accent),rgba(200,241,53,0.2))]" />
       )}
 
       {/* Inner shimmer on hover — for featured */}
       {p.featured && (
-        <div style={{
-          position: "absolute", inset: 0, pointerEvents: "none",
-          background: "radial-gradient(circle at 30% 20%, rgba(200,241,53,0.05) 0%, transparent 60%)",
-        }} />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(200,241,53,0.05)_0%,transparent_60%)]" />
       )}
 
       {/* Top row */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span className="pill" style={{
-          background: `${p.statusColor}18`,
-          borderColor: `${p.statusColor}40`,
-          color: p.statusColor,
-        }}>
+      <div className="flex items-center justify-between">
+        <span className={`pill ${statusClass}`}>
           {p.id !== "suite" && <span className="pill-dot" />}&nbsp;{p.status}
         </span>
-        <div style={{
-          width: p.featured ? 46 : 40, height: p.featured ? 46 : 40,
-          borderRadius: 12,
-          background: p.featured ? "var(--accent-dim)" : "var(--bg-card-alt)",
-          border: "1px solid var(--border)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: p.featured ? "1.35rem" : "1.15rem",
-          animation: p.id === "mystery" ? "glow-pulse 2.5s ease-in-out infinite" : "none",
-        }}>
+        <div
+          className={`flex items-center justify-center rounded-xl border border-border-subtle ${p.featured ? "h-[46px] w-[46px] bg-[var(--accent-dim)] text-[1.35rem]" : "h-10 w-10 bg-card-alt text-[1.15rem]"} ${p.id === "mystery" ? "animate-[glow-pulse_2.5s_ease-in-out_infinite]" : ""}`}
+        >
           {p.icon}
         </div>
       </div>
 
       {/* Name + description */}
       <div>
-        <h3 style={{
-          fontFamily: "var(--font-display)", fontWeight: 800,
-          textTransform: "uppercase", letterSpacing: "-0.01em",
-          fontSize: p.featured ? "1.55rem" : "1.15rem",
-          color: "var(--text)", marginBottom: "0.55rem",
-        }}>{p.name}</h3>
-        <p style={{ fontSize: "0.83rem", color: "var(--text-muted)", lineHeight: 1.72 }}>{p.description}</p>
+        <h3 className={`mb-[0.55rem] font-[var(--font-display)] text-foreground uppercase tracking-[-0.01em] ${p.featured ? "text-[1.55rem]" : "text-[1.15rem]"}`}>{p.name}</h3>
+        <p className="text-[0.83rem] leading-[1.72] text-muted">{p.description}</p>
       </div>
 
       {/* Tags */}
       {p.tags.length > 0 && (
-        <div style={{ display: "flex", gap: "0.35rem", flexWrap: "wrap" }}>
+        <div className="flex flex-wrap gap-[0.35rem]">
           {p.tags.map((t) => (
-            <span key={t} className="pill" style={{ fontSize: "0.66rem" }}>#{t}</span>
+            <span key={t} className="pill text-[0.66rem]">#{t}</span>
           ))}
         </div>
       )}
@@ -203,12 +179,12 @@ function ProductCard({ product: p, idx }: { product: (typeof products)[0]; idx: 
       {/* Metric bar */}
       {p.metric && (
         <div>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
-            <span style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>{p.metricLabel}</span>
-            <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "var(--accent)", fontFamily: "var(--font-display)" }}>{p.metric}</span>
+          <div className="mb-[0.4rem] flex justify-between">
+            <span className="text-[0.68rem] text-muted">{p.metricLabel}</span>
+            <span className="font-[var(--font-display)] text-[0.78rem] font-extrabold text-accent">{p.metric}</span>
           </div>
-          <div className="poll-bar-track" style={{ height: 5 }}>
-            <div className="poll-bar-fill" style={{ width: "98%", background: "linear-gradient(90deg, var(--accent), rgba(200,241,53,0.6))" }} />
+          <div className="poll-bar-track h-[5px]">
+            <div className="poll-bar-fill w-[98%] bg-[linear-gradient(90deg,var(--accent),rgba(200,241,53,0.6))]" />
           </div>
         </div>
       )}
@@ -217,8 +193,7 @@ function ProductCard({ product: p, idx }: { product: (typeof products)[0]; idx: 
       {p.cta && (
         <a
           href={p.ctaHref ?? "#"}
-          className={p.featured ? "btn btn-primary" : "btn btn-ghost"}
-          style={{ alignSelf: "flex-start", fontSize: "0.82rem" }}
+          className={`${p.featured ? "btn btn-primary" : "btn btn-ghost"} self-start text-[0.82rem]`}
         >
           {p.cta}
           {p.featured && (

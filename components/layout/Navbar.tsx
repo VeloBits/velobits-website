@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
-  { label: "Products",  href: "#products",  soon: false },
+  { label: "Products", href: "#products", soon: false },
   { label: "Community", href: "#community", soon: false },
-  { label: "About",     href: "#about",     soon: false },
-  { label: "Blog",      href: "#",          soon: true  },
+  { label: "About", href: "#about", soon: false },
+  { label: "Blog", href: "#", soon: true },
 ];
 
 export default function Navbar() {
@@ -28,137 +28,30 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Outer wrapper — full-width, positions the island */}
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 100,
-          display: "flex",
-          justifyContent: "center",
-          padding: "1rem 1.5rem",
-          pointerEvents: "none",
-        }}
-      >
-        {/* ── The island pill ── */}
+      <div className="pointer-events-none fixed top-0 right-0 left-0 z-[100] flex justify-center px-6 pt-4 pb-4">
         <nav
           id="navbar"
-          style={{
-            pointerEvents: "all",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "1.5rem",
-            width: "100%",
-            maxWidth: 860,
-            padding: "0.5rem 0.5rem 0.5rem 1.1rem",
-            borderRadius: "var(--radius-card)",
-            border: "1px solid rgba(255,255,255,0.09)",
-            backdropFilter: "blur(18px)",
-            WebkitBackdropFilter: "blur(18px)",
-            background: scrolled
-              ? "rgba(10,10,10,0.88)"
-              : "rgba(16,16,16,0.72)",
-            boxShadow: scrolled
-              ? "0 8px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.05)"
-              : "0 4px 24px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.04)",
-            transition: "background 0.35s ease, box-shadow 0.35s ease",
-          }}
+          className={`pointer-events-auto flex w-full max-w-[860px] items-center justify-between gap-6 rounded-[var(--radius-card)] border px-2 py-2 pl-[1.1rem] backdrop-blur-[18px] transition-[background,box-shadow] duration-350 ${scrolled ? "border-[rgba(255,255,255,0.09)] bg-[rgba(10,10,10,0.88)] shadow-[0_8px_40px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.05)]" : "border-[rgba(255,255,255,0.09)] bg-[rgba(16,16,16,0.72)] shadow-[0_4px_24px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.04)]"}`}
         >
-          {/* ── Logo ── */}
-          <a
-            href="#"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              textDecoration: "none",
-              flexShrink: 0,
-            }}
-          >
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 30,
-                height: 30,
-                background: "var(--accent)",
-                borderRadius: 8,
-                color: "#0c0c0c",
-                fontSize: "0.9rem",
-                flexShrink: 0,
-              }}
-            >
+          <a href="#" className="flex shrink-0 items-center gap-2 no-underline">
+            <span className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[8px] bg-accent text-[0.9rem] text-background">
               ⚡
             </span>
-            <span
-              style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 800,
-                fontSize: "1.05rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.06em",
-                color: "var(--text)",
-              }}
-            >
+            <span className="font-[var(--font-display)] text-[1.05rem] font-extrabold tracking-[0.06em] text-foreground uppercase">
               Velobits
             </span>
           </a>
 
-          {/* ── Desktop nav links — centered ── */}
-          <div
-            className="desktop-nav"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.1rem",
-              flex: 1,
-              justifyContent: "center",
-            }}
-          >
+          <div className="desktop-nav flex flex-1 items-center justify-center gap-[0.1rem]">
             {NAV_LINKS.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  padding: "0.42rem 0.85rem",
-                  borderRadius: 9999,
-                  fontSize: "0.84rem",
-                  fontWeight: 500,
-                  color: item.soon ? "var(--text-muted)" : "var(--text)",
-                  textDecoration: "none",
-                  transition: "background 0.18s ease, color 0.18s ease",
-                  whiteSpace: "nowrap",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(255,255,255,0.07)";
-                  if (!item.soon) e.currentTarget.style.color = "#fff";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.color = item.soon ? "var(--text-muted)" : "var(--text)";
-                }}
+                className={`inline-flex items-center gap-[0.35rem] rounded-full px-[0.85rem] py-[0.42rem] text-[0.84rem] font-medium whitespace-nowrap no-underline transition-[background,color] duration-200 hover:bg-[rgba(255,255,255,0.07)] ${item.soon ? "text-muted" : "text-foreground hover:text-white"}`}
               >
                 {item.label}
                 {item.soon && (
-                  <span
-                    style={{
-                      fontSize: "0.55rem",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
-                      background: "rgba(255,255,255,0.07)",
-                      color: "var(--text-muted)",
-                      padding: "0.15rem 0.45rem",
-                      borderRadius: 9999,
-                    }}
-                  >
+                  <span className="rounded-full bg-[rgba(255,255,255,0.07)] px-[0.45rem] py-[0.15rem] text-[0.55rem] font-bold tracking-[0.1em] text-muted uppercase">
                     Soon
                   </span>
                 )}
@@ -166,17 +59,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* ── CTA button ── */}
-          <a
-            href="#waitlist"
-            className="btn btn-primary"
-            style={{
-              fontSize: "0.82rem",
-              padding: "0.55rem 1.25rem",
-              flexShrink: 0,
-              borderRadius: 9999,
-            }}
-          >
+          <a href="#waitlist" className="btn btn-primary shrink-0 rounded-full px-5 py-[0.55rem] text-[0.82rem]">
             Join Waitlist
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
               <path
@@ -189,20 +72,12 @@ export default function Navbar() {
             </svg>
           </a>
 
-          {/* ── Hamburger (mobile only) ── */}
           <button
-            className="menu-toggle"
+            className="menu-toggle hidden shrink-0 cursor-pointer rounded-[8px] border-none bg-transparent p-[0.4rem] text-foreground"
             aria-label="Toggle menu"
-            onClick={(e) => { e.stopPropagation(); setMenuOpen((o) => !o); }}
-            style={{
-              display: "none",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "var(--text)",
-              padding: "0.4rem",
-              borderRadius: 8,
-              flexShrink: 0,
+            onClick={(e) => {
+              e.stopPropagation();
+              setMenuOpen((o) => !o);
             }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -216,26 +91,9 @@ export default function Navbar() {
         </nav>
       </div>
 
-      {/* ── Mobile dropdown ── */}
       {menuOpen && (
         <div
-          style={{
-            position: "fixed",
-            top: "4.5rem",
-            left: "1.5rem",
-            right: "1.5rem",
-            zIndex: 99,
-            background: "rgba(12,12,12,0.96)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            border: "1px solid rgba(255,255,255,0.09)",
-            borderRadius: "var(--radius-card)",
-            padding: "0.75rem",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.25rem",
-            boxShadow: "0 16px 48px rgba(0,0,0,0.5)",
-          }}
+          className="fixed top-[4.5rem] right-6 left-6 z-[99] flex flex-col gap-1 rounded-[var(--radius-card)] border border-[rgba(255,255,255,0.09)] bg-[rgba(12,12,12,0.96)] p-3 shadow-[0_16px_48px_rgba(0,0,0,0.5)] backdrop-blur-[20px]"
           onClick={(e) => e.stopPropagation()}
         >
           {NAV_LINKS.map((item) => (
@@ -243,39 +101,21 @@ export default function Navbar() {
               key={item.label}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                padding: "0.75rem 1rem",
-                borderRadius: 14,
-                fontSize: "0.95rem",
-                fontWeight: 500,
-                color: item.soon ? "var(--text-muted)" : "var(--text)",
-                textDecoration: "none",
-                transition: "background 0.15s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+              className={`flex items-center gap-2 rounded-[14px] px-4 py-3 text-[0.95rem] font-medium no-underline transition-colors duration-150 hover:bg-[rgba(255,255,255,0.06)] ${item.soon ? "text-muted" : "text-foreground"}`}
             >
               {item.label}
               {item.soon && (
-                <span style={{
-                  fontSize: "0.58rem", fontWeight: 700,
-                  textTransform: "uppercase", letterSpacing: "0.1em",
-                  background: "rgba(255,255,255,0.07)",
-                  color: "var(--text-muted)",
-                  padding: "0.12rem 0.4rem", borderRadius: 9999,
-                }}>Soon</span>
+                <span className="rounded-full bg-[rgba(255,255,255,0.07)] px-[0.4rem] py-[0.12rem] text-[0.58rem] font-bold tracking-[0.1em] text-muted uppercase">
+                  Soon
+                </span>
               )}
             </a>
           ))}
-          <div style={{ borderTop: "1px solid var(--border)", marginTop: "0.25rem", paddingTop: "0.75rem" }}>
+          <div className="mt-1 border-t border-border-subtle pt-3">
             <a
               href="#waitlist"
-              className="btn btn-primary"
+              className="btn btn-primary w-full justify-center text-[0.9rem]"
               onClick={() => setMenuOpen(false)}
-              style={{ width: "100%", justifyContent: "center", fontSize: "0.9rem" }}
             >
               Join Waitlist →
             </a>

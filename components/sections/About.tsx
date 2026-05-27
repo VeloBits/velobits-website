@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 
 const stats = [
-  { value: 1,   suffix: "",   label: "Product Launching",          display: null },
-  { value: 100, suffix: "%",  label: "Community-First Roadmap",     display: null },
-  { value: 0,   suffix: "",   label: "Ideas Driven by Community",   display: "∞" },
+  { value: 1, suffix: "", label: "Product Launching", display: null },
+  { value: 100, suffix: "%", label: "Community-First Roadmap", display: null },
+  { value: 0, suffix: "", label: "Ideas Driven by Community", display: "∞" },
 ];
 
 function useCountUp(target: number, duration = 1200, active = false) {
@@ -47,272 +47,103 @@ export default function About() {
     return () => observer.disconnect();
   }, []);
 
-  const stat0 = useCountUp(1,   800,  statsActive);
+  const stat0 = useCountUp(1, 800, statsActive);
   const stat1 = useCountUp(100, 1200, statsActive);
 
   return (
-    <section
-      id="about"
-      className="section"
-      ref={sectionRef}
-      style={{ position: "relative", paddingTop: "5rem", paddingBottom: "5rem" }}
-    >
-      {/* Subtle glow top-right */}
-      <div style={{
-        position: "absolute", top: "10%", right: "-5%",
-        width: 480, height: 480,
-        background: "radial-gradient(circle, rgba(200,241,53,0.05) 0%, transparent 68%)",
-        borderRadius: "50%", filter: "blur(55px)", pointerEvents: "none",
-      }} />
+    <section id="about" className="section relative pt-20 pb-20" ref={sectionRef}>
+      <div className="pointer-events-none absolute top-[10%] right-[-5%] h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(200,241,53,0.05)_0%,transparent_68%)] blur-[55px]" />
 
       <div className="container">
-
-        {/* ── Section header ── */}
-        <div className="reveal" style={{ marginBottom: "3rem" }}>
+        <div className="reveal mb-12">
           <span className="eyebrow">Our Mission</span>
-          <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", marginTop: "0.6rem", flexWrap: "wrap" }}>
+          <div className="mt-[0.6rem] flex flex-wrap items-center gap-5">
             <h2 className="display display-lg">
-              Built with{" "}
-              <span style={{ color: "var(--accent)" }}>purpose.</span>
+              Built with <span className="text-accent">purpose.</span>
             </h2>
-            <div style={{
-              width: 48, height: 2,
-              background: "rgba(200,241,53,0.38)",
-              borderRadius: 2, flexShrink: 0,
-            }} />
+            <div className="h-[2px] w-12 shrink-0 rounded-[2px] bg-[rgba(200,241,53,0.38)]" />
           </div>
         </div>
 
-        {/* ── Main grid: 60% text | 40% orbit ── */}
-        <div
-          className="about-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "60% 40%",
-            gap: "3rem",
-            alignItems: "center",  /* vertically center text alongside orbit */
-          }}
-        >
-          {/* ── LEFT — copy + stats ── */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1.4rem" }}>
-
-            <p className="reveal" style={{
-              color: "var(--text-muted)", lineHeight: 1.9, fontSize: "0.97rem",
-              maxWidth: "54ch",
-            }}>
-              We started Velobits because we kept hitting the same wall —
-              great ideas, terrible tools. So we decided to build them
-              ourselves and give them to the world.
+        <div className="about-grid grid items-center gap-12 [grid-template-columns:60%_40%] max-[1024px]:[grid-template-columns:55%_45%] max-[860px]:grid-cols-1 max-[860px]:gap-10">
+          <div className="flex flex-col gap-[1.4rem]">
+            <p className="reveal max-w-[54ch] text-[0.97rem] leading-[1.9] text-muted">
+              We started Velobits because we kept hitting the same wall - great ideas, terrible
+              tools. So we decided to build them ourselves and give them to the world.
             </p>
 
-            <p className="reveal reveal-delay-1" style={{
-              color: "var(--text-muted)", lineHeight: 1.9, fontSize: "0.97rem",
-              maxWidth: "54ch",
-            }}>
-              Every product starts with a real problem. We listen first, build second.
-              No bloat. No vaporware.{" "}
-              <span style={{ color: "var(--text)", fontWeight: 700 }}>Just bits that matter.</span>
+            <p className="reveal reveal-delay-1 max-w-[54ch] text-[0.97rem] leading-[1.9] text-muted">
+              Every product starts with a real problem. We listen first, build second. No bloat.
+              No vaporware. <span className="font-bold text-foreground">Just bits that matter.</span>
             </p>
 
-            {/* Accent quote block */}
-            <div
-              className="reveal reveal-delay-2"
-              style={{
-                display: "flex", alignItems: "center", gap: "1.1rem",
-                padding: "1.1rem 1.4rem",
-                background: "rgba(200,241,53,0.04)",
-                border: "1px solid rgba(200,241,53,0.12)",
-                borderRadius: 16,
-                maxWidth: "54ch",
-              }}
-            >
-              <div style={{
-                width: 3, height: 34,
-                background: "var(--accent)",
-                borderRadius: 9999, flexShrink: 0,
-              }} />
-              <p style={{ fontSize: "0.88rem", color: "var(--text)", lineHeight: 1.65, fontStyle: "italic" }}>
-                "We build tools that work for people, not the other way around."
+            <div className="reveal reveal-delay-2 flex max-w-[54ch] items-center gap-[1.1rem] rounded-2xl border border-[rgba(200,241,53,0.12)] bg-[rgba(200,241,53,0.04)] px-[1.4rem] py-[1.1rem]">
+              <div className="h-[34px] w-[3px] shrink-0 rounded-full bg-accent" />
+              <p className="text-[0.88rem] leading-[1.65] text-foreground italic">
+                &quot;We build tools that work for people, not the other way around.&quot;
               </p>
             </div>
 
-            {/* Stat cards */}
-            <div
-              className="reveal reveal-delay-3"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "0.8rem",
-                marginTop: "0.5rem",
-                maxWidth: "54ch",
-              }}
-            >
+            <div className="reveal reveal-delay-3 mt-2 grid max-w-[54ch] grid-cols-3 gap-[0.8rem]">
               {stats.map((s, i) => (
-                <div
-                  key={s.label}
-                  className="card"
-                  style={{ padding: "1.1rem", textAlign: "center" }}
-                >
-                  <div style={{
-                    fontFamily: "var(--font-display)", fontWeight: 800,
-                    fontSize: "1.6rem", lineHeight: 1, marginBottom: "0.35rem",
-                    color: "var(--accent)",
-                  }}>
-                    {s.display
-                      ? s.display
-                      : i === 0
-                      ? stat0 + s.suffix
-                      : i === 1
-                      ? stat1 + s.suffix
-                      : s.value + s.suffix}
+                <div key={s.label} className="card p-[1.1rem] text-center">
+                  <div className="mb-[0.35rem] font-[var(--font-display)] text-[1.6rem] leading-1 font-extrabold text-accent">
+                    {s.display ? s.display : i === 0 ? stat0 + s.suffix : i === 1 ? stat1 + s.suffix : s.value + s.suffix}
                   </div>
-                  <div style={{ fontSize: "0.62rem", color: "var(--text-muted)", lineHeight: 1.5 }}>
-                    {s.label}
-                  </div>
+                  <div className="text-[0.62rem] leading-[1.5] text-muted">{s.label}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* ── RIGHT — orbit visual, flush to the right edge ── */}
-          <div
-            className="about-visual"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-            }}
-          >
-            {/* Orbit container — 460 × 460 */}
-            <div style={{ position: "relative", width: 460, height: 460 }}>
+          <div className="about-visual flex items-center justify-end max-[860px]:hidden">
+            <div className="relative h-[460px] w-[460px]">
+              <div className="absolute inset-0 rounded-full border border-dashed border-[rgba(255,255,255,0.07)]" />
+              <div className="absolute inset-[70px] rounded-full border border-dashed border-[rgba(200,241,53,0.14)]" />
 
-              {/* Outer dashed ring */}
-              <div style={{
-                position: "absolute", inset: 0,
-                borderRadius: "50%",
-                border: "1px dashed rgba(255,255,255,0.07)",
-              }} />
+              <div className="absolute top-1/2 left-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(200,241,53,0.16),transparent_70%)] blur-[22px] animate-[glow-pulse_3.5s_ease-in-out_infinite]" />
 
-              {/* Inner dashed ring */}
-              <div style={{
-                position: "absolute", inset: 70,
-                borderRadius: "50%",
-                border: "1px dashed rgba(200,241,53,0.14)",
-              }} />
-
-              {/* Glow behind center */}
-              <div style={{
-                position: "absolute", top: "50%", left: "50%",
-                transform: "translate(-50%,-50%)",
-                width: 160, height: 160,
-                background: "radial-gradient(circle, rgba(200,241,53,0.16), transparent 70%)",
-                borderRadius: "50%", filter: "blur(22px)",
-                animation: "glow-pulse 3.5s ease-in-out infinite",
-              }} />
-
-              {/* Center ⚡ logo */}
-              <div style={{
-                position: "absolute", top: "50%", left: "50%",
-                transform: "translate(-50%,-50%)",
-                width: 90, height: 90, borderRadius: "50%", zIndex: 2,
-                background: "var(--bg-card)",
-                border: "1px solid rgba(200,241,53,0.25)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                boxShadow: "0 0 36px rgba(200,241,53,0.14)",
-              }}>
-                <span style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 800, fontSize: "1.5rem",
-                  color: "var(--accent)",
-                }}>⚡</span>
+              <div className="absolute top-1/2 left-1/2 z-2 flex h-[90px] w-[90px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[rgba(200,241,53,0.25)] bg-card shadow-[0_0_36px_rgba(200,241,53,0.14)]">
+                <span className="font-[var(--font-display)] text-[1.5rem] font-extrabold text-accent">⚡</span>
               </div>
 
-              {/* Orbiting product icons — use orbit-lg (148px radius) */}
               {[
-                { icon: "✏️", label: "FixMyText", dur: 13 },
-                { icon: "🔮", label: "Soon",       dur: 17, delay: "-6s" },
-                { icon: "🌌", label: "Suite",      dur: 22, delay: "-12s" },
-              ].map(({ icon, label, dur, delay = "0s" }) => (
+                { icon: "✏️", label: "FixMyText", anim: "animate-[orbit-lg_13s_linear_infinite]" },
+                { icon: "🔮", label: "Soon", anim: "animate-[orbit-lg_17s_linear_-6s_infinite]" },
+                { icon: "🌌", label: "Suite", anim: "animate-[orbit-lg_22s_linear_-12s_infinite]" },
+              ].map(({ icon, label, anim }) => (
                 <div
                   key={label}
-                  style={{
-                    position: "absolute", top: "50%", left: "50%",
-                    width: 58, height: 58,
-                    marginTop: -29, marginLeft: -29,
-                    animation: `orbit-lg ${dur}s linear ${delay} infinite`,
-                  }}
+                  className={`absolute top-1/2 left-1/2 h-[58px] w-[58px] -translate-x-[29px] -translate-y-[29px] ${anim}`}
                 >
-                  <div style={{
-                    width: "100%", height: "100%", borderRadius: "50%",
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: "1.35rem",
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
-                  }} title={label}>{icon}</div>
+                  <div
+                    className="flex h-full w-full items-center justify-center rounded-full border border-border-subtle bg-card text-[1.35rem] shadow-[0_4px_16px_rgba(0,0,0,0.35)]"
+                    title={label}
+                  >
+                    {icon}
+                  </div>
                 </div>
               ))}
 
-              {/* Small accent dots — use orbit-reverse-lg (108px radius) */}
-              {[0, 120, 240].map((deg) => (
+              {[
+                { key: 0, anim: "animate-[orbit-reverse-lg_8s_linear_0s_infinite]" },
+                { key: 120, anim: "animate-[orbit-reverse-lg_8s_linear_-2.6667s_infinite]" },
+                { key: 240, anim: "animate-[orbit-reverse-lg_8s_linear_-5.3333s_infinite]" },
+              ].map(({ key, anim }) => (
                 <div
-                  key={deg}
-                  style={{
-                    position: "absolute", top: "50%", left: "50%",
-                    width: 9, height: 9, marginTop: -4.5, marginLeft: -4.5,
-                    animation: `orbit-reverse-lg 8s linear ${(-deg / 360) * 8}s infinite`,
-                  }}
+                  key={key}
+                  className={`absolute top-1/2 left-1/2 h-[9px] w-[9px] -translate-x-[4.5px] -translate-y-[4.5px] ${anim}`}
                 >
-                  <div style={{
-                    width: "100%", height: "100%",
-                    borderRadius: "50%",
-                    background: "var(--accent)", opacity: 0.55,
-                  }} />
+                  <div className="h-full w-full rounded-full bg-accent opacity-55" />
                 </div>
               ))}
 
-              {/* Decorative floating square — top-right */}
-              <div style={{
-                position: "absolute", top: -20, right: -20,
-                width: 44, height: 44,
-                background: "var(--accent-dim)",
-                borderRadius: 10,
-                border: "1px solid rgba(200,241,53,0.2)",
-                transform: "rotate(12deg)",
-                animation: "float-b 5s ease-in-out infinite",
-              }} />
-
-              {/* Decorative circle — bottom-left */}
-              <div style={{
-                position: "absolute", bottom: -14, left: -14,
-                width: 28, height: 28,
-                background: "rgba(255,255,255,0.025)",
-                borderRadius: "50%",
-                border: "1px solid var(--border)",
-                animation: "float-a 6s ease-in-out 1s infinite",
-              }} />
+              <div className="absolute top-[-20px] right-[-20px] h-11 w-11 rotate-[12deg] rounded-[10px] border border-[rgba(200,241,53,0.2)] bg-[var(--accent-dim)] animate-[float-b_5s_ease-in-out_infinite]" />
+              <div className="absolute bottom-[-14px] left-[-14px] h-7 w-7 rounded-full border border-border-subtle bg-[rgba(255,255,255,0.025)] animate-[float-a_6s_ease-in-out_1s_infinite]" />
             </div>
           </div>
         </div>
       </div>
-
-      <style>{`
-        @keyframes orbit-lg {
-          from { transform: rotate(0deg)    translateX(148px) rotate(0deg); }
-          to   { transform: rotate(360deg)  translateX(148px) rotate(-360deg); }
-        }
-        @keyframes orbit-reverse-lg {
-          from { transform: rotate(0deg)    translateX(108px) rotate(0deg); }
-          to   { transform: rotate(-360deg) translateX(108px) rotate(360deg); }
-        }
-        @media (max-width: 1024px) {
-          .about-grid { grid-template-columns: 55% 45% !important; }
-        }
-        @media (max-width: 860px) {
-          .about-grid  { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
-          .about-visual { display: none !important; }
-        }
-      `}</style>
     </section>
   );
 }

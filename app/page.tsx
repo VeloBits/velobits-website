@@ -14,17 +14,17 @@ export default function Home() {
     <>
       <CursorGlow />
       <Navbar />
-      <main style={{ flex: 1 }}>
+      <main className="flex-1">
         <Hero />
         <Marquee />
         <Products />
-        <div className="divider" style={{ margin: "0 2rem" }} />
+        <div className="divider mx-8" />
         <CommunityPulse />
-        <div className="divider" style={{ margin: "0 2rem" }} />
+        <div className="divider mx-8" />
         <About />
-        <div className="divider" style={{ margin: "0 2rem" }} />
+        <div className="divider mx-8" />
         <Roadmap />
-        <div className="divider" style={{ margin: "0 2rem" }} />
+        <div className="divider mx-8" />
         <Waitlist />
       </main>
       <Footer />

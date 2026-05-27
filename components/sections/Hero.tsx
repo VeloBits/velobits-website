@@ -8,7 +8,7 @@ export default function Hero() {
   useEffect(() => {
     const onScroll = () => {
       if (glowRef.current)
-        glowRef.current.style.transform = `translateY(${window.scrollY * 0.22}px)`;
+        glowRef.current.setAttribute("style", `transform: translateY(${window.scrollY * 0.22}px);`);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -17,256 +17,157 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        position: "relative",
-        overflow: "hidden",
-        paddingTop: "7.5rem",
-        paddingBottom: "3rem",
-      }}
+      className="relative flex min-h-screen items-center overflow-hidden pt-[7.5rem] pb-12"
     >
-      {/* Background glows */}
-      <div ref={glowRef} style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }}>
-        <div style={{
-          position: "absolute", top: "-12%", left: "-6%",
-          width: 700, height: 700,
-          background: "radial-gradient(circle, rgba(200,241,53,0.07) 0%, transparent 60%)",
-          borderRadius: "50%", filter: "blur(70px)",
-          animation: "glow-pulse 7s ease-in-out infinite",
-        }} />
-        <div style={{
-          position: "absolute", top: "20%", right: "-8%",
-          width: 560, height: 560,
-          background: "radial-gradient(circle, rgba(90,50,210,0.08) 0%, transparent 65%)",
-          borderRadius: "50%", filter: "blur(60px)",
-          animation: "glow-pulse 9s ease-in-out infinite 3s",
-        }} />
+      <div ref={glowRef} className="pointer-events-none absolute inset-0 z-0">
+        <div className="absolute top-[-12%] left-[-6%] h-[700px] w-[700px] rounded-full bg-[radial-gradient(circle,rgba(200,241,53,0.07)_0%,transparent_60%)] blur-[70px] animate-[glow-pulse_7s_ease-in-out_infinite]" />
+        <div className="absolute top-[20%] right-[-8%] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(90,50,210,0.08)_0%,transparent_65%)] blur-[60px] animate-[glow-pulse_9s_ease-in-out_3s_infinite]" />
       </div>
 
-      <div className="container" style={{ position: "relative", zIndex: 1, width: "100%" }}>
-        <div
-          className="hero-grid"
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }}
-        >
-
-          {/* ── LEFT COLUMN ── */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1.6rem" }}>
-            {/* Slogan */}
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", animation: "pop-in 0.5s ease 0.1s both" }}>
-              <div style={{ width: 32, height: 1.5, background: "var(--accent)", opacity: 0.85 }} />
-              <span style={{
-                fontFamily: "var(--font-display)", fontSize: "0.68rem", fontWeight: 700,
-                textTransform: "uppercase", letterSpacing: "0.22em", color: "var(--accent)",
-              }}>Bits that matter.</span>
+      <div className="container relative z-1 w-full">
+        <div className="hero-grid grid items-center gap-12 [grid-template-columns:1fr_1fr]">
+          <div className="flex flex-col gap-[1.6rem]">
+            <div className="flex items-center gap-3 animate-[pop-in_0.5s_ease_0.1s_both]">
+              <div className="h-[1.5px] w-8 bg-accent opacity-85" />
+              <span className="font-[var(--font-display)] text-[0.68rem] font-bold tracking-[0.22em] text-accent uppercase">
+                Bits that matter.
+              </span>
             </div>
 
-            {/* Badge */}
-            <div style={{ animation: "pop-in 0.55s ease 0.2s both" }}>
-              <span className="pill pill-accent pill-dot">&nbsp;Launching Soon — FixMyText</span>
+            <div className="animate-[pop-in_0.55s_ease_0.2s_both]">
+              <span className="pill pill-accent pill-dot">&nbsp;Launching Soon - FixMyText</span>
             </div>
 
-            {/* H1 */}
-            <h1 style={{
-              fontFamily: "var(--font-display)", fontWeight: 800,
-              textTransform: "uppercase", letterSpacing: "-0.025em",
-              lineHeight: 0.93, color: "var(--text)",
-              fontSize: "clamp(2.2rem, 3.2vw, 3.9rem)",
-              animation: "pop-in 0.65s ease 0.3s both",
-            }}>
-              The smarter<br />
-              <span style={{ color: "var(--accent)" }}>way</span> to build<br />
+            <h1 className="animate-[pop-in_0.65s_ease_0.3s_both] font-[var(--font-display)] text-[clamp(2.2rem,3.2vw,3.9rem)] leading-[0.93] font-extrabold tracking-[-0.025em] text-foreground uppercase">
+              The smarter
+              <br />
+              <span className="text-accent">way</span> to build
+              <br />
               software.
             </h1>
 
-            {/* Sub */}
-            <p style={{
-              color: "var(--text-muted)", fontSize: "0.97rem", lineHeight: 1.82,
-              maxWidth: "38ch", animation: "pop-in 0.65s ease 0.42s both",
-            }}>
-              Velobits crafts thoughtful, everyday tools that cut through the noise.
-              One product at a time — each one a{" "}
-              <span style={{ color: "var(--text)", fontWeight: 600 }}>bit that matters.</span>
+            <p className="max-w-[38ch] animate-[pop-in_0.65s_ease_0.42s_both] text-[0.97rem] leading-[1.82] text-muted">
+              Velobits crafts thoughtful, everyday tools that cut through the noise. One product
+              at a time - each one a <span className="font-semibold text-foreground">bit that matters.</span>
             </p>
 
-            {/* CTAs */}
-            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", animation: "pop-in 0.65s ease 0.52s both" }}>
+            <div className="flex flex-wrap gap-3 animate-[pop-in_0.65s_ease_0.52s_both]">
               <a href="https://app.velobits.dev" className="btn btn-primary">
                 Explore FixMyText
                 <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M3 8h10M9 4l4 4-4 4"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </a>
-              <a href="#community" className="btn btn-ghost">Community Pulse</a>
+              <a href="#community" className="btn btn-ghost">
+                Community Pulse
+              </a>
             </div>
 
-            {/* Trust chips */}
-            <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", animation: "pop-in 0.65s ease 0.62s both" }}>
+            <div className="flex flex-wrap gap-[0.4rem] animate-[pop-in_0.65s_ease_0.62s_both]">
               {["AI-Powered", "Privacy-first", "Free to start", "Community-driven"].map((tag) => (
-                <span key={tag} className="pill" style={{ fontSize: "0.68rem" }}>✦ {tag}</span>
+                <span key={tag} className="pill text-[0.68rem]">
+                  * {tag}
+                </span>
               ))}
             </div>
           </div>
 
-          {/* ── RIGHT COLUMN — clean product visual ── */}
-          <div
-            className="hero-visual"
-            style={{
-              position: "relative",
-              height: 500,
-              animation: "pop-in 0.8s ease 0.45s both",
-            }}
-          >
-            {/* ── Stat chip: 98% — top-left corner ── */}
-            <div
-              className="card"
-              style={{
-                position: "absolute", top: "3%", left: "0%",
-                padding: "0.6rem 0.9rem",
-                display: "flex", alignItems: "center", gap: "0.6rem",
-                zIndex: 4, animation: "float-b 4.5s ease-in-out infinite",
-                minWidth: 132,
-                boxShadow: "0 8px 28px rgba(0,0,0,0.55)",
-              }}
-            >
-              <div style={{
-                width: 30, height: 30, borderRadius: 8, flexShrink: 0,
-                background: "var(--accent-dim)",
-                display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem",
-              }}>✅</div>
+          <div className="hero-visual relative h-[500px] animate-[pop-in_0.8s_ease_0.45s_both]">
+            <div className="card absolute top-[3%] left-[0%] z-4 flex min-w-[132px] items-center gap-[0.6rem] px-[0.9rem] py-[0.6rem] shadow-[0_8px_28px_rgba(0,0,0,0.55)] animate-[float-b_4.5s_ease-in-out_infinite]">
+              <div className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[8px] bg-[var(--accent-dim)] text-[0.85rem]">
+                OK
+              </div>
               <div>
-                <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--accent)", lineHeight: 1, fontFamily: "var(--font-display)" }}>98%</div>
-                <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", marginTop: 2 }}>Accuracy score</div>
+                <div className="font-[var(--font-display)] text-[0.95rem] leading-1 font-extrabold text-accent">
+                  98%
+                </div>
+                <div className="mt-[2px] text-[0.6rem] text-muted">Accuracy score</div>
               </div>
             </div>
 
-            {/* ── Sticker — top-right corner ── */}
-            <div
-              className="sticker"
-              style={{
-                position: "absolute", top: "0%", right: "2%",
-                width: 58, height: 58, zIndex: 4, fontSize: "0.54rem",
-              }}
-            >TRY<br />FREE</div>
+            <div className="sticker absolute top-[0%] right-[2%] z-4 h-[58px] w-[58px] text-[0.54rem]">
+              TRY
+              <br />
+              FREE
+            </div>
 
-            {/* ── Main product card — shifted left and up ── */}
-            <div
-              className="card"
-              style={{
-                position: "absolute",
-                top: "40%", left: "44%",
-                transform: "translate(-50%, -50%)",
-                width: "84%",
-                padding: "1.5rem 1.5rem 1.4rem",
-                zIndex: 2,
-                animation: "float-a 5.5s ease-in-out infinite",
-                boxShadow: "0 28px 72px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.05)",
-              }}
-            >
-              {/* Browser chrome */}
-              <div style={{
-                display: "flex", alignItems: "center", gap: "0.35rem",
-                marginBottom: "1.05rem", paddingBottom: "0.85rem",
-                borderBottom: "1px solid var(--border)",
-              }}>
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff5f57", display: "inline-block" }} />
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#febc2e", display: "inline-block" }} />
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#28c840", display: "inline-block" }} />
-                <span style={{
-                  marginLeft: "0.4rem", fontSize: "0.67rem", color: "var(--text-faint)",
-                  background: "var(--bg-card-alt)", padding: "0.15rem 0.65rem",
-                  borderRadius: 5, flex: 1, letterSpacing: "0.02em",
-                }}>app.fixmytext.com</span>
+            <div className="card absolute top-[40%] left-[44%] z-2 w-[84%] -translate-x-1/2 -translate-y-1/2 px-6 pt-6 pb-[1.4rem] shadow-[0_28px_72px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.05)] animate-[float-a_5.5s_ease-in-out_infinite]">
+              <div className="mb-[1.05rem] flex items-center gap-[0.35rem] border-b border-border-subtle pb-[0.85rem]">
+                <span className="inline-block h-2 w-2 rounded-full bg-[#ff5f57]" />
+                <span className="inline-block h-2 w-2 rounded-full bg-[#febc2e]" />
+                <span className="inline-block h-2 w-2 rounded-full bg-[#28c840]" />
+                <span className="ml-[0.4rem] flex-1 rounded-[5px] bg-card-alt px-[0.65rem] py-[0.15rem] text-[0.67rem] tracking-[0.02em] text-faint">
+                  app.fixmytext.com
+                </span>
               </div>
 
-              {/* Original label + text */}
-              <div style={{ fontSize: "0.6rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "var(--text-muted)", marginBottom: "0.4rem" }}>Original</div>
-              <div style={{
-                background: "var(--bg-card-alt)", borderRadius: 9,
-                padding: "0.7rem 0.9rem", marginBottom: "0.75rem",
-                border: "1px solid var(--border)",
-              }}>
-                <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", lineHeight: 1.62 }}>
-                  I writed this email yesterday but i think it can be improved alot. Can you help me?
+              <div className="mb-[0.4rem] text-[0.6rem] font-bold tracking-[0.14em] text-muted uppercase">
+                Original
+              </div>
+              <div className="mb-[0.75rem] rounded-[9px] border border-border-subtle bg-card-alt px-[0.9rem] py-[0.7rem]">
+                <p className="text-[0.78rem] leading-[1.62] text-muted">
+                  I writed this email yesterday but i think it can be improved alot. Can you help
+                  me?
                 </p>
               </div>
 
-              {/* Action pills */}
-              <div style={{ display: "flex", gap: "0.35rem", marginBottom: "0.75rem" }}>
+              <div className="mb-[0.75rem] flex gap-[0.35rem]">
                 {["Fix Grammar", "Rephrase", "Improve Tone"].map((a, i) => (
-                  <span key={a} style={{
-                    fontSize: "0.67rem", fontWeight: 600,
-                    padding: "0.25rem 0.6rem", borderRadius: 9999,
-                    background: i === 0 ? "var(--accent-dim)" : "var(--bg-card-alt)",
-                    color: i === 0 ? "var(--accent)" : "var(--text-muted)",
-                    border: `1px solid ${i === 0 ? "rgba(200,241,53,0.3)" : "var(--border)"}`,
-                    whiteSpace: "nowrap",
-                  }}>{a}</span>
+                  <span
+                    key={a}
+                    className={`whitespace-nowrap rounded-full border px-[0.6rem] py-[0.25rem] text-[0.67rem] font-semibold ${i === 0 ? "border-[rgba(200,241,53,0.3)] bg-[var(--accent-dim)] text-accent" : "border-border-subtle bg-card-alt text-muted"}`}
+                  >
+                    {a}
+                  </span>
                 ))}
               </div>
 
-              {/* Fixed label + result */}
-              <div style={{ fontSize: "0.6rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "var(--accent)", marginBottom: "0.4rem" }}>✦ Fixed</div>
-              <div style={{
-                background: "rgba(200,241,53,0.05)", borderRadius: 9,
-                padding: "0.7rem 0.9rem",
-                border: "1px solid rgba(200,241,53,0.16)",
-                position: "relative", overflow: "hidden",
-              }}>
-                <div style={{
-                  position: "absolute", inset: 0,
-                  background: "linear-gradient(110deg, transparent 20%, rgba(200,241,53,0.07) 50%, transparent 80%)",
-                  animation: "shimmer-sweep 3.5s ease-in-out infinite",
-                  pointerEvents: "none",
-                }} />
-                <p style={{ fontSize: "0.78rem", color: "var(--text)", lineHeight: 1.62, position: "relative" }}>
-                  I wrote this email yesterday, but I believe it could be improved significantly. Could you help me refine it?
+              <div className="mb-[0.4rem] text-[0.6rem] font-bold tracking-[0.14em] text-accent uppercase">
+                * Fixed
+              </div>
+              <div className="relative overflow-hidden rounded-[9px] border border-[rgba(200,241,53,0.16)] bg-[rgba(200,241,53,0.05)] px-[0.9rem] py-[0.7rem]">
+                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(110deg,transparent_20%,rgba(200,241,53,0.07)_50%,transparent_80%)] animate-[shimmer-sweep_3.5s_ease-in-out_infinite]" />
+                <p className="relative text-[0.78rem] leading-[1.62] text-foreground">
+                  I wrote this email yesterday, but I believe it could be improved significantly.
+                  Could you help me refine it?
                 </p>
               </div>
             </div>
 
-            {/* ── Icon orbs — left and right outer edges ── */}
-            <div style={{
-              position: "absolute", top: "42%", left: "3%",
-              width: 38, height: 38, borderRadius: "50%", zIndex: 3,
-              background: "var(--bg-card)", border: "1px solid var(--border)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: "1rem", animation: "float-a 4.2s ease-in-out infinite",
-              boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
-            }}>✏️</div>
+            <div className="absolute top-[42%] left-[3%] z-3 flex h-[38px] w-[38px] items-center justify-center rounded-full border border-border-subtle bg-card text-[1rem] shadow-[0_4px_16px_rgba(0,0,0,0.4)] animate-[float-a_4.2s_ease-in-out_infinite]">
+              P
+            </div>
 
-            <div style={{
-              position: "absolute", bottom: "18%", right: "3%",
-              width: 36, height: 36, borderRadius: "50%", zIndex: 3,
-              background: "var(--bg-card)", border: "1px solid var(--border)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: "0.9rem", animation: "float-b 3.8s ease-in-out 1s infinite",
-              boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
-            }}>🧠</div>
+            <div className="absolute right-[3%] bottom-[18%] z-3 flex h-9 w-9 items-center justify-center rounded-full border border-border-subtle bg-card text-[0.9rem] shadow-[0_4px_16px_rgba(0,0,0,0.4)] animate-[float-b_3.8s_ease-in-out_1s_infinite]">
+              N
+            </div>
 
-            {/* ── Ping dot ── */}
-            <div style={{ position: "absolute", bottom: "12%", left: "14%", zIndex: 1 }}>
-              <span style={{ position: "relative", display: "flex", width: 9, height: 9 }}>
-                <span style={{
-                  position: "absolute", inset: 0, borderRadius: "50%",
-                  background: "var(--accent)", opacity: 0.45,
-                  animation: "ping 2.2s cubic-bezier(0,0,0.2,1) infinite",
-                }} />
-                <span style={{ width: 9, height: 9, borderRadius: "50%", background: "var(--accent)", opacity: 0.9, display: "inline-block" }} />
+            <div className="absolute bottom-[12%] left-[14%] z-1">
+              <span className="relative flex h-[9px] w-[9px]">
+                <span className="absolute inset-0 rounded-full bg-accent opacity-45 animate-[ping_2.2s_cubic-bezier(0,0,0.2,1)_infinite]" />
+                <span className="inline-block h-[9px] w-[9px] rounded-full bg-accent opacity-90" />
               </span>
             </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div style={{
-          display: "flex", flexDirection: "column", alignItems: "center",
-          gap: "0.4rem", marginTop: "3rem", opacity: 0.3,
-          animation: "pop-in 1s ease 1.2s both",
-        }}>
-          <span style={{ fontSize: "0.58rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "var(--text-muted)" }}>Scroll to explore</span>
-          <svg width="14" height="22" viewBox="0 0 14 22" fill="none" style={{ animation: "float-a 2.2s ease-in-out infinite" }}>
+        <div className="mt-12 flex flex-col items-center gap-[0.4rem] opacity-30 animate-[pop-in_1s_ease_1.2s_both]">
+          <span className="text-[0.58rem] tracking-[0.2em] text-muted uppercase">
+            Scroll to explore
+          </span>
+          <svg
+            width="14"
+            height="22"
+            viewBox="0 0 14 22"
+            fill="none"
+            className="animate-[float-a_2.2s_ease-in-out_infinite]"
+          >
             <rect x="1" y="1" width="12" height="20" rx="6" stroke="currentColor" strokeWidth="1.4" />
             <circle cx="7" cy="6" r="2" fill="currentColor" />
           </svg>

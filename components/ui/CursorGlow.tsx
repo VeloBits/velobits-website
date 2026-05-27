@@ -19,8 +19,7 @@ export default function CursorGlow() {
       // Smooth lerp
       cx += (x - cx) * 0.09;
       cy += (y - cy) * 0.09;
-      el.style.left = cx + "px";
-      el.style.top = cy + "px";
+      el.setAttribute("style", `left:${cx}px;top:${cy}px;`);
       rafId = requestAnimationFrame(animate);
     };
     rafId = requestAnimationFrame(animate);

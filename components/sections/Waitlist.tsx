@@ -37,148 +37,58 @@ export default function Waitlist() {
   };
 
   return (
-    <section
-      id="waitlist"
-      className="section"
-      ref={sectionRef}
-      style={{ position: "relative" }}
-    >
+    <section id="waitlist" className="section relative" ref={sectionRef}>
       <div className="container">
-        <div
-          className="card reveal"
-          style={{
-            padding: "5rem 4rem",
-            textAlign: "center",
-            position: "relative",
-            overflow: "hidden",
-            background: "var(--bg-card)",
-          }}
-        >
-          {/* Background glow inside card */}
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "80%",
-              height: "60%",
-              background: "radial-gradient(ellipse, rgba(200,241,53,0.07) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
+        <div className="card reveal relative overflow-hidden bg-card px-16 py-20 text-center max-sm:px-6 max-sm:py-12">
+          <div className="pointer-events-none absolute top-1/2 left-1/2 h-[60%] w-[80%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse,rgba(200,241,53,0.07)_0%,transparent_70%)]" />
 
-          {/* Grid texture inside card */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage:
-                "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-              borderRadius: "inherit",
-              pointerEvents: "none",
-            }}
-          />
+          <div className="pointer-events-none absolute inset-0 rounded-[inherit] bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
-          {/* Floating sticker */}
-          <div
-            className="sticker"
-            style={{
-              position: "absolute",
-              top: "1.5rem",
-              right: "2rem",
-              width: 72,
-              height: 72,
-              fontSize: "0.6rem",
-              transform: "rotate(-8deg)",
-            }}
-          >
+          <div className="sticker absolute top-6 right-8 h-[72px] w-[72px] rotate-[-8deg] text-[0.6rem]">
             FREE
           </div>
 
-          {/* Floating icon chips */}
           {[
-            { icon: "⚡", top: "1.5rem", left: "2rem" },
-            { icon: "🚀", bottom: "2rem", left: "3rem", animation: "float-b 4s ease-in-out infinite" },
-            { icon: "✨", bottom: "1.5rem", right: "3rem", animation: "float-c 5s ease-in-out infinite" },
-          ].map(({ icon, top, left, bottom, right, animation }) => (
+            { icon: "A", className: "top-6 left-8 animate-[float-a_5s_ease-in-out_infinite]" },
+            { icon: "B", className: "bottom-8 left-12 animate-[float-b_4s_ease-in-out_infinite]" },
+            { icon: "C", className: "right-12 bottom-6 animate-[float-c_5s_ease-in-out_infinite]" },
+          ].map(({ icon, className }) => (
             <div
               key={icon}
-              style={{
-                position: "absolute",
-                top,
-                left,
-                bottom,
-                right,
-                width: 44,
-                height: 44,
-                borderRadius: "50%",
-                background: "var(--bg-card-alt)",
-                border: "1px solid var(--border)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "1.1rem",
-                animation: animation ?? "float-a 5s ease-in-out infinite",
-              }}
+              className={`absolute flex h-11 w-11 items-center justify-center rounded-full border border-border-subtle bg-card-alt text-[1.1rem] ${className}`}
             >
               {icon}
             </div>
           ))}
 
-          {/* Content */}
-          <div style={{ position: "relative", zIndex: 1 }}>
+          <div className="relative z-1">
             {submitted ? (
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem", padding: "2rem 0" }}>
-                <div style={{ fontSize: "3rem" }}>🎉</div>
-                <h2 className="display display-md" style={{ color: "var(--accent)" }}>
-                  You&apos;re in!
-                </h2>
-                <p style={{ color: "var(--text-muted)", maxWidth: "36ch", lineHeight: 1.7 }}>
-                  We&apos;ll be in touch with first-access details before the launch.
-                  Keep an eye on your inbox.
+              <div className="flex flex-col items-center gap-4 py-8">
+                <div className="text-[3rem]">Done</div>
+                <h2 className="display display-md text-accent">You&apos;re in!</h2>
+                <p className="max-w-[36ch] leading-[1.7] text-muted">
+                  We&apos;ll be in touch with first-access details before the launch. Keep an eye on
+                  your inbox.
                 </p>
               </div>
             ) : (
               <>
                 <div className="reveal">
-                  <span className="eyebrow" style={{ marginBottom: "0.75rem", display: "block" }}>
-                    Early Access
-                  </span>
+                  <span className="eyebrow mb-3 block">Early Access</span>
                   <h2 className="display display-lg">
                     Don&apos;t miss
                     <br />
-                    <span style={{ color: "var(--accent)" }}>what&apos;s next.</span>
+                    <span className="text-accent">what&apos;s next.</span>
                   </h2>
-                  <p style={{ color: "var(--text-muted)", marginTop: "1rem", maxWidth: "46ch", margin: "1rem auto 0", lineHeight: 1.7 }}>
-                    Join early believers. Get first access to every Velobits launch
-                    before anyone else. No spam — ever.
+                  <p className="mx-auto mt-4 max-w-[46ch] leading-[1.7] text-muted">
+                    Join early believers. Get first access to every Velobits launch before anyone
+                    else. No spam - ever.
                   </p>
                 </div>
 
                 <form
                   onSubmit={handleSubmit}
-                  className="reveal reveal-delay-2"
-                  style={{
-                    display: "flex",
-                    gap: "0",
-                    maxWidth: 500,
-                    margin: "2.5rem auto 0",
-                    background: "var(--bg-card-alt)",
-                    border: "1px solid var(--border)",
-                    borderRadius: 9999,
-                    padding: "0.3rem 0.3rem 0.3rem 1.5rem",
-                    transition: "border-color 0.25s, box-shadow 0.25s",
-                  }}
-                  onFocusCapture={(e) => {
-                    (e.currentTarget as HTMLFormElement).style.borderColor = "rgba(200,241,53,0.4)";
-                    (e.currentTarget as HTMLFormElement).style.boxShadow = "0 0 0 4px rgba(200,241,53,0.08)";
-                  }}
-                  onBlurCapture={(e) => {
-                    (e.currentTarget as HTMLFormElement).style.borderColor = "var(--border)";
-                    (e.currentTarget as HTMLFormElement).style.boxShadow = "none";
-                  }}
+                  className="reveal reveal-delay-2 mx-auto mt-10 flex max-w-[500px] rounded-full border border-border-subtle bg-card-alt py-[0.3rem] pr-[0.3rem] pl-6 transition-[border-color,box-shadow] duration-250 focus-within:border-[rgba(200,241,53,0.4)] focus-within:shadow-[0_0_0_4px_rgba(200,241,53,0.08)]"
                 >
                   <input
                     type="email"
@@ -186,54 +96,44 @@ export default function Waitlist() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
                     required
-                    style={{
-                      flex: 1,
-                      background: "none",
-                      border: "none",
-                      outline: "none",
-                      color: "var(--text)",
-                      fontSize: "0.9rem",
-                      fontFamily: "inherit",
-                      minWidth: 0,
-                    }}
+                    className="min-w-0 flex-1 border-none bg-transparent font-inherit text-[0.9rem] text-foreground outline-none"
                   />
                   <button
                     type="submit"
-                    className="btn btn-primary"
+                    className="btn btn-primary shrink-0 px-6 py-[0.65rem]"
                     disabled={loading}
-                    style={{ flexShrink: 0, padding: "0.65rem 1.5rem" }}
                   >
                     {loading ? (
-                      <span style={{ display: "inline-flex", gap: 4 }}>
-                        <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#0c0c0c", animation: "glow-pulse 0.8s ease-in-out infinite" }} />
-                        <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#0c0c0c", animation: "glow-pulse 0.8s ease-in-out infinite 0.2s" }} />
-                        <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#0c0c0c", animation: "glow-pulse 0.8s ease-in-out infinite 0.4s" }} />
+                      <span className="inline-flex gap-1">
+                        <span className="h-[5px] w-[5px] rounded-full bg-background animate-[glow-pulse_0.8s_ease-in-out_infinite]" />
+                        <span className="h-[5px] w-[5px] rounded-full bg-background animate-[glow-pulse_0.8s_ease-in-out_0.2s_infinite]" />
+                        <span className="h-[5px] w-[5px] rounded-full bg-background animate-[glow-pulse_0.8s_ease-in-out_0.4s_infinite]" />
                       </span>
                     ) : (
                       <>
                         Get Early Access
                         <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-                          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                          <path
+                            d="M3 8h10M9 4l4 4-4 4"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
                       </>
                     )}
                   </button>
                 </form>
 
-                <p className="reveal reveal-delay-3" style={{ fontSize: "0.75rem", color: "var(--text-faint)", marginTop: "1rem" }}>
-                  🔒 No spam. Unsubscribe anytime.
+                <p className="reveal reveal-delay-3 mt-4 text-[0.75rem] text-faint">
+                  No spam. Unsubscribe anytime.
                 </p>
               </>
             )}
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 640px) {
-          #waitlist .card { padding: 3rem 1.5rem !important; }
-        }
-      `}</style>
     </section>
   );
 }

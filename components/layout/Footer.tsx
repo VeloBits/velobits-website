@@ -21,61 +21,23 @@ export default function Footer() {
   };
 
   return (
-    <footer
-      style={{
-        borderTop: "1px solid var(--border)",
-        padding: "4rem 0 2rem",
-        marginTop: "auto",
-      }}
-    >
+    <footer className="mt-auto border-t border-border-subtle pt-16 pb-8">
       <div className="container">
-        {/* Top row */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "2fr 1fr 1fr 1fr",
-            gap: "3rem",
-            marginBottom: "3rem",
-          }}
-          className="footer-grid"
-        >
-          {/* Brand */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <span
-                style={{
-                  width: 30,
-                  height: 30,
-                  background: "var(--accent)",
-                  borderRadius: 8,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "0.9rem",
-                  color: "#0c0c0c",
-                  flexShrink: 0,
-                }}
-              >
+        <div className="footer-grid mb-12 grid gap-12 [grid-template-columns:2fr_1fr_1fr_1fr] max-md:grid-cols-2 max-md:gap-8 max-[480px]:grid-cols-1">
+          <div className="flex flex-col gap-4 max-md:col-span-2 max-[480px]:col-span-1">
+            <div className="flex items-center gap-2">
+              <span className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[8px] bg-accent text-[0.9rem] text-background">
                 ⚡
               </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 800,
-                  fontSize: "1rem",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.04em",
-                }}
-              >
+              <span className="font-[var(--font-display)] text-[1rem] font-extrabold tracking-[0.04em] uppercase">
                 Velobits
               </span>
             </div>
-            <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.75, maxWidth: "28ch" }}>
-              Software that works for you. Building everyday tools that solve real
-              problems — one product at a time.
+            <p className="max-w-[28ch] text-[0.82rem] leading-[1.75] text-muted">
+              Software that works for you. Building everyday tools that solve real problems - one
+              product at a time.
             </p>
-            {/* Social links */}
-            <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.25rem" }}>
+            <div className="mt-1 flex gap-2">
               {[
                 {
                   label: "GitHub",
@@ -100,27 +62,7 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 10,
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "var(--text-muted)",
-                    textDecoration: "none",
-                    transition: "all 0.2s",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(200,241,53,0.3)";
-                    e.currentTarget.style.color = "var(--accent)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = "var(--border)";
-                    e.currentTarget.style.color = "var(--text-muted)";
-                  }}
+                  className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-border-subtle bg-card text-muted no-underline transition-colors duration-200 hover:border-[rgba(200,241,53,0.3)] hover:text-accent"
                 >
                   {icon}
                 </a>
@@ -128,34 +70,15 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Link columns */}
           {Object.entries(links).map(([group, items]) => (
             <div key={group}>
-              <div
-                style={{
-                  fontSize: "0.72rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  color: "var(--text-muted)",
-                  marginBottom: "1rem",
-                }}
-              >
-                {group}
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+              <div className="mb-4 text-[0.72rem] font-bold tracking-[0.1em] text-muted uppercase">{group}</div>
+              <div className="flex flex-col gap-[0.6rem]">
                 {items.map((item) => (
                   <a
                     key={item.label}
                     href={item.href}
-                    style={{
-                      fontSize: "0.85rem",
-                      color: "var(--text-muted)",
-                      textDecoration: "none",
-                      transition: "color 0.2s",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+                    className="text-[0.85rem] text-muted no-underline transition-colors duration-200 hover:text-foreground"
                   >
                     {item.label}
                   </a>
@@ -165,38 +88,13 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Divider */}
         <div className="divider" />
 
-        {/* Bottom row */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingTop: "1.5rem",
-            flexWrap: "wrap",
-            gap: "0.75rem",
-          }}
-        >
-          <p style={{ fontSize: "0.78rem", color: "var(--text-faint)" }}>
-            © {year} Velobits. All rights reserved.
-          </p>
-          <p style={{ fontSize: "0.78rem", color: "var(--text-faint)" }}>
-            Made with ⚡ by the Velobits team
-          </p>
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-6">
+          <p className="text-[0.78rem] text-faint">© {year} Velobits. All rights reserved.</p>
+          <p className="text-[0.78rem] text-faint">Made with ⚡ by the Velobits team</p>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 2rem !important; }
-          .footer-grid > div:first-child { grid-column: 1 / -1; }
-        }
-        @media (max-width: 480px) {
-          .footer-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </footer>
   );
 }
