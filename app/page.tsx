@@ -1,13 +1,13 @@
-import CursorGlow from "./components/CursorGlow";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Marquee from "./components/Marquee";
-import Products from "./components/Products";
-import CommunityPulse from "./components/CommunityPulse";
-import About from "./components/About";
-import Roadmap from "./components/Roadmap";
-import Waitlist from "./components/Waitlist";
-import Footer from "./components/Footer";
+import CursorGlow from "@/components/ui/CursorGlow";
+import Navbar from "@/components/layout/Navbar";
+import Hero from "@/components/sections/Hero";
+import Marquee from "@/components/ui/Marquee";
+import Products from "@/components/sections/Products";
+import CommunityPulse from "@/components/sections/CommunityPulse";
+import About from "@/components/sections/About";
+import Roadmap from "@/components/sections/Roadmap";
+import Waitlist from "@/components/sections/Waitlist";
+import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (
