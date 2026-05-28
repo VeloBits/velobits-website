@@ -37,7 +37,7 @@ export default function Navbar() {
             <span className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[8px] bg-accent text-[0.9rem] text-background">
               ⚡
             </span>
-            <span className="font-[var(--font-display)] text-[1.05rem] font-extrabold tracking-[0.06em] text-foreground uppercase">
+            <span className="font-display text-[1.05rem] font-extrabold tracking-[0.06em] text-foreground uppercase">
               Velobits
             </span>
           </a>

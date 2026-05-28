@@ -163,7 +163,7 @@ function ProductCard({ product: p, idx }: { product: (typeof products)[0]; idx: 
 
       {/* Name + description */}
       <div>
-        <h3 className={`mb-[0.55rem] font-[var(--font-display)] text-foreground uppercase tracking-[-0.01em] ${p.featured ? "text-[1.55rem]" : "text-[1.15rem]"}`}>{p.name}</h3>
+        <h3 className={`mb-[0.55rem] font-display text-foreground uppercase tracking-[-0.01em] ${p.featured ? "text-[1.55rem]" : "text-[1.15rem]"}`}>{p.name}</h3>
         <p className="text-[0.83rem] leading-[1.72] text-muted">{p.description}</p>
       </div>
 
@@ -181,7 +181,7 @@ function ProductCard({ product: p, idx }: { product: (typeof products)[0]; idx: 
         <div>
           <div className="mb-[0.4rem] flex justify-between">
             <span className="text-[0.68rem] text-muted">{p.metricLabel}</span>
-            <span className="font-[var(--font-display)] text-[0.78rem] font-extrabold text-accent">{p.metric}</span>
+            <span className="font-display text-[0.78rem] font-extrabold text-accent">{p.metric}</span>
           </div>
           <div className="poll-bar-track h-[5px]">
             <div className="poll-bar-fill w-[98%] bg-[linear-gradient(90deg,var(--accent),rgba(200,241,53,0.6))]" />

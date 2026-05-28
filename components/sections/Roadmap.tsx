@@ -89,7 +89,7 @@ export default function Roadmap() {
                   <div className={`mb-[0.4rem] text-[0.7rem] font-bold tracking-[0.1em] uppercase ${m.now ? "text-accent" : "text-muted"}`}>
                     {m.date}
                   </div>
-                  <div className="mb-[0.4rem] font-[var(--font-display)] text-[0.95rem] font-extrabold tracking-[-0.01em] text-foreground uppercase">
+                  <div className="mb-[0.4rem] font-display text-[0.95rem] font-extrabold tracking-[-0.01em] text-foreground uppercase">
                     {m.label}
                   </div>
                   <div className="text-[0.78rem] leading-[1.6] text-muted">{m.desc}</div>

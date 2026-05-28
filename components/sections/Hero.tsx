@@ -29,7 +29,7 @@ export default function Hero() {
           <div className="flex flex-col gap-[1.6rem]">
             <div className="flex items-center gap-3 animate-[pop-in_0.5s_ease_0.1s_both]">
               <div className="h-[1.5px] w-8 bg-accent opacity-85" />
-              <span className="font-[var(--font-display)] text-[0.68rem] font-bold tracking-[0.22em] text-accent uppercase">
+              <span className="font-display text-[0.68rem] font-bold tracking-[0.22em] text-accent uppercase">
                 Bits that matter.
               </span>
             </div>
@@ -38,7 +38,7 @@ export default function Hero() {
               <span className="pill pill-accent pill-dot">&nbsp;Launching Soon - FixMyText</span>
             </div>
 
-            <h1 className="animate-[pop-in_0.65s_ease_0.3s_both] font-[var(--font-display)] text-[clamp(2.2rem,3.2vw,3.9rem)] leading-[0.93] font-extrabold tracking-[-0.025em] text-foreground uppercase">
+            <h1 className="animate-[pop-in_0.65s_ease_0.3s_both] font-display text-[clamp(2.2rem,3.2vw,3.9rem)] leading-[0.93] font-extrabold tracking-[-0.025em] text-foreground uppercase">
               The smarter
               <br />
               <span className="text-accent">way</span> to build
@@ -84,7 +84,7 @@ export default function Hero() {
                 OK
               </div>
               <div>
-                <div className="font-[var(--font-display)] text-[0.95rem] leading-1 font-extrabold text-accent">
+                <div className="font-display text-[0.95rem] leading-[1] font-extrabold text-accent">
                   98%
                 </div>
                 <div className="mt-[2px] text-[0.6rem] text-muted">Accuracy score</div>

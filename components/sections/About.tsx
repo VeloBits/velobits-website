@@ -87,7 +87,7 @@ export default function About() {
             <div className="reveal reveal-delay-3 mt-2 grid max-w-[54ch] grid-cols-3 gap-[0.8rem]">
               {stats.map((s, i) => (
                 <div key={s.label} className="card p-[1.1rem] text-center">
-                  <div className="mb-[0.35rem] font-[var(--font-display)] text-[1.6rem] leading-1 font-extrabold text-accent">
+                  <div className="mb-[0.35rem] font-display text-[1.6rem] leading-[1] font-extrabold text-accent">
                     {s.display ? s.display : i === 0 ? stat0 + s.suffix : i === 1 ? stat1 + s.suffix : s.value + s.suffix}
                   </div>
                   <div className="text-[0.62rem] leading-[1.5] text-muted">{s.label}</div>
@@ -104,7 +104,7 @@ export default function About() {
               <div className="absolute top-1/2 left-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(200,241,53,0.16),transparent_70%)] blur-[22px] animate-[glow-pulse_3.5s_ease-in-out_infinite]" />
 
               <div className="absolute top-1/2 left-1/2 z-2 flex h-[90px] w-[90px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[rgba(200,241,53,0.25)] bg-card shadow-[0_0_36px_rgba(200,241,53,0.14)]">
-                <span className="font-[var(--font-display)] text-[1.5rem] font-extrabold text-accent">⚡</span>
+                <span className="font-display text-[1.5rem] font-extrabold text-accent">⚡</span>
               </div>
 
               {[

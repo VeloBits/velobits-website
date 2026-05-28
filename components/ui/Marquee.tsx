@@ -20,7 +20,7 @@ export default function Marquee() {
         {doubled.map((item, i) => (
           <div key={i} className="inline-flex shrink-0 items-center gap-[0.9rem] whitespace-nowrap px-[2.2rem]">
             <span
-              className={`font-[var(--font-display)] text-[0.72rem] font-bold tracking-[0.18em] uppercase ${i % 4 === 0 ? "text-accent" : "text-muted"}`}
+              className={`font-display text-[0.72rem] font-bold tracking-[0.18em] uppercase ${i % 4 === 0 ? "text-accent" : "text-muted"}`}
             >
               {item}
             </span>

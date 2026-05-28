@@ -91,7 +91,7 @@ export default function CommunityPulse() {
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <div className="eyebrow mb-[0.3rem]">Active Poll</div>
-                <h3 className="max-w-[26ch] font-[var(--font-display)] text-[1.05rem] leading-[1.45] font-extrabold tracking-[-0.01em] uppercase">
+                <h3 className="max-w-[26ch] font-display text-[1.05rem] leading-[1.45] font-extrabold tracking-[-0.01em] uppercase">
                   {polls[0].question}
                 </h3>
               </div>
@@ -166,7 +166,7 @@ export default function CommunityPulse() {
             )}
 
             <div className="eyebrow mb-2">Got an Idea?</div>
-            <h3 className="mb-5 font-[var(--font-display)] text-[1.05rem] leading-[1.45] font-extrabold tracking-[-0.01em] uppercase">
+            <h3 className="mb-5 font-display text-[1.05rem] leading-[1.45] font-extrabold tracking-[-0.01em] uppercase">
               Describe a problem you&apos;d love us to solve.
             </h3>
 
