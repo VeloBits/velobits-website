@@ -5,12 +5,12 @@ import { useEffect, useRef, useState } from "react";
 const polls = [
   {
     id: "p1",
-    question: "What should we build after FixMyText?",
+    question: "What should we build next for FixMyText?",
     options: [
-      { label: "Password Manager", pct: 72 },
-      { label: "Note-taking App", pct: 48 },
-      { label: "Screenshot Tool", pct: 41 },
-      { label: "Code Snippets", pct: 31 },
+      { label: "Browser & editor plugins", pct: 72 },
+      { label: "Team workspaces", pct: 48 },
+      { label: "Leaderboard & profiles", pct: 41 },
+      { label: "Offline mode", pct: 31 },
     ],
     totalVotes: 1247,
     daysLeft: 14,
@@ -87,7 +87,7 @@ export default function CommunityPulse() {
         </div>
 
         <div className="community-grid grid gap-6 [grid-template-columns:1fr_1fr] max-md:grid-cols-1">
-          <div className="card reveal p-8" ref={barsRef}>
+          <div className="card reveal p-8 border-2 border-[rgba(200,241,53,0.15)] transition-all duration-500 hover:border-[rgba(200,241,53,0.3)] hover:shadow-[0_12px_40px_rgba(200,241,53,0.1)] hover:-translate-y-1" ref={barsRef}>
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <div className="eyebrow mb-[0.3rem]">Active Poll</div>
@@ -122,7 +122,7 @@ export default function CommunityPulse() {
                     <button
                       key={opt.label}
                       onClick={() => setVoteIdx(i)}
-                      className={`cursor-pointer border-none bg-transparent p-0 text-left transition-opacity duration-200 ${voteIdx !== null && voteIdx !== i ? "opacity-55" : "opacity-100"}`}
+                      className={`cursor-pointer border-none bg-transparent p-0 text-left transition-all duration-300 hover:pl-1 ${voteIdx !== null && voteIdx !== i ? "opacity-55 hover:opacity-70" : "opacity-100 hover:opacity-110"}`}
                     >
                       <div className="mb-[0.4rem] flex justify-between">
                         <span
@@ -160,7 +160,7 @@ export default function CommunityPulse() {
             </div>
           </div>
 
-          <div className="card reveal reveal-delay-2 relative overflow-hidden p-8">
+          <div className="card reveal reveal-delay-2 relative overflow-hidden p-8 border-2 border-[rgba(200,241,53,0.15)] transition-all duration-500 hover:border-[rgba(200,241,53,0.3)] hover:shadow-[0_12px_40px_rgba(200,241,53,0.1)] hover:-translate-y-1">
             {submitted && (
               <div className="absolute inset-0 z-10 flex animate-[pop-in_0.4s_ease] flex-col items-center justify-center gap-4 rounded-[var(--radius-card)] bg-card">
                 <div className="text-[2.5rem]">Done</div>
@@ -182,7 +182,7 @@ export default function CommunityPulse() {
                 onChange={(e) => setIdea(e.target.value)}
                 placeholder="e.g. I wish there was a tool that automatically summarizes long articles into bullet points..."
                 rows={5}
-                className="w-full resize-y rounded-[14px] border border-border-subtle bg-card-alt p-4 font-inherit text-[0.85rem] leading-[1.7] text-foreground outline-none transition-[border-color,box-shadow] duration-250 focus:border-[rgba(200,241,53,0.5)] focus:shadow-[0_0_0_3px_rgba(200,241,53,0.1)]"
+                className="w-full resize-y rounded-[14px] border-2 border-[rgba(200,241,53,0.1)] bg-card-alt p-4 font-inherit text-[0.85rem] leading-[1.7] text-foreground outline-none transition-all duration-300 hover:border-[rgba(200,241,53,0.2)] focus:border-[rgba(200,241,53,0.4)] focus:shadow-[0_0_0_4px_rgba(200,241,53,0.12)]"
               />
 
               <div>
@@ -195,7 +195,7 @@ export default function CommunityPulse() {
                       key={cat}
                       type="button"
                       onClick={() => setSelectedCat(cat)}
-                      className={`cursor-pointer rounded-full border px-3 py-[0.3rem] text-[0.75rem] font-semibold transition-all duration-200 ${selectedCat === cat ? "border-[rgba(200,241,53,0.4)] bg-[var(--accent-dim)] text-accent" : "border-border-subtle bg-transparent text-muted"}`}
+                      className={`cursor-pointer rounded-full border-2 px-3 py-[0.3rem] text-[0.75rem] font-semibold transition-all duration-300 hover:scale-105 ${selectedCat === cat ? "border-[rgba(200,241,53,0.5)] bg-[var(--accent-dim)] text-accent shadow-[0_4px_12px_rgba(200,241,53,0.15)]" : "border-[rgba(200,241,53,0.15)] bg-transparent text-muted hover:border-[rgba(200,241,53,0.25)]"}`}
                     >
                       {cat}
                     </button>
@@ -214,6 +214,25 @@ export default function CommunityPulse() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes soft-float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-2px); }
+        }
+
+        .card {
+          animation: soft-float 3.5s ease-in-out infinite;
+        }
+
+        .community-grid > div:first-child {
+          animation-delay: 0s;
+        }
+
+        .community-grid > div:last-child {
+          animation-delay: 0.2s;
+        }
+      `}</style>
     </section>
   );
 }

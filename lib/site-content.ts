@@ -2,7 +2,7 @@ export const brand = {
   name: "Velobits",
   tagline: "Software that works for you",
   description:
-    "Velobits builds FixMyText, an AI writing assistant for grammar fixes, sentence rewriting, and tone improvement. Join the FixMyText waitlist.",
+    "Velobits builds FixMyText — a 254-tool text-transformation platform with instant case, encode, hash, cipher, and format tools, plus 50+ AI tools for rewriting, summarizing, and analysis, right in your browser. Join the FixMyText waitlist.",
   domain: "https://velobits.dev",
   logo: {
     src: "/velobits-white-png.png",
@@ -21,6 +21,13 @@ export const navLinks = [
   { label: "Community", href: "#community", soon: false },
   { label: "About", href: "#about", soon: false },
   { label: "Blog", href: "#", soon: true },
+];
+
+export const taglines = [
+  "254 Tools. Infinite Possibilities.",
+  "Your text, transformed instantly.",
+  "The Swiss Army knife for text work.",
+  "From writers to developers, one platform.",
 ];
 
 export type Product = {
@@ -57,38 +64,40 @@ export const products: Product[] = [
     status: "Launching Soon",
     statusColor: "#c8f135",
     shortDescription:
-      "AI writing assistant that fixes grammar, rewrites sentences, and improves tone in seconds.",
+      "254 text tools in one editor — case, encode, hash, cipher, JSON/XML formatting, plus 50+ AI tools for rewriting, summarizing, and analysis.",
     longDescription:
-      "Your AI-powered writing companion. Fix grammar, rephrase sentences, improve tone, and more — right in your browser.",
+      "An all-in-one text-transformation platform. Convert case, encode/decode, hash, format JSON, run ciphers, and tap 50+ AI tools — summarize, paraphrase, sentiment, keyword extraction — with real-time preview and shareable results, right in your browser.",
     features: [
-      "Fix grammar & spelling instantly",
-      "Rephrase sentences with one click",
-      "Adjust tone — formal, casual, sharp",
-      "Runs right in your browser",
+      "254 tools across 12 categories",
+      "Instant case, encode, hash & cipher tools",
+      "50+ AI tools — summarize, paraphrase, analyze",
+      "Real-time preview & shareable links",
     ],
-    tags: ["AI", "Writing", "Productivity"],
+    tags: ["AI", "Developer Tools", "Writing", "Productivity"],
     ctaLabel: "Join FixMyText Waitlist",
     ctaHref: "#waitlist",
     launchLabel: "Launching Soon",
     preview: {
-      url: "app.fixmytext.com",
+      url: "fixmytext.velobits.dev",
       originalText:
         "I writed this email yesterday but i think it can be improved alot. Can you help me?",
       fixedText:
         "I wrote this email yesterday, but I believe it could be improved significantly. Could you help me refine it?",
-      actions: ["Fix Grammar", "Rephrase", "Improve Tone"],
-      accuracy: "98%",
-      accuracyLabel: "Accuracy score",
+      actions: ["Fix Grammar", "Summarize", "Format"],
+      accuracy: "254",
+      accuracyLabel: "Text tools",
     },
     seoKeywords: [
-      "AI writing assistant",
-      "grammar fixer",
-      "sentence rewriter",
-      "tone improvement",
+      "text transformation platform",
+      "online case converter",
+      "free JSON formatter",
+      "base64 encoder decoder",
+      "AI text summarizer",
+      "paraphrase tool",
       "FixMyText",
     ],
-    metric: "98%",
-    metricLabel: "Grammar accuracy",
+    metric: "254",
+    metricLabel: "Text tools",
     icon: "✏️",
     featured: true,
   },

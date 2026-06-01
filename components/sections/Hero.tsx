@@ -68,9 +68,10 @@ export default function Hero() {
 
             {/* Description */}
             <p className="max-w-[42ch] animate-[pop-in_0.6s_ease_0.32s_both] text-[0.97rem] leading-[1.8] text-muted">
-              An AI writing assistant that fixes grammar, rewrites sentences, and improves tone in
-              seconds — built by <span className="font-semibold text-foreground">Velobits</span> for
-              everyday writing.
+              254 text tools in one editor — case conversion, encoding, formatting, and 50+ AI tools
+              for rewriting, summarizing, and analysis. Built by{" "}
+              <span className="font-semibold text-foreground">Velobits</span>, runs right in your
+              browser.
             </p>
 
             {/* CTAs */}
@@ -114,7 +115,7 @@ export default function Hero() {
           >
             {/* Browser frame */}
             <div
-              className="card relative mt-8 px-5 pt-4 pb-5 border-2 border-[rgba(200,241,53,0.2)] bg-gradient-to-br from-[rgba(200,241,53,0.03)] to-transparent shadow-[0_24px_80px_rgba(200,241,53,0.2),0_0_40px_rgba(200,241,53,0.1)] transition-all duration-300 hover:-translate-y-2 hover:border-[rgba(200,241,53,0.35)] hover:shadow-[0_32px_100px_rgba(200,241,53,0.25),0_0_60px_rgba(200,241,53,0.15)]"
+              className="card relative mt-8 px-5 pt-4 pb-5 border-2 border-[rgba(200,241,53,0.2)] bg-gradient-to-br from-[rgba(200,241,53,0.03)] to-transparent transition-all duration-300 hover:-translate-y-2 hover:border-[rgba(200,241,53,0.35)]"
               style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
             >
               {/* Browser chrome */}

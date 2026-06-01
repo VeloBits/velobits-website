@@ -1,13 +1,13 @@
 "use client";
 
 const items = [
-  "AI-Powered Tools",
+  "254 Text Tools",
+  "AI-Powered",
   "Privacy First",
-  "Community Driven",
+  "Case · Encode · Hash",
   "Free to Start",
-  "Bits That Matter",
+  "Real-Time Preview",
   "Open Roadmap",
-  "Built for Everyone",
   "Zero Bloat",
 ];
 
@@ -15,7 +15,10 @@ const doubled = [...items, ...items];
 
 export default function Marquee() {
   return (
-    <div className="overflow-hidden border-y border-[rgba(200,241,53,0.15)] py-[1.35rem] [mask-image:linear-gradient(to_right,transparent_0%,black_8%,black_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_8%,black_92%,transparent_100%)]">
+    <div
+      data-no-spark
+      className="overflow-hidden border-y border-[rgba(200,241,53,0.15)] py-[1.35rem] [mask-image:linear-gradient(to_right,transparent_0%,black_8%,black_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_8%,black_92%,transparent_100%)]"
+    >
       <div className="flex w-max flex-nowrap animate-[marquee_32s_linear_infinite]">
         {doubled.map((item, i) => (
           <div

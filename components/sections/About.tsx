@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 const stats = [
   { value: 1, suffix: "", label: "Product Launching", display: null },
@@ -94,7 +93,6 @@ export default function About() {
                   key={s.label}
                   className="card relative p-[1.1rem] text-center border-2 border-[rgba(200,241,53,0.2)] transition-all duration-300 hover:border-[rgba(200,241,53,0.35)] hover:shadow-[0_8px_24px_rgba(200,241,53,0.1)]"
                 >
-                  <GlowingEffect spread={30} proximity={60} inactiveZone={0.01} />
                   <div className="relative mb-[0.35rem] font-display text-[1.6rem] leading-[1] font-extrabold bg-gradient-to-r from-accent to-[rgba(200,241,53,0.8)] bg-clip-text text-transparent">
                     {s.display
                       ? s.display

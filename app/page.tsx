@@ -1,4 +1,5 @@
 import CursorGlow from "@/components/ui/CursorGlow";
+import BackgroundSpark from "@/components/ui/BackgroundSpark";
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
 import Marquee from "@/components/ui/Marquee";
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <>
       <CursorGlow />
+      <BackgroundSpark />
       <Navbar />
       <main className="flex-1">
         <Hero />
