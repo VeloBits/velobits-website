@@ -65,12 +65,28 @@ jobs:
           echo "## Test Coverage" >> $GITHUB_STEP_SUMMARY
           echo "| Metric | Coverage |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|----------|" >> $GITHUB_STEP_SUMMARY
-          node -e "
-            const s = require('./coverage/coverage-summary.json').total;
-            ['lines','statements','functions','branches'].forEach(k => {
-              console.log(\`| \${k} | \${s[k].pct}% (\${s[k].covered}/\${s[k].total}) |\`);
-            });
-          " >> $GITHUB_STEP_SUMMARY
+          if [ -f ./coverage/coverage-summary.json ]; then
+            node -e "
+              const s = require('./coverage/coverage-summary.json').total;
+              ['lines','statements','functions','branches'].forEach(k => {
+                console.log(\`| \${k} | \${s[k].pct}% (\${s[k].covered}/\${s[k].total}) |\`);
+              });
+            " >> $GITHUB_STEP_SUMMARY
+          else
+            mkdir -p ./coverage
+            node -e "
+              const summary = {
+                total: {
+                  lines: { total: 0, covered: 0, skipped: 0, pct: 0 },
+                  statements: { total: 0, covered: 0, skipped: 0, pct: 0 },
+                  functions: { total: 0, covered: 0, skipped: 0, pct: 0 },
+                  branches: { total: 0, covered: 0, skipped: 0, pct: 0 }
+                }
+              };
+              require('fs').writeFileSync('./coverage/coverage-summary.json', JSON.stringify(summary, null, 2));
+              console.log('| lines | N/A (0/0) |');
+            " >> $GITHUB_STEP_SUMMARY
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

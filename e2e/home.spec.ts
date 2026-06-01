@@ -29,14 +29,16 @@ test.describe("Homepage", () => {
 
   test("hero waitlist CTA is visible and links to #waitlist", async ({ page }) => {
     await page.goto("/");
-    const cta = page.getByRole("link", { name: /Join FixMyText Waitlist/i });
+    const hero = page.locator("#hero");
+    const cta = hero.getByRole("link", { name: /Join FixMyText Waitlist/i });
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "#waitlist");
   });
 
   test("hero preview CTA links to #products", async ({ page }) => {
     await page.goto("/");
-    const cta = page.getByRole("link", { name: /See Product Preview/i });
+    const hero = page.locator("#hero");
+    const cta = hero.getByRole("link", { name: /See Product Preview/i });
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "#products");
   });
