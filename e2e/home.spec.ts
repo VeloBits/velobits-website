@@ -20,6 +20,35 @@ test.describe("Homepage", () => {
     await expect(footer).toContainText("Velobits");
   });
 
+  test("hero heading contains FixMyText and Velobits", async ({ page }) => {
+    await page.goto("/");
+    const h1 = page.getByRole("heading", { level: 1 });
+    await expect(h1).toContainText("FixMyText");
+    await expect(h1).toContainText("Velobits");
+  });
+
+  test("hero waitlist CTA is visible and links to #waitlist", async ({ page }) => {
+    await page.goto("/");
+    const hero = page.locator("#hero");
+    const cta = hero.getByRole("link", { name: /Join FixMyText Waitlist/i });
+    await expect(cta).toBeVisible();
+    await expect(cta).toHaveAttribute("href", "#waitlist");
+  });
+
+  test("hero preview CTA links to #products", async ({ page }) => {
+    await page.goto("/");
+    const hero = page.locator("#hero");
+    const cta = hero.getByRole("link", { name: /See Product Preview/i });
+    await expect(cta).toBeVisible();
+    await expect(cta).toHaveAttribute("href", "#products");
+  });
+
+  test("navbar has main navigation landmark", async ({ page }) => {
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: /Main navigation/i });
+    await expect(nav).toBeVisible();
+  });
+
   test("has no console errors on load", async ({ page }) => {
     const errors: string[] = [];
     page.on("console", (msg) => {

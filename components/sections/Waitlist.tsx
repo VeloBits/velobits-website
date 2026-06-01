@@ -1,0 +1,139 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+export default function Waitlist() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll(".reveal").forEach((el, i) => {
+              setTimeout(() => el.classList.add("visible"), i * 120);
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim() || !email.includes("@")) return;
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+    }, 1200);
+  };
+
+  return (
+    <section id="waitlist" className="section relative" ref={sectionRef}>
+      <div className="container">
+        <div className="card reveal relative overflow-hidden bg-card px-16 py-20 text-center max-sm:px-6 max-sm:py-12">
+          <div className="pointer-events-none absolute top-1/2 left-1/2 h-[60%] w-[80%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse,rgba(200,241,53,0.07)_0%,transparent_70%)]" />
+
+          <div className="pointer-events-none absolute inset-0 rounded-[inherit] bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+
+          <div className="sticker absolute top-6 right-8 h-[72px] w-[72px] rotate-[-8deg] text-[0.6rem]">
+            FREE
+          </div>
+
+          {[
+            { icon: "A", className: "top-6 left-8 animate-[float-a_5s_ease-in-out_infinite]" },
+            { icon: "B", className: "bottom-8 left-12 animate-[float-b_4s_ease-in-out_infinite]" },
+            { icon: "C", className: "right-12 bottom-6 animate-[float-c_5s_ease-in-out_infinite]" },
+          ].map(({ icon, className }) => (
+            <div
+              key={icon}
+              className={`absolute flex h-11 w-11 items-center justify-center rounded-full border border-border-subtle bg-card-alt text-[1.1rem] ${className}`}
+            >
+              {icon}
+            </div>
+          ))}
+
+          <div className="relative z-1">
+            {submitted ? (
+              <div className="flex flex-col items-center gap-4 py-8">
+                <div className="text-[3rem]">Done</div>
+                <h2 className="display display-md text-accent">You&apos;re in!</h2>
+                <p className="max-w-[36ch] leading-[1.7] text-muted">
+                  We&apos;ll be in touch with first-access details before the launch. Keep an eye on
+                  your inbox.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="reveal">
+                  <span className="eyebrow mb-3 block">Early Access</span>
+                  <h2 className="display display-lg">
+                    Don&apos;t miss
+                    <br />
+                    <span className="text-accent">what&apos;s next.</span>
+                  </h2>
+                  <p className="mx-auto mt-4 max-w-[46ch] leading-[1.7] text-muted">
+                    Join early believers. Get first access to every Velobits launch before anyone
+                    else. No spam - ever.
+                  </p>
+                </div>
+
+                <form
+                  onSubmit={handleSubmit}
+                  className="reveal reveal-delay-2 mx-auto mt-10 flex max-w-[500px] rounded-full border border-border-subtle bg-card-alt py-[0.3rem] pr-[0.3rem] pl-6 transition-[border-color,box-shadow] duration-250 focus-within:border-[rgba(200,241,53,0.4)] focus-within:shadow-[0_0_0_4px_rgba(200,241,53,0.08)]"
+                >
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    required
+                    className="min-w-0 flex-1 border-none bg-transparent font-inherit text-[0.9rem] text-foreground outline-none"
+                  />
+                  <button
+                    type="submit"
+                    className="btn btn-primary shrink-0 px-6 py-[0.65rem]"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span className="inline-flex gap-1">
+                        <span className="h-[5px] w-[5px] rounded-full bg-background animate-[glow-pulse_0.8s_ease-in-out_infinite]" />
+                        <span className="h-[5px] w-[5px] rounded-full bg-background animate-[glow-pulse_0.8s_ease-in-out_0.2s_infinite]" />
+                        <span className="h-[5px] w-[5px] rounded-full bg-background animate-[glow-pulse_0.8s_ease-in-out_0.4s_infinite]" />
+                      </span>
+                    ) : (
+                      <>
+                        Get Early Access
+                        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                          <path
+                            d="M3 8h10M9 4l4 4-4 4"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                </form>
+
+                <p className="reveal reveal-delay-3 mt-4 text-[0.75rem] text-faint">
+                  No spam. Unsubscribe anytime.
+                </p>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
