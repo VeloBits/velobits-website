@@ -4,10 +4,6 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { brand } from "@/lib/site-content";
 
-// Vercel Analytics is used to track page views and other analytics data.
-// It is included in the RootLayout so that it is available on all pages of the application.
-import { Analytics } from "@vercel/analytics/next";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
