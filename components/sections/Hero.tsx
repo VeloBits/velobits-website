@@ -186,6 +186,21 @@ export default function Hero() {
                   </p>
                 </div>
               </div>
+
+              {/* Accuracy stat */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  paddingTop: "0.3rem",
+                }}
+              >
+                <div className="text-[0.6rem] font-bold tracking-[0.14em] text-muted uppercase">
+                  {preview.accuracyLabel}
+                </div>
+                <div className="text-[0.9rem] font-bold text-accent">{preview.accuracy}</div>
+              </div>
             </div>
           </div>
         </div>
