@@ -6,7 +6,10 @@ export default function CursorGlow() {
   useEffect(() => {
     const el = document.getElementById("cursor-glow");
     if (!el) return;
-    let x = 0, y = 0, cx = 0, cy = 0;
+    let x = 0,
+      y = 0,
+      cx = 0,
+      cy = 0;
     let rafId: number;
 
     const onMove = (e: MouseEvent) => {

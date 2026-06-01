@@ -45,7 +45,10 @@ export default function Navbar() {
   }, [menuOpen]);
 
   return (
-    <header role="banner" className="pointer-events-none fixed top-0 right-0 left-0 z-[100] flex justify-center px-4 pt-4 pb-4">
+    <header
+      role="banner"
+      className="pointer-events-none fixed top-0 right-0 left-0 z-[100] flex justify-center px-4 pt-4 pb-4"
+    >
       <nav
         id="navbar"
         aria-label="Main navigation"

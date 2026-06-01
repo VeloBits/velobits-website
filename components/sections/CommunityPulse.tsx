@@ -99,7 +99,7 @@ export default function CommunityPulse() {
             </div>
 
             <div className="flex flex-col gap-4">
-              {polls[0].options.map((opt, i) => (
+              {polls[0].options.map((opt, i) =>
                 (() => {
                   const widthClass = barsVisible
                     ? i === 0
@@ -111,34 +111,40 @@ export default function CommunityPulse() {
                           : "w-[31%]"
                     : "w-0";
                   const delayClass =
-                    i === 0 ? "delay-[0ms]" : i === 1 ? "delay-[150ms]" : i === 2 ? "delay-[300ms]" : "delay-[450ms]";
+                    i === 0
+                      ? "delay-[0ms]"
+                      : i === 1
+                        ? "delay-[150ms]"
+                        : i === 2
+                          ? "delay-[300ms]"
+                          : "delay-[450ms]";
                   return (
-                <button
-                  key={opt.label}
-                  onClick={() => setVoteIdx(i)}
-                  className={`cursor-pointer border-none bg-transparent p-0 text-left transition-opacity duration-200 ${voteIdx !== null && voteIdx !== i ? "opacity-55" : "opacity-100"}`}
-                >
-                  <div className="mb-[0.4rem] flex justify-between">
-                    <span
-                      className={`text-[0.83rem] ${voteIdx === i ? "font-semibold text-foreground" : "font-normal text-muted"}`}
+                    <button
+                      key={opt.label}
+                      onClick={() => setVoteIdx(i)}
+                      className={`cursor-pointer border-none bg-transparent p-0 text-left transition-opacity duration-200 ${voteIdx !== null && voteIdx !== i ? "opacity-55" : "opacity-100"}`}
                     >
-                      {opt.label}
-                    </span>
-                    <span
-                      className={`text-[0.8rem] font-bold ${voteIdx === i ? "text-accent" : "text-muted"}`}
-                    >
-                      {opt.pct}%
-                    </span>
-                  </div>
-                  <div className="poll-bar-track">
-                    <div
-                      className={`poll-bar-fill ${widthClass} ${delayClass} ${voteIdx === i ? "bg-accent" : "bg-[rgba(200,241,53,0.45)]"}`}
-                    />
-                  </div>
-                </button>
+                      <div className="mb-[0.4rem] flex justify-between">
+                        <span
+                          className={`text-[0.83rem] ${voteIdx === i ? "font-semibold text-foreground" : "font-normal text-muted"}`}
+                        >
+                          {opt.label}
+                        </span>
+                        <span
+                          className={`text-[0.8rem] font-bold ${voteIdx === i ? "text-accent" : "text-muted"}`}
+                        >
+                          {opt.pct}%
+                        </span>
+                      </div>
+                      <div className="poll-bar-track">
+                        <div
+                          className={`poll-bar-fill ${widthClass} ${delayClass} ${voteIdx === i ? "bg-accent" : "bg-[rgba(200,241,53,0.45)]"}`}
+                        />
+                      </div>
+                    </button>
                   );
                 })()
-              ))}
+              )}
             </div>
 
             <div className="mt-6 flex items-center justify-between border-t border-border-subtle pt-5">
@@ -180,7 +186,9 @@ export default function CommunityPulse() {
               />
 
               <div>
-                <div className="mb-2 text-[0.7rem] tracking-[0.1em] text-muted uppercase">Category</div>
+                <div className="mb-2 text-[0.7rem] tracking-[0.1em] text-muted uppercase">
+                  Category
+                </div>
                 <div className="flex flex-wrap gap-[0.4rem]">
                   {categories.map((cat) => (
                     <button

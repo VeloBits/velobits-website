@@ -12,9 +12,11 @@ export default function Products() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.querySelectorAll(".reveal, .reveal-scale, .reveal-left").forEach((el, i) => {
-              setTimeout(() => el.classList.add("visible"), i * 110);
-            });
+            entry.target
+              .querySelectorAll(".reveal, .reveal-scale, .reveal-left")
+              .forEach((el, i) => {
+                setTimeout(() => el.classList.add("visible"), i * 110);
+              });
             observer.unobserve(entry.target);
           }
         });
@@ -32,13 +34,12 @@ export default function Products() {
           <div className="reveal">
             <span className="eyebrow">Our Products</span>
             <h2 className="display display-lg mt-[0.65rem]">
-              Tools that{" "}
-              <span className="text-accent">actually</span> work.
+              Tools that <span className="text-accent">actually</span> work.
             </h2>
           </div>
           <p className="reveal reveal-delay-2 max-w-[36ch] text-[0.9rem] leading-[1.75] text-muted">
-            Every Velobits product starts with a real problem. No bloat. No vaporware.
-            Just bits that matter.
+            Every Velobits product starts with a real problem. No bloat. No vaporware. Just bits
+            that matter.
           </p>
         </div>
 
@@ -106,7 +107,8 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
         {/* ── Shared header row: badge (left) + icon (right) ── */}
         <div className="relative flex items-center justify-between mb-[1.6rem]">
           <span className={`pill ${statusClass}`}>
-            <span className="pill-dot" />&nbsp;{p.status}
+            <span className="pill-dot" />
+            &nbsp;{p.status}
           </span>
           <div
             className="flex items-center justify-center rounded-xl border-2 border-[rgba(200,241,53,0.25)] h-[42px] w-[42px] bg-gradient-to-br from-[rgba(200,241,53,0.15)] to-[rgba(200,241,53,0.05)] text-[1.35rem] transition-all duration-500 ease-in-out hover:scale-[1.1] hover:border-[rgba(200,241,53,0.4)] hover:shadow-[0_0_16px_rgba(200,241,53,0.2)]"
@@ -118,7 +120,6 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
 
         {/* ── Body: two columns, both start at the same point ── */}
         <div className="relative flex flex-col md:flex-row gap-8 flex-1">
-
           {/* Left: title + description + tags */}
           <div className="flex flex-col gap-[1.2rem] md:w-[55%]">
             <div>
@@ -130,7 +131,9 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
             {p.tags.length > 0 && (
               <div className="flex flex-wrap gap-[0.35rem]">
                 {p.tags.map((t) => (
-                  <span key={t} className="pill text-[0.66rem]">#{t}</span>
+                  <span key={t} className="pill text-[0.66rem]">
+                    #{t}
+                  </span>
                 ))}
               </div>
             )}
@@ -150,7 +153,13 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
                       aria-hidden="true"
                     >
                       <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
-                        <path d="M2 5l2.5 2.5L8 3" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                        <path
+                          d="M2 5l2.5 2.5L8 3"
+                          stroke="var(--accent)"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
                     </span>
                     <span className="text-[0.78rem] leading-[1.4] text-foreground/70">{feat}</span>
@@ -177,7 +186,13 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
                 <a href={p.ctaHref ?? "#"} className="btn btn-primary self-start text-[0.82rem]">
                   {p.ctaLabel}
                   <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M3 8h10M9 4l4 4-4 4"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </a>
               )}
@@ -236,7 +251,10 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
       {p.tags.length > 0 && (
         <div className="flex flex-wrap gap-[0.35rem]">
           {p.tags.map((t) => (
-            <span key={t} className="pill text-[0.66rem] text-[rgba(244,244,245,0.55)] border-[rgba(255,255,255,0.12)]">
+            <span
+              key={t}
+              className="pill text-[0.66rem] text-[rgba(244,244,245,0.55)] border-[rgba(255,255,255,0.12)]"
+            >
               #{t}
             </span>
           ))}

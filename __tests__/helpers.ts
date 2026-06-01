@@ -12,7 +12,9 @@ export function mockIntersectionObserver() {
     // Immediately fire with isIntersecting: true on next tick
     setTimeout(() => {
       callback(
-        [{ isIntersecting: true, target: document.createElement("div") }] as unknown as IntersectionObserverEntry[],
+        [
+          { isIntersecting: true, target: document.createElement("div") },
+        ] as unknown as IntersectionObserverEntry[],
         {} as IntersectionObserver
       );
     }, 0);

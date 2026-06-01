@@ -11,10 +11,7 @@ export default function Hero() {
   useEffect(() => {
     const onScroll = () => {
       if (glowRef.current)
-        glowRef.current.setAttribute(
-          "style",
-          `transform: translateY(${window.scrollY * 0.18}px);`
-        );
+        glowRef.current.setAttribute("style", `transform: translateY(${window.scrollY * 0.18}px);`);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -41,7 +38,6 @@ export default function Hero() {
 
       <div className="container relative z-[1] w-full flex-1 flex flex-col justify-center">
         <div className="hero-grid grid items-center gap-16 [grid-template-columns:1.15fr_1fr]">
-
           {/* Left: copy */}
           <div className="flex flex-col gap-[1.5rem]">
             {/* Eyebrow */}
@@ -62,15 +58,19 @@ export default function Hero() {
             <h1 className="animate-[pop-in_0.6s_ease_0.2s_both] font-[var(--font-display)] text-[clamp(2.8rem,5vw,5rem)] leading-[0.93] font-extrabold tracking-[-0.03em] text-foreground uppercase">
               FixMyText
               <br />
-              <span className="text-accent" style={{ textShadow: '0 0 60px rgba(200,241,53,0.12)' }}>by Velobits</span>
+              <span
+                className="text-accent"
+                style={{ textShadow: "0 0 60px rgba(200,241,53,0.12)" }}
+              >
+                by Velobits
+              </span>
             </h1>
 
             {/* Description */}
             <p className="max-w-[42ch] animate-[pop-in_0.6s_ease_0.32s_both] text-[0.97rem] leading-[1.8] text-muted">
-              An AI writing assistant that fixes grammar, rewrites sentences, and improves
-              tone in seconds — built by{" "}
-              <span className="font-semibold text-foreground">Velobits</span> for everyday
-              writing.
+              An AI writing assistant that fixes grammar, rewrites sentences, and improves tone in
+              seconds — built by <span className="font-semibold text-foreground">Velobits</span> for
+              everyday writing.
             </p>
 
             {/* CTAs */}
@@ -95,7 +95,7 @@ export default function Hero() {
             {/* Trust tags */}
             <div className="hero-pills flex flex-wrap gap-[0.4rem] animate-[pop-in_0.6s_ease_0.52s_both]">
               {featured.features.map((tag, i) => (
-                <span key={tag} className={`pill text-[0.68rem] ${i === 0 ? 'pill-accent' : ''}`}>
+                <span key={tag} className={`pill text-[0.68rem] ${i === 0 ? "pill-accent" : ""}`}>
                   {i === 0 && <span className="pill-dot" />}
                   {tag}
                 </span>
@@ -107,7 +107,10 @@ export default function Hero() {
           <div
             className="hero-visual relative animate-[pop-in_0.75s_ease_0.4s_both]"
             aria-label="FixMyText product preview"
-            style={{ transform: 'perspective(1200px) rotateY(-4deg) rotateX(2deg)', transition: 'transform 0.4s ease' }}
+            style={{
+              transform: "perspective(1200px) rotateY(-4deg) rotateX(2deg)",
+              transition: "transform 0.4s ease",
+            }}
           >
             {/* Browser frame */}
             <div
@@ -119,9 +122,18 @@ export default function Hero() {
                 className="border-b border-border-subtle pb-3"
                 style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}
               >
-                <span className="inline-block h-2 w-2 rounded-full bg-[#ff5f57]" aria-hidden="true" />
-                <span className="inline-block h-2 w-2 rounded-full bg-[#febc2e]" aria-hidden="true" />
-                <span className="inline-block h-2 w-2 rounded-full bg-[#28c840]" aria-hidden="true" />
+                <span
+                  className="inline-block h-2 w-2 rounded-full bg-[#ff5f57]"
+                  aria-hidden="true"
+                />
+                <span
+                  className="inline-block h-2 w-2 rounded-full bg-[#febc2e]"
+                  aria-hidden="true"
+                />
+                <span
+                  className="inline-block h-2 w-2 rounded-full bg-[#28c840]"
+                  aria-hidden="true"
+                />
                 <span className="ml-2 flex-1 rounded-[5px] bg-card-alt px-[0.65rem] py-[0.2rem] text-[0.67rem] tracking-[0.02em] text-faint">
                   {preview.url}
                 </span>
@@ -133,7 +145,9 @@ export default function Hero() {
                   Original
                 </div>
                 <div className="rounded-[8px] border border-border-subtle bg-card-alt px-4 py-[0.65rem]">
-                  <p className="text-[0.78rem] leading-relaxed text-muted">{preview.originalText}</p>
+                  <p className="text-[0.78rem] leading-relaxed text-muted">
+                    {preview.originalText}
+                  </p>
                 </div>
               </div>
 
@@ -158,12 +172,13 @@ export default function Hero() {
                 <div className="text-[0.6rem] font-bold tracking-[0.14em] text-accent uppercase">
                   ✓ Fixed
                 </div>
-                <div
-                  className="relative overflow-hidden rounded-[8px] border border-[rgba(200,241,53,0.16)] bg-[rgba(200,241,53,0.05)] px-4 py-[0.65rem]"
-                >
+                <div className="relative overflow-hidden rounded-[8px] border border-[rgba(200,241,53,0.16)] bg-[rgba(200,241,53,0.05)] px-4 py-[0.65rem]">
                   <div
                     className="pointer-events-none absolute inset-0 animate-[shimmer-sweep_3.5s_ease-in-out_infinite]"
-                    style={{ background: "linear-gradient(110deg, transparent 20%, rgba(200,241,53,0.06) 50%, transparent 80%)" }}
+                    style={{
+                      background:
+                        "linear-gradient(110deg, transparent 20%, rgba(200,241,53,0.06) 50%, transparent 80%)",
+                    }}
                     aria-hidden="true"
                   />
                   <p className="relative text-[0.78rem] leading-relaxed text-foreground">
@@ -172,14 +187,14 @@ export default function Hero() {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
 
       {/* Scroll hint */}
       <div
-        className="relative z-[1] flex flex-col items-center gap-[1.5rem] opacity-40 animate-[pop-in_1s_ease_1.2s_both]"                                                                                                                                                                                                                                                                                     aria-hidden="true"
+        className="relative z-[1] flex flex-col items-center gap-[1.5rem] opacity-40 animate-[pop-in_1s_ease_1.2s_both]"
+        aria-hidden="true"
       >
         <span className="text-[0.58rem] tracking-[0.2em] text-muted uppercase">
           Scroll to explore

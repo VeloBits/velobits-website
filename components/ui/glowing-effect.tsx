@@ -48,8 +48,10 @@ export function GlowingEffect({
         }
 
         const inRange =
-          x > left - proximity && x < left + width + proximity &&
-          y > top - proximity && y < top + height + proximity;
+          x > left - proximity &&
+          x < left + width + proximity &&
+          y > top - proximity &&
+          y < top + height + proximity;
 
         el.style.setProperty("--active", inRange ? "1" : "0");
         if (!inRange) return;

@@ -3,11 +3,41 @@
 import { useEffect, useRef, useState } from "react";
 
 const milestones = [
-  { date: "Q2 2025", label: "FixMyText Alpha", desc: "Core AI engine built and internally tested.", done: true, now: false },
-  { date: "Q2 2026", label: "Public Launch", desc: "FixMyText goes live for everyone - free to start.", done: false, now: true },
-  { date: "Q3 2026", label: "Community Pulse", desc: "Full community voting & idea platform goes live.", done: false, now: false },
-  { date: "Q4 2026", label: "Product #2", desc: "Voted on by the community. Built by us.", done: false, now: false },
-  { date: "2027", label: "Velobits Suite", desc: "A full ecosystem of everyday tools.", done: false, now: false },
+  {
+    date: "Q2 2025",
+    label: "FixMyText Alpha",
+    desc: "Core AI engine built and internally tested.",
+    done: true,
+    now: false,
+  },
+  {
+    date: "Q2 2026",
+    label: "Public Launch",
+    desc: "FixMyText goes live for everyone - free to start.",
+    done: false,
+    now: true,
+  },
+  {
+    date: "Q3 2026",
+    label: "Community Pulse",
+    desc: "Full community voting & idea platform goes live.",
+    done: false,
+    now: false,
+  },
+  {
+    date: "Q4 2026",
+    label: "Product #2",
+    desc: "Voted on by the community. Built by us.",
+    done: false,
+    now: false,
+  },
+  {
+    date: "2027",
+    label: "Velobits Suite",
+    desc: "A full ecosystem of everyday tools.",
+    done: false,
+    now: false,
+  },
 ];
 
 export default function Roadmap() {
@@ -43,10 +73,14 @@ export default function Roadmap() {
         <div className="reveal mb-16">
           <span className="eyebrow">What&apos;s Coming</span>
           <h2 className="display display-lg mt-3">
-            The road <span className="bg-gradient-to-r from-accent via-accent to-[rgba(200,241,53,0.7)] bg-clip-text text-transparent">ahead.</span>
+            The road{" "}
+            <span className="bg-gradient-to-r from-accent via-accent to-[rgba(200,241,53,0.7)] bg-clip-text text-transparent">
+              ahead.
+            </span>
           </h2>
           <p className="mt-5 max-w-[44ch] leading-[1.8] text-muted">
-            We move fast, build thoughtfully, and ship often. Here&apos;s what&apos;s on the horizon.
+            We move fast, build thoughtfully, and ship often. Here&apos;s what&apos;s on the
+            horizon.
           </p>
         </div>
 
@@ -54,14 +88,22 @@ export default function Roadmap() {
           <svg className="timeline-svg pointer-events-none absolute top-14 left-0 block h-1 w-full overflow-visible max-[900px]:hidden">
             <defs>
               <filter id="timeline-glow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="2" result="coloredBlur" />
                 <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
             </defs>
-            <line x1="2%" y1="2" x2="98%" y2="2" stroke="rgba(255,255,255,0.08)" strokeWidth="2" strokeLinecap="round" />
+            <line
+              x1="2%"
+              y1="2"
+              x2="98%"
+              y2="2"
+              stroke="rgba(255,255,255,0.08)"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
             <line
               x1="2%"
               y1="2"
@@ -89,10 +131,13 @@ export default function Roadmap() {
                       className={`relative z-1 h-5 w-5 rounded-full border-2 transition-all duration-300 ${m.now ? "border-accent bg-accent shadow-[0_0_24px_rgba(200,241,53,0.6)] scale-125" : m.done ? "border-accent bg-[rgba(200,241,53,0.6)]" : "border-border-subtle bg-card hover:border-accent/50"}`}
                     />
                     {m.now && (
-                      <div className="absolute inset-0 rounded-full animate-pulse" style={{
-                        boxShadow: "0 0 32px rgba(200,241,53,0.4)",
-                        filter: "blur(1px)"
-                      }} />
+                      <div
+                        className="absolute inset-0 rounded-full animate-pulse"
+                        style={{
+                          boxShadow: "0 0 32px rgba(200,241,53,0.4)",
+                          filter: "blur(1px)",
+                        }}
+                      />
                     )}
                   </div>
                 </div>
@@ -114,20 +159,32 @@ export default function Roadmap() {
                 >
                   {m.now && (
                     <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                      <div className="absolute -inset-full animate-[spin_8s_linear_infinite] opacity-20" style={{
-                        backgroundImage: "conic-gradient(from 0deg, transparent, rgba(200,241,53,0.4), transparent 180deg)"
-                      }} />
+                      <div
+                        className="absolute -inset-full animate-[spin_8s_linear_infinite] opacity-20"
+                        style={{
+                          backgroundImage:
+                            "conic-gradient(from 0deg, transparent, rgba(200,241,53,0.4), transparent 180deg)",
+                        }}
+                      />
                     </div>
                   )}
 
                   <div className="relative z-1">
-                    <div className={`mb-2 text-[0.68rem] font-bold tracking-[0.12em] uppercase ${m.now ? "bg-gradient-to-r from-accent to-[rgba(200,241,53,0.7)] bg-clip-text text-transparent" : m.done ? "text-accent" : "text-muted"}`}>
+                    <div
+                      className={`mb-2 text-[0.68rem] font-bold tracking-[0.12em] uppercase ${m.now ? "bg-gradient-to-r from-accent to-[rgba(200,241,53,0.7)] bg-clip-text text-transparent" : m.done ? "text-accent" : "text-muted"}`}
+                    >
                       {m.date}
                     </div>
-                    <div className={`mb-3 font-display text-[1rem] font-extrabold tracking-[-0.01em] uppercase transition-colors ${m.now ? "bg-gradient-to-r from-accent to-[rgba(200,241,53,0.8)] bg-clip-text text-transparent" : "text-foreground"}`}>
+                    <div
+                      className={`mb-3 font-display text-[1rem] font-extrabold tracking-[-0.01em] uppercase transition-colors ${m.now ? "bg-gradient-to-r from-accent to-[rgba(200,241,53,0.8)] bg-clip-text text-transparent" : "text-foreground"}`}
+                    >
                       {m.label}
                     </div>
-                    <div className={`text-[0.8rem] leading-[1.7] transition-colors ${m.now ? "text-foreground/90" : "text-muted"}`}>{m.desc}</div>
+                    <div
+                      className={`text-[0.8rem] leading-[1.7] transition-colors ${m.now ? "text-foreground/90" : "text-muted"}`}
+                    >
+                      {m.desc}
+                    </div>
                   </div>
                 </div>
               </div>

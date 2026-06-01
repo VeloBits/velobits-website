@@ -72,7 +72,9 @@ export default function Footer() {
 
           {Object.entries(links).map(([group, items]) => (
             <div key={group}>
-              <div className="mb-4 text-[0.72rem] font-bold tracking-[0.1em] text-muted uppercase">{group}</div>
+              <div className="mb-4 text-[0.72rem] font-bold tracking-[0.1em] text-muted uppercase">
+                {group}
+              </div>
               <div className="flex flex-col gap-[0.6rem]">
                 {items.map((item) => (
                   <a
