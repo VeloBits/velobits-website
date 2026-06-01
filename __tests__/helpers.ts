@@ -8,7 +8,7 @@ export function mockIntersectionObserver() {
   const unobserve = vi.fn();
   const disconnect = vi.fn();
 
-  const MockIO = vi.fn((callback: IntersectionObserverCallback) => {
+  const MockIO = vi.fn(function (callback: IntersectionObserverCallback) {
     // Immediately fire with isIntersecting: true on next tick
     setTimeout(() => {
       callback(

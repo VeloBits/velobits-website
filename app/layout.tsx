@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import { brand } from "@/lib/site-content";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,24 +17,56 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Velobits — Software That Works For You",
+  title: "Velobits: FixMyText AI Writing Assistant",
   description:
-    "Velobits is a startup building thoughtful, everyday software products that solve real problems. First up: FixMyText — your AI writing companion.",
-  keywords: ["Velobits", "FixMyText", "software", "AI writing", "productivity tools"],
+    "Velobits builds FixMyText, an AI writing assistant for grammar fixes, sentence rewriting, and tone improvement. Join the FixMyText waitlist.",
+  keywords: [
+    "Velobits",
+    "FixMyText",
+    "AI writing assistant",
+    "grammar fixer",
+    "sentence rewriter",
+    "tone improvement",
+    "waitlist",
+  ],
+  alternates: {
+    canonical: "https://velobits.dev/",
+  },
   openGraph: {
-    title: "Velobits — Software That Works For You",
+    title: "Velobits: FixMyText AI Writing Assistant",
     description:
-      "Thoughtful software products that solve real problems. Join the community and decide what we build next.",
-    url: "https://velobits.dev",
+      "Velobits builds FixMyText, an AI writing assistant for grammar fixes, sentence rewriting, and tone improvement. Join the FixMyText waitlist.",
+    url: "https://velobits.dev/",
     siteName: "Velobits",
     type: "website",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Velobits — Software That Works For You",
-    description: "Thoughtful everyday software. Join us at velobits.dev",
+    title: "Velobits: FixMyText AI Writing Assistant",
+    description:
+      "Velobits builds FixMyText, an AI writing assistant for grammar fixes, sentence rewriting, and tone improvement. Join the FixMyText waitlist.",
   },
   metadataBase: new URL("https://velobits.dev"),
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: brand.name,
+      url: brand.domain,
+      logo: `${brand.domain}${brand.logo.src}`,
+      description: brand.description,
+      sameAs: [brand.socialLinks.github, brand.socialLinks.twitter],
+    },
+    {
+      "@type": "WebSite",
+      name: brand.name,
+      url: brand.domain,
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -52,6 +85,10 @@ export default function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col">{children}</body>

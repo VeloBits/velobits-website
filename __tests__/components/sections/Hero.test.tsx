@@ -1,11 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, beforeEach } from "vitest";
 import Hero from "@/components/sections/Hero";
-import { mockIntersectionObserver } from "../../helpers";
+import { getFeaturedProduct } from "@/lib/site-content";
 
 describe("Hero", () => {
   beforeEach(() => {
-    mockIntersectionObserver();
     Object.defineProperty(window, "scrollY", { value: 0, writable: true });
   });
 
@@ -14,67 +13,77 @@ describe("Hero", () => {
     expect(document.getElementById("hero")).toBeInTheDocument();
   });
 
-  it("renders the main heading text", () => {
+  it("renders the main h1 heading 'FixMyText by Velobits'", () => {
     render(<Hero />);
-    expect(screen.getByText(/SMARTER/i)).toBeInTheDocument();
-    expect(screen.getByText(/SOFTWARE/i)).toBeInTheDocument();
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1).toBeInTheDocument();
+    expect(h1).toHaveTextContent(/FixMyText/i);
+    expect(h1).toHaveTextContent(/Velobits/i);
   });
 
-  it("renders the 'Bits that matter' slogan", () => {
+  it("renders the eyebrow 'FixMyText is launching soon'", () => {
     render(<Hero />);
-    expect(screen.getByText(/Bits that matter/i)).toBeInTheDocument();
+    expect(screen.getByText(/FixMyText is launching soon/i)).toBeInTheDocument();
   });
 
-  it("renders the subtitle description", () => {
+  it("renders the supporting description copy", () => {
     render(<Hero />);
-    expect(screen.getByText(/Velobits builds/i)).toBeInTheDocument();
+    // "rewrites sentences" and "improves tone in seconds" are unique to the description paragraph
+    expect(screen.getByText(/rewrites sentences/i)).toBeInTheDocument();
+    expect(screen.getByText(/improves tone in seconds/i)).toBeInTheDocument();
   });
 
-  it("renders the Get Early Access CTA", () => {
+  it("renders the 'Join FixMyText Waitlist' CTA linking to #waitlist", () => {
     render(<Hero />);
-    expect(screen.getByText("Get Early Access")).toBeInTheDocument();
+    const cta = screen.getByRole("link", { name: /Join FixMyText Waitlist/i });
+    expect(cta).toBeInTheDocument();
+    expect(cta).toHaveAttribute("href", "#waitlist");
   });
 
-  it("renders the View Products CTA", () => {
+  it("renders the 'See Product Preview' CTA linking to #products", () => {
     render(<Hero />);
-    expect(screen.getByText("View Products")).toBeInTheDocument();
+    const cta = screen.getByRole("link", { name: /See Product Preview/i });
+    expect(cta).toBeInTheDocument();
+    expect(cta).toHaveAttribute("href", "#products");
   });
 
-  it("CTA links have correct hrefs", () => {
+  it("renders trust tags from featured product config", () => {
     render(<Hero />);
-    expect(screen.getByText("Get Early Access").closest("a")).toHaveAttribute("href", "#waitlist");
-    expect(screen.getByText("View Products").closest("a")).toHaveAttribute("href", "#products");
+    const featured = getFeaturedProduct();
+    featured.features.forEach((tag) => {
+      expect(screen.getByText(tag)).toBeInTheDocument();
+    });
   });
 
-  it("renders trust metric pills", () => {
+  it("renders the product preview browser frame", () => {
     render(<Hero />);
-    expect(screen.getByText(/Community-driven/i)).toBeInTheDocument();
-    expect(screen.getByText(/Open roadmap/i)).toBeInTheDocument();
+    const featured = getFeaturedProduct();
+    expect(screen.getByText(featured.preview!.url)).toBeInTheDocument();
   });
 
-  it("renders the product card with FixMyText", () => {
+  it("renders the original and fixed preview text", () => {
     render(<Hero />);
-    expect(screen.getByText("FixMyText")).toBeInTheDocument();
+    const featured = getFeaturedProduct();
+    expect(screen.getByText(featured.preview!.originalText)).toBeInTheDocument();
+    expect(screen.getByText(featured.preview!.fixedText)).toBeInTheDocument();
   });
 
-  it("renders the 98% accuracy stat chip", () => {
+  it("renders the accuracy stat from config", () => {
     render(<Hero />);
-    expect(screen.getByText("98%")).toBeInTheDocument();
-    expect(screen.getByText("Accuracy score")).toBeInTheDocument();
+    const featured = getFeaturedProduct();
+    expect(screen.getByText(featured.preview!.accuracy)).toBeInTheDocument();
+    expect(screen.getByText(featured.preview!.accuracyLabel)).toBeInTheDocument();
   });
 
-  it("renders the TRY FREE sticker", () => {
+  it("renders action chips from preview config", () => {
     render(<Hero />);
-    expect(screen.getByText(/TRY/)).toBeInTheDocument();
-    expect(screen.getByText(/FREE/)).toBeInTheDocument();
+    const featured = getFeaturedProduct();
+    featured.preview!.actions.forEach((action) => {
+      expect(screen.getByText(action)).toBeInTheDocument();
+    });
   });
 
-  it("renders the editor preview bar", () => {
-    render(<Hero />);
-    expect(screen.getByText(/Your next big idea starts here/i)).toBeInTheDocument();
-  });
-
-  it("renders the scroll prompt", () => {
+  it("renders the scroll hint", () => {
     render(<Hero />);
     expect(screen.getByText(/Scroll to explore/i)).toBeInTheDocument();
   });

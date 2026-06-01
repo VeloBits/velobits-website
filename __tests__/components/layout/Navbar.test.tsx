@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import Navbar from "@/components/layout/Navbar";
+import { navLinks, brand } from "@/lib/site-content";
 import { simulateScroll } from "../../helpers";
 
 describe("Navbar", () => {
@@ -8,32 +9,42 @@ describe("Navbar", () => {
     Object.defineProperty(window, "scrollY", { value: 0, writable: true });
   });
 
-  it("renders the Velobits logo text", () => {
+  it("renders a semantic <header> with role banner", () => {
     render(<Navbar />);
-    expect(screen.getByText("Velobits")).toBeInTheDocument();
+    expect(screen.getByRole("banner")).toBeInTheDocument();
   });
 
-  it("renders the ⚡ logo icon", () => {
+  it("renders a <nav> with aria-label 'Main navigation'", () => {
     render(<Navbar />);
-    expect(screen.getByText("⚡")).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: /Main navigation/i })).toBeInTheDocument();
   });
 
-  it("renders all navigation links", () => {
+  it("renders the Velobits logo image with correct alt text", () => {
     render(<Navbar />);
-    expect(screen.getByText("Products")).toBeInTheDocument();
-    expect(screen.getByText("Community")).toBeInTheDocument();
-    expect(screen.getByText("About")).toBeInTheDocument();
-    expect(screen.getByText("Blog")).toBeInTheDocument();
+    const img = screen.getByAltText(brand.logo.alt);
+    expect(img).toBeInTheDocument();
+  });
+
+  it("renders the Velobits wordmark text", () => {
+    render(<Navbar />);
+    expect(screen.getByText(brand.name)).toBeInTheDocument();
+  });
+
+  it("renders all navigation links from config", () => {
+    render(<Navbar />);
+    navLinks.forEach((link) => {
+      expect(screen.getByText(link.label)).toBeInTheDocument();
+    });
   });
 
   it("marks Blog with a 'Soon' badge", () => {
     render(<Navbar />);
-    expect(screen.getByText("Soon")).toBeInTheDocument();
+    const soonBadge = screen.getAllByText(/Soon/i);
+    expect(soonBadge.length).toBeGreaterThanOrEqual(1);
   });
 
   it("renders the Join Waitlist CTA", () => {
     render(<Navbar />);
-    // Multiple "Join Waitlist" elements (desktop + mobile dropdown CTA)
     const ctas = screen.getAllByText(/Join Waitlist/);
     expect(ctas.length).toBeGreaterThanOrEqual(1);
   });
@@ -50,52 +61,85 @@ describe("Navbar", () => {
     expect(document.getElementById("navbar")).toBeInTheDocument();
   });
 
+  it("renders hamburger menu button with aria-expanded=false initially", () => {
+    render(<Navbar />);
+    const toggle = screen.getByRole("button", { name: /Open navigation menu/i });
+    expect(toggle).toBeInTheDocument();
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("sets aria-expanded=true on hamburger click", () => {
+    render(<Navbar />);
+    const toggle = screen.getByRole("button", { name: /Open navigation menu/i });
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("button has aria-controls pointing to mobile-menu", () => {
+    render(<Navbar />);
+    const toggle = screen.getByRole("button", { name: /Open navigation menu/i });
+    expect(toggle).toHaveAttribute("aria-controls", "mobile-menu");
+  });
+
+  it("toggles mobile menu on hamburger click", () => {
+    render(<Navbar />);
+    const toggle = screen.getByRole("button", { name: /Open navigation menu/i });
+    const linksBefore = screen.getAllByText("Products").length;
+
+    fireEvent.click(toggle);
+
+    const linksAfter = screen.getAllByText("Products").length;
+    expect(linksAfter).toBeGreaterThan(linksBefore);
+  });
+
+  it("closes mobile menu on outside click", () => {
+    render(<Navbar />);
+    const toggle = screen.getByRole("button", { name: /Open navigation menu/i });
+    fireEvent.click(toggle);
+    const linksOpen = screen.getAllByText("Products").length;
+
+    act(() => {
+      document.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+    });
+
+    const linksClosed = screen.getAllByText("Products").length;
+    expect(linksClosed).toBeLessThan(linksOpen);
+  });
+
+  it("closes mobile menu on link click", () => {
+    render(<Navbar />);
+    const toggle = screen.getByRole("button", { name: /Open navigation menu/i });
+    fireEvent.click(toggle);
+
+    const menuLinks = screen.getAllByText("Products");
+    fireEvent.click(menuLinks[menuLinks.length - 1]);
+
+    expect(screen.getAllByText("Products").length).toBeLessThan(menuLinks.length);
+  });
+
+  it("closes mobile menu on Escape key", () => {
+    render(<Navbar />);
+    const toggle = screen.getByRole("button", { name: /Open navigation menu/i });
+    fireEvent.click(toggle);
+    const linksOpen = screen.getAllByText("Products").length;
+
+    act(() => {
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    });
+
+    const linksClosed = screen.getAllByText("Products").length;
+    expect(linksClosed).toBeLessThan(linksOpen);
+  });
+
   it("applies scroll styling when scrolled", () => {
     render(<Navbar />);
     const nav = document.getElementById("navbar")!;
-    const initialBg = nav.style.background;
+    const initialClass = nav.className;
 
     act(() => {
       simulateScroll(100);
     });
 
-    // Background should change after scroll
-    expect(nav.style.background).not.toBe(initialBg);
-  });
-
-  it("renders hamburger menu button", () => {
-    render(<Navbar />);
-    expect(screen.getByLabelText("Toggle menu")).toBeInTheDocument();
-  });
-
-  it("toggles mobile menu on hamburger click", () => {
-    render(<Navbar />);
-    const toggle = screen.getByLabelText("Toggle menu");
-
-    // Menu closed initially — only one set of nav links
-    const linksBefore = screen.getAllByText("Products");
-
-    fireEvent.click(toggle);
-
-    // After opening, mobile dropdown should show a duplicate set of links
-    const linksAfter = screen.getAllByText("Products");
-    expect(linksAfter.length).toBeGreaterThan(linksBefore.length);
-  });
-
-  it("closes mobile menu on outside click", async () => {
-    render(<Navbar />);
-    const toggle = screen.getByLabelText("Toggle menu");
-
-    fireEvent.click(toggle);
-    const linksOpen = screen.getAllByText("Products").length;
-
-    // Click outside (document)
-    act(() => {
-      document.dispatchEvent(new Event("click"));
-    });
-
-    // Menu should close — fewer "Products" links visible
-    const linksClosed = screen.getAllByText("Products").length;
-    expect(linksClosed).toBeLessThan(linksOpen);
+    expect(nav.className).not.toBe(initialClass);
   });
 });
