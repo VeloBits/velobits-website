@@ -46,6 +46,11 @@
   }
   html {
     scroll-behavior: smooth;
+    cursor: none;
+  }
+
+  * {
+    cursor: none !important;
   }
 
   body {
@@ -58,7 +63,7 @@
     background-image:
       linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
-    background-size: 80px 80px;
+    background-size: 48px 48px;
     background-attachment: fixed;
     background-position: 0 1px;
   }
@@ -431,15 +436,97 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 480px;
-    height: 480px;
+    width: 560px;
+    height: 560px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(200, 241, 53, 0.055) 0%, transparent 65%);
+    background: radial-gradient(
+      circle,
+      rgba(200, 241, 53, 0.1) 0%,
+      rgba(200, 241, 53, 0.04) 45%,
+      transparent 70%
+    );
     pointer-events: none;
     z-index: 0;
     transform: translate(-50%, -50%);
-    transition: transform 0.12s linear;
-    filter: blur(30px);
+    filter: blur(24px);
+  }
+
+  /* Inner sharp ring — tight, bright, follows cursor with lerp */
+  #cursor-ring-inner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(200, 241, 53, 0.7);
+    pointer-events: none;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    box-shadow:
+      0 0 8px rgba(200, 241, 53, 0.4),
+      inset 0 0 6px rgba(200, 241, 53, 0.15);
+    animation: ring-pulse-inner 2.4s ease-in-out infinite;
+  }
+
+  /* Outer faint ring — wider, slow pulse */
+  #cursor-ring-outer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 1px solid rgba(200, 241, 53, 0.25);
+    pointer-events: none;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    animation: ring-pulse-outer 2.4s ease-in-out infinite;
+  }
+
+  @keyframes ring-pulse-inner {
+    0%,
+    100% {
+      opacity: 0.9;
+      width: 36px;
+      height: 36px;
+    }
+    50% {
+      opacity: 0.6;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  @keyframes ring-pulse-outer {
+    0%,
+    100% {
+      opacity: 0.35;
+      width: 72px;
+      height: 72px;
+    }
+    50% {
+      opacity: 0.15;
+      width: 84px;
+      height: 84px;
+    }
+  }
+
+  /* Highlighted grid layer — #c8f135 grid lines revealed only within cursor radius.
+     mask-image is set inline by CursorGlow.tsx on every frame. */
+  #cursor-grid-highlight {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      linear-gradient(rgba(200, 241, 53, 0.9) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200, 241, 53, 0.9) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: 0 1px;
+    /* fully hidden by default; JS sets mask to reveal within cursor radius */
+    mask-image: radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%);
+    -webkit-mask-image: radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%);
   }
 
   /* ── Divider ─────────────────────────────── */
@@ -821,7 +908,10 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  #cursor-glow {
+  #cursor-glow,
+  #cursor-ring-inner,
+  #cursor-ring-outer,
+  #cursor-grid-highlight {
     display: none !important;
   }
   .marquee-inner {
