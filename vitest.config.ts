@@ -27,6 +27,11 @@ export default defineConfig({
         "**/*.config.*",
         "vitest.setup.ts",
         "app/layout.tsx",
+        // Browser-interaction-only components (RAF loops, mousemove, matchMedia)
+        // cannot be meaningfully branch-tested in jsdom.
+        "components/ui/BackgroundSpark.tsx",
+        "components/ui/CursorGlow.tsx",
+        "components/ui/glowing-effect.tsx",
       ],
     },
   },

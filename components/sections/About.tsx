@@ -80,7 +80,7 @@ export default function About() {
               vaporware. <span className="font-bold text-foreground">Just bits that matter.</span>
             </p>
 
-            <div className="reveal reveal-delay-2 flex items-center gap-[1.1rem] rounded-2xl border-2 border-[rgba(200,241,53,0.25)] bg-gradient-to-r from-[rgba(200,241,53,0.08)] to-[rgba(200,241,53,0.03)] px-[1.4rem] py-[1.1rem] shadow-[0_8px_24px_rgba(200,241,53,0.08)] hover:border-[rgba(200,241,53,0.35)] hover:shadow-[0_12px_32px_rgba(200,241,53,0.12)] transition-all duration-300">
+            <div className="reveal reveal-delay-2 flex items-center gap-[1.1rem] rounded-2xl border-2 border-[rgba(200,241,53,0.25)] bg-[var(--bg-card)] bg-gradient-to-r from-[rgba(200,241,53,0.08)] to-[rgba(200,241,53,0.03)] px-[1.4rem] py-[1.1rem] shadow-[0_8px_24px_rgba(200,241,53,0.08)] hover:border-[rgba(200,241,53,0.35)] hover:shadow-[0_12px_32px_rgba(200,241,53,0.12)] transition-all duration-300">
               <div className="h-[34px] w-[3px] shrink-0 rounded-full bg-gradient-to-b from-accent to-[rgba(200,241,53,0.5)]" />
               <p className="text-[0.88rem] leading-[1.65] text-foreground italic">
                 &quot;We build tools that work for people, not the other way around.&quot;
