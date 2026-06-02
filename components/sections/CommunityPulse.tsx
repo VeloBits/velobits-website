@@ -87,7 +87,10 @@ export default function CommunityPulse() {
         </div>
 
         <div className="community-grid grid gap-6 [grid-template-columns:1fr_1fr] max-md:grid-cols-1">
-          <div className="card reveal p-8 border-2 border-[rgba(200,241,53,0.15)] transition-all duration-500 hover:border-[rgba(200,241,53,0.3)] hover:shadow-[0_12px_40px_rgba(200,241,53,0.1)] hover:-translate-y-1" ref={barsRef}>
+          <div
+            className="card reveal p-8 border-2 border-[rgba(200,241,53,0.15)] transition-all duration-500 hover:border-[rgba(200,241,53,0.3)] hover:shadow-[0_12px_40px_rgba(200,241,53,0.1)] hover:-translate-y-1"
+            ref={barsRef}
+          >
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <div className="eyebrow mb-[0.3rem]">Active Poll</div>

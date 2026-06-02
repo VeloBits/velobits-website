@@ -52,8 +52,12 @@ export default function Waitlist() {
           <div className="relative z-1">
             {submitted ? (
               <div className="flex flex-col items-center gap-4 py-8 animate-[fade-in-up_0.6s_ease_0.2s_both]">
-                <div className="text-[3rem] animate-[scale-pulse_2s_ease-in-out_infinite]">Done</div>
-                <h2 className="display display-md text-accent animate-[glow-pulse_2s_ease-in-out_infinite]">You&apos;re in!</h2>
+                <div className="text-[3rem] animate-[scale-pulse_2s_ease-in-out_infinite]">
+                  Done
+                </div>
+                <h2 className="display display-md text-accent animate-[glow-pulse_2s_ease-in-out_infinite]">
+                  You&apos;re in!
+                </h2>
                 <p className="max-w-[36ch] leading-[1.7] text-muted">
                   We&apos;ll be in touch with first-access details before the launch. Keep an eye on
                   your inbox.
@@ -66,7 +70,9 @@ export default function Waitlist() {
                   <h2 className="display display-lg">
                     Don&apos;t miss
                     <br />
-                    <span className="text-accent animate-[glow-pulse_2.5s_ease-in-out_infinite]">what&apos;s next.</span>
+                    <span className="text-accent animate-[glow-pulse_2.5s_ease-in-out_infinite]">
+                      what&apos;s next.
+                    </span>
                   </h2>
                   <p className="mx-auto mt-4 max-w-[46ch] leading-[1.7] text-muted">
                     Join early believers. Get first access to every Velobits launch before anyone

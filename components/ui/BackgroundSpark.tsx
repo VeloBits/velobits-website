@@ -206,9 +206,7 @@ export default function BackgroundSpark() {
               willChange: "transform, opacity",
             }}
           >
-            <span className="leading-none">
-              {"glyph" in p.item ? p.item.glyph : p.item.text}
-            </span>
+            <span className="leading-none">{"glyph" in p.item ? p.item.glyph : p.item.text}</span>
           </div>
         );
       })}
