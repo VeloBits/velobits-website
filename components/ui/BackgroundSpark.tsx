@@ -275,7 +275,7 @@ function buildGrid(vw: number, vh: number): Cell[] {
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       // Checkerboard: even rows use even columns, odd rows use odd columns.
-      if ((c % 2) !== (r % 2)) continue;
+      if (c % 2 !== r % 2) continue;
       cells.push({
         x: c * GRID_PX + GRID_PX / 2,
         y: r * GRID_PX + GRID_PX / 2,
