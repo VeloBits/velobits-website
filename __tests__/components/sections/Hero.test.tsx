@@ -28,9 +28,10 @@ describe("Hero", () => {
 
   it("renders the supporting description copy", () => {
     render(<Hero />);
-    // "rewrites sentences" and "improves tone in seconds" are unique to the description paragraph
-    expect(screen.getByText(/rewrites sentences/i)).toBeInTheDocument();
-    expect(screen.getByText(/improves tone in seconds/i)).toBeInTheDocument();
+    // Phrases unique to the platform-positioning description paragraph
+    // (both fall in the text node before the inline "Velobits" span)
+    expect(screen.getByText(/254 text tools in one editor/i)).toBeInTheDocument();
+    expect(screen.getByText(/rewriting, summarizing, and analysis/i)).toBeInTheDocument();
   });
 
   it("renders the 'Join FixMyText Waitlist' CTA linking to #waitlist", () => {

@@ -4,37 +4,42 @@ import { useEffect, useRef, useState } from "react";
 
 const milestones = [
   {
-    date: "Q2 2025",
+    id: "m1",
+    date: "2025",
     label: "FixMyText Alpha",
-    desc: "Core AI engine built and internally tested.",
+    desc: "Core editor and 200+ text tools built and internally tested.",
     done: true,
     now: false,
   },
   {
-    date: "Q2 2026",
+    id: "m2",
+    date: "2026",
     label: "Public Launch",
-    desc: "FixMyText goes live for everyone - free to start.",
+    desc: "254 tools go live for everyone - free to start.",
     done: false,
     now: true,
   },
   {
-    date: "Q3 2026",
-    label: "Community Pulse",
-    desc: "Full community voting & idea platform goes live.",
+    id: "m3",
+    date: "2026",
+    label: "AI Suite & Sharing",
+    desc: "50+ AI tools, shareable results, and gamification go live.",
     done: false,
     now: false,
   },
   {
-    date: "Q4 2026",
-    label: "Product #2",
-    desc: "Voted on by the community. Built by us.",
+    id: "m4",
+    date: "2026",
+    label: "API Access & Batch",
+    desc: "Programmatic tool access and batch processing for teams.",
     done: false,
     now: false,
   },
   {
+    id: "m5",
     date: "2027",
-    label: "Velobits Suite",
-    desc: "A full ecosystem of everyday tools.",
+    label: "Suite & Integrations",
+    desc: "Slack/Discord bots, mobile apps, and a full Velobits ecosystem.",
     done: false,
     now: false,
   },
@@ -122,7 +127,7 @@ export default function Roadmap() {
           <div className="timeline-grid relative grid grid-cols-5 gap-4 max-[900px]:grid-cols-1">
             {milestones.map((m, i) => (
               <div
-                key={m.date}
+                key={m.id}
                 className={`reveal flex flex-col gap-4 transition-transform duration-500 hover:scale-105 ${i === 0 ? "delay-[0ms]" : i === 1 ? "delay-[100ms]" : i === 2 ? "delay-[200ms]" : i === 3 ? "delay-[300ms]" : "delay-[400ms]"}`}
               >
                 <div className="flex justify-start">
@@ -142,20 +147,8 @@ export default function Roadmap() {
                   </div>
                 </div>
 
-                {m.now && (
-                  <div className="-mt-3 flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-accent/20 to-accent/10 border border-accent/40 px-3 py-1.5 text-[0.65rem] font-bold tracking-[0.12em] text-accent uppercase">
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="absolute inline-flex h-full w-full rounded-full bg-accent animate-ping opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent"></span>
-                      </span>
-                      Currently Active
-                    </span>
-                  </div>
-                )}
-
                 <div
-                  className={`card group relative overflow-hidden p-6 transition-all duration-300 backdrop-blur-md ${m.now ? "border-accent/40 bg-gradient-to-br from-[rgba(200,241,53,0.08)] via-[rgba(200,241,53,0.03)] to-transparent shadow-[0_16px_48px_rgba(200,241,53,0.1)]" : m.done ? "border-accent/20 bg-gradient-to-br from-[rgba(200,241,53,0.04)] to-transparent" : "border-border-subtle bg-card/50 hover:border-border-subtle/50"} ${!m.done && !m.now ? "opacity-70 hover:opacity-85" : "opacity-100"}`}
+                  className={`card group relative overflow-hidden p-6 transition-all duration-300 backdrop-blur-md h-full flex flex-col ${m.now ? "border-accent/40 bg-gradient-to-br from-[rgba(200,241,53,0.08)] via-[rgba(200,241,53,0.03)] to-transparent shadow-[0_16px_48px_rgba(200,241,53,0.1)]" : m.done ? "border-accent/20 bg-gradient-to-br from-[rgba(200,241,53,0.04)] to-transparent" : "border-border-subtle bg-card/50 hover:border-border-subtle/50"} ${!m.done && !m.now ? "opacity-70 hover:opacity-85" : "opacity-100"}`}
                 >
                   {m.now && (
                     <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -166,6 +159,18 @@ export default function Roadmap() {
                             "conic-gradient(from 0deg, transparent, rgba(200,241,53,0.4), transparent 180deg)",
                         }}
                       />
+                    </div>
+                  )}
+
+                  {m.now && (
+                    <div className="absolute bottom-4 right-4 pointer-events-none">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-accent/20 to-accent/10 border border-accent/40 px-2 py-1 text-[0.55rem] font-bold tracking-[0.12em] text-accent uppercase">
+                        <span className="relative flex h-1.5 w-1.5 shrink-0">
+                          <span className="absolute inline-flex h-full w-full rounded-full bg-accent animate-ping opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent"></span>
+                        </span>
+                        Active
+                      </span>
                     </div>
                   )}
 

@@ -8,9 +8,9 @@ describe("Footer", () => {
     expect(screen.getByText("Velobits")).toBeInTheDocument();
   });
 
-  it("renders the ⚡ logo icon", () => {
+  it("renders the Velobits logo image", () => {
     render(<Footer />);
-    expect(screen.getByText("⚡")).toBeInTheDocument();
+    expect(screen.getByAltText("Velobits")).toBeInTheDocument();
   });
 
   it("renders the brand description", () => {
@@ -54,18 +54,19 @@ describe("Footer", () => {
   it("renders social links with aria labels", () => {
     render(<Footer />);
     expect(screen.getByLabelText("GitHub")).toBeInTheDocument();
-    expect(screen.getByLabelText("Twitter/X")).toBeInTheDocument();
   });
 
   it("has correct href for social links", () => {
     render(<Footer />);
-    expect(screen.getByLabelText("GitHub")).toHaveAttribute("href", "https://github.com/velobits");
-    expect(screen.getByLabelText("Twitter/X")).toHaveAttribute("href", "https://x.com/velobits");
+    expect(screen.getByLabelText("GitHub")).toHaveAttribute(
+      "href",
+      "https://github.com/VeloBits/velobits-website"
+    );
   });
 
-  it("renders the Made with ⚡ footer line", () => {
+  it("renders the Made by the Velobits team footer line", () => {
     render(<Footer />);
-    expect(screen.getByText(/Made with/)).toBeInTheDocument();
+    expect(screen.getByText(/Made by the Velobits team/)).toBeInTheDocument();
   });
 
   it("renders as a footer element", () => {

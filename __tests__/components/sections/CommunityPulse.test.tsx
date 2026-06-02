@@ -12,7 +12,7 @@ describe("CommunityPulse", () => {
   it("renders the section heading", () => {
     render(<CommunityPulse />);
     expect(screen.getByText(/You decide what we/i)).toBeInTheDocument();
-    expect(screen.getByText(/build next/i)).toBeInTheDocument();
+    expect(screen.getByText(/build next\./i)).toBeInTheDocument();
   });
 
   it("renders the eyebrow text 'Community Pulse'", () => {
@@ -28,7 +28,7 @@ describe("CommunityPulse", () => {
   it("renders the 'Active Poll' section", () => {
     render(<CommunityPulse />);
     expect(screen.getByText(/Active Poll/i)).toBeInTheDocument();
-    expect(screen.getByText(/What should we build after FixMyText?/i)).toBeInTheDocument();
+    expect(screen.getByText(/What should we build next for FixMyText?/i)).toBeInTheDocument();
   });
 
   it("renders the 'Live' pill in the poll section", () => {
@@ -38,10 +38,10 @@ describe("CommunityPulse", () => {
 
   it("renders all poll options with vote percentages", () => {
     render(<CommunityPulse />);
-    expect(screen.getByText(/Password Manager/i)).toBeInTheDocument();
-    expect(screen.getByText(/Note-taking App/i)).toBeInTheDocument();
-    expect(screen.getByText(/Screenshot Tool/i)).toBeInTheDocument();
-    expect(screen.getByText(/Code Snippets/i)).toBeInTheDocument();
+    expect(screen.getByText(/Browser & editor plugins/i)).toBeInTheDocument();
+    expect(screen.getByText(/Team workspaces/i)).toBeInTheDocument();
+    expect(screen.getByText(/Leaderboard & profiles/i)).toBeInTheDocument();
+    expect(screen.getByText(/Offline mode/i)).toBeInTheDocument();
   });
 
   it("displays vote counts and days left", () => {
@@ -152,24 +152,24 @@ describe("CommunityPulse", () => {
   it("updates vote when poll option is clicked", async () => {
     const user = userEvent.setup();
     render(<CommunityPulse />);
-    const passwordManagerButton = screen.getByRole("button", {
-      name: /Password Manager/i,
+    const firstOptionButton = screen.getByRole("button", {
+      name: /Browser & editor plugins/i,
     });
 
-    await user.click(passwordManagerButton);
+    await user.click(firstOptionButton);
 
     // The button's opacity should change to indicate selection
-    expect(passwordManagerButton).toHaveClass("opacity-100");
+    expect(firstOptionButton).toHaveClass("opacity-100");
   });
 
   it("shows 'Voted' button after selecting an option", async () => {
     const user = userEvent.setup();
     render(<CommunityPulse />);
-    const passwordManagerButton = screen.getByRole("button", {
-      name: /Password Manager/i,
+    const firstOptionButton = screen.getByRole("button", {
+      name: /Browser & editor plugins/i,
     });
 
-    await user.click(passwordManagerButton);
+    await user.click(firstOptionButton);
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /Voted/i })).toBeInTheDocument();
