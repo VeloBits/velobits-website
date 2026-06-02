@@ -14,13 +14,23 @@ export default function CursorGlow() {
       y = 0;
     let rafId: number;
 
+    const CONTENT_SELECTOR =
+      ".card, nav, footer, a, button, input, textarea, select, [data-no-spark]";
+
+    let dirty = false;
+
     const onMove = (e: MouseEvent) => {
       x = e.clientX;
       y = e.clientY;
+      dirty = true;
     };
     window.addEventListener("mousemove", onMove, { passive: true });
 
     const animate = () => {
+      rafId = requestAnimationFrame(animate);
+      if (!dirty) return;
+      dirty = false;
+
       // Rings snap exactly to the real cursor — no lag
       const ringPos = `left:${x}px;top:${y}px;`;
       inner.setAttribute("style", ringPos);
@@ -29,11 +39,18 @@ export default function CursorGlow() {
       // Blob snaps to real cursor — no lag
       blob.setAttribute("style", `left:${x}px;top:${y}px;`);
 
-      // Grid highlight also snaps to real cursor
-      grid.style.maskImage = `radial-gradient(circle 220px at ${x}px ${y}px, black 30%, transparent 100%)`;
-      grid.style.webkitMaskImage = `radial-gradient(circle 220px at ${x}px ${y}px, black 30%, transparent 100%)`;
-
-      rafId = requestAnimationFrame(animate);
+      // Grid highlight: hide entirely when cursor is over any card or content.
+      const under = document.elementFromPoint(x, y);
+      const overContent = under && under.closest(CONTENT_SELECTOR);
+      if (overContent) {
+        grid.style.maskImage =
+          "radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%)";
+        grid.style.webkitMaskImage =
+          "radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%)";
+      } else {
+        grid.style.maskImage = `radial-gradient(circle 220px at ${x}px ${y}px, black 30%, transparent 100%)`;
+        grid.style.webkitMaskImage = `radial-gradient(circle 220px at ${x}px ${y}px, black 30%, transparent 100%)`;
+      }
     };
     rafId = requestAnimationFrame(animate);
 

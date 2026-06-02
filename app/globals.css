@@ -53,6 +53,12 @@
     cursor: none !important;
   }
 
+  main,
+  footer,
+  header {
+    position: relative;
+  }
+
   body {
     background: var(--bg);
     color: var(--text);
@@ -117,6 +123,7 @@
   }
   .section {
     padding: 7rem 0;
+    position: relative;
   }
 
   @media (max-width: 768px) {
@@ -134,7 +141,7 @@
   /* ── Cards ───────────────────────────────── */
   .card {
     position: relative;
-    background: rgba(16, 16, 16, 0.75);
+    background: #141414;
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border: 1px solid rgba(200, 241, 53, 0.15);
@@ -461,7 +468,7 @@
     border-radius: 50%;
     border: 1.5px solid rgba(200, 241, 53, 0.7);
     pointer-events: none;
-    z-index: 2;
+    z-index: 9999;
     transform: translate(-50%, -50%);
     box-shadow:
       0 0 8px rgba(200, 241, 53, 0.4),
@@ -479,7 +486,7 @@
     border-radius: 50%;
     border: 1px solid rgba(200, 241, 53, 0.25);
     pointer-events: none;
-    z-index: 2;
+    z-index: 9999;
     transform: translate(-50%, -50%);
     animation: ring-pulse-outer 2.4s ease-in-out infinite;
   }
