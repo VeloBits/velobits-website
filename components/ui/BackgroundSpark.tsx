@@ -115,6 +115,8 @@ export default function BackgroundSpark() {
   const chipRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    // Browser-only effect; bail out if media queries aren't available (e.g. tests/SSR).
+    if (typeof window.matchMedia !== "function") return;
     const noHover = window.matchMedia("(hover: none), (pointer: coarse)").matches;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (noHover || reduced) return;

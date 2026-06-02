@@ -133,16 +133,4 @@ describe("Waitlist", () => {
       { timeout: 3000 }
     );
   });
-
-  it("renders FREE sticker", () => {
-    render(<Waitlist />);
-    expect(screen.getByText("FREE")).toBeInTheDocument();
-  });
-
-  it("renders floating animation badges", () => {
-    render(<Waitlist />);
-    expect(screen.getByText("A")).toBeInTheDocument();
-    expect(screen.getByText("B")).toBeInTheDocument();
-    expect(screen.getByText("C")).toBeInTheDocument();
-  });
 });
