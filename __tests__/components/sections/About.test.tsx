@@ -25,9 +25,7 @@ describe("About", () => {
 
   it("renders the quote text", () => {
     render(<About />);
-    expect(
-      screen.getByText(/We build tools that work for people/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/We build tools that work for people/i)).toBeInTheDocument();
   });
 
   it("renders all three stat cards", () => {
