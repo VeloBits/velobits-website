@@ -24,7 +24,7 @@ export default function Footer() {
 
   return (
     <footer
-      className="mt-auto pt-16 pb-8"
+      className="mt-auto pt-16 pb-8 relative z-[1] bg-[var(--bg)]"
       style={{ borderTop: "0.5px solid rgba(200, 241, 53, 0.4)" }}
     >
       <div className="container">

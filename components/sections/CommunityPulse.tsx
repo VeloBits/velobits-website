@@ -206,7 +206,7 @@ export default function CommunityPulse() {
                 </div>
               </div>
 
-              <button type="submit" className="btn btn-primary self-start">
+              <button type="submit" className="btn btn-primary self-start px-4 py-2 text-[0.78rem]">
                 Submit Idea
               </button>
 
