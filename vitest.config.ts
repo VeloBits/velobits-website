@@ -13,7 +13,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "json-summary", "html"],
-      include: ["components/**/*.tsx", "app/page.tsx"],
+      include: ["components/**/*.tsx", "app/page.tsx", "app/api/**/*.ts", "lib/updates.ts"],
       thresholds: {
         lines: 70,
         branches: 70,
@@ -32,6 +32,9 @@ export default defineConfig({
         "components/ui/BackgroundSpark.tsx",
         "components/ui/CursorGlow.tsx",
         "components/ui/glowing-effect.tsx",
+        // Async Server Component: does server-side fetch; has no RSC runtime in
+        // jsdom. Its presentational seam (UpdatesList.tsx) is unit-tested instead.
+        "components/sections/LatestUpdates.tsx",
       ],
     },
   },

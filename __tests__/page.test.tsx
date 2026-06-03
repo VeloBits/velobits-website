@@ -1,5 +1,13 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
+
+// LatestUpdates is an async Server Component that pulls in server-only modules
+// (lib/apps-script); it can't render in jsdom. Stub it so the page test stays
+// focused on layout. Its presentational seam is covered by UpdatesList.test.tsx.
+vi.mock("@/components/sections/LatestUpdates", () => ({
+  default: () => null,
+}));
+
 import Home from "../app/page";
 
 describe("Home page", () => {

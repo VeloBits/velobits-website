@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { products, type Product } from "@/lib/site-content";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { CONTAINER, SECTION, EYEBROW, DISPLAY, DISPLAY_LG, PILL_BASE } from "@/lib/ui-classes";
 
 export default function Products() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -28,12 +29,12 @@ export default function Products() {
   }, []);
 
   return (
-    <section id="products" className="section" ref={sectionRef}>
-      <div className="container">
+    <section id="products" className={SECTION} ref={sectionRef}>
+      <div className={`container ${CONTAINER}`}>
         <div className="mb-14 flex flex-wrap items-end justify-between gap-4">
           <div className="reveal">
-            <span className="eyebrow">Our Products</span>
-            <h2 className="display display-lg mt-[0.65rem]">
+            <span className={`eyebrow ${EYEBROW} text-muted`}>Our Products</span>
+            <h2 className={`${DISPLAY} ${DISPLAY_LG} text-foreground mt-[0.65rem]`}>
               Tools that <span className="text-accent">actually</span> work.
             </h2>
           </div>
@@ -56,12 +57,7 @@ export default function Products() {
 function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const statusClass =
-    p.id === "fixmytext"
-      ? "bg-[rgba(200,241,53,0.09)] border-[rgba(200,241,53,0.25)] text-accent"
-      : p.id === "mystery"
-        ? "bg-[rgba(102,102,102,0.09)] border-[rgba(102,102,102,0.25)] text-[#666]"
-        : "bg-[rgba(68,68,68,0.09)] border-[rgba(68,68,68,0.25)] text-[#444]";
+  const statusClass = "bg-[rgba(200,241,53,0.09)] border-[rgba(200,241,53,0.25)] text-accent";
 
   const tilt = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current;
@@ -88,16 +84,11 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
         ref={cardRef}
         onMouseMove={tilt}
         onMouseLeave={resetTilt}
-        style={{ willChange: "transform", borderColor: "rgba(200,241,53,0.3)" }}
-        className={`card card-glow reveal ${delayClass} col-span-1 md:col-span-2 relative flex flex-col overflow-hidden p-8 md:p-10 border-2 transition-all duration-500 ease-out hover:border-[rgba(200,241,53,0.45)] hover:shadow-[0_16px_48px_rgba(200,241,53,0.15)]`}
+        style={{ borderColor: "rgba(200,241,53,0.3)" }}
+        className={`card card-glow reveal ${delayClass} col-span-1 md:col-span-2 relative flex flex-col overflow-hidden p-8 md:p-10 border-2 [will-change:transform] transition-all duration-500 ease-out hover:border-[rgba(200,241,53,0.45)] hover:shadow-[0_16px_48px_rgba(200,241,53,0.15)]`}
       >
         <GlowingEffect spread={50} proximity={80} inactiveZone={0.01} />
 
-        {/* Left accent bar */}
-        <div
-          className="absolute top-0 left-0 h-full w-[3px] rounded-l-[24px] bg-[linear-gradient(180deg,var(--accent),rgba(200,241,53,0.2))]"
-          aria-hidden="true"
-        />
         {/* Background glow */}
         <div
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(200,241,53,0.05)_0%,transparent_60%)]"
@@ -106,7 +97,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
 
         {/* ── Shared header row: badge (left) + icon (right) ── */}
         <div className="relative flex items-center justify-between mb-[1.6rem]">
-          <span className={`pill ${statusClass}`}>
+          <span className={`pill ${PILL_BASE} text-[0.73rem] ${statusClass}`}>
             <span className="pill-dot" />
             &nbsp;{p.status}
           </span>
@@ -131,7 +122,10 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
             {p.tags.length > 0 && (
               <div className="flex flex-wrap gap-[0.35rem]">
                 {p.tags.map((t) => (
-                  <span key={t} className="pill text-[0.66rem]">
+                  <span
+                    key={t}
+                    className={`pill ${PILL_BASE} bg-card text-[0.66rem] text-accent border-[rgba(200,241,53,0.25)]`}
+                  >
                     #{t}
                   </span>
                 ))}
@@ -209,8 +203,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
       ref={cardRef}
       onMouseMove={tilt}
       onMouseLeave={resetTilt}
-      style={{ willChange: "transform" }}
-      className={`card card-glow reveal ${delayClass} col-span-1 relative flex flex-col gap-[1.2rem] overflow-hidden p-7 border-2 border-[rgba(200,241,53,0.15)] transition-all duration-500 ease-out hover:border-[rgba(200,241,53,0.3)] hover:shadow-[0_8px_32px_rgba(200,241,53,0.1)] ${p.id === "suite" ? "opacity-85" : "opacity-100"}`}
+      className={`card card-glow reveal ${delayClass} col-span-1 relative flex flex-col gap-[1.2rem] overflow-hidden p-7 border-2 border-[rgba(200,241,53,0.15)] [will-change:transform] transition-all duration-500 ease-out hover:border-[rgba(200,241,53,0.3)] hover:shadow-[0_8px_32px_rgba(200,241,53,0.1)] ${p.id === "suite" ? "opacity-85" : "opacity-100"}`}
     >
       <GlowingEffect spread={40} proximity={64} inactiveZone={0.01} />
 
@@ -226,7 +219,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
 
       {/* Status + icon */}
       <div className="flex items-center justify-between">
-        <span className={`pill ${statusClass}`}>
+        <span className={`pill ${PILL_BASE} text-[0.73rem] ${statusClass}`}>
           {p.id !== "suite" && <span className="pill-dot" />}&nbsp;{p.status}
         </span>
         <div
@@ -253,7 +246,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
           {p.tags.map((t) => (
             <span
               key={t}
-              className="pill text-[0.66rem] text-[rgba(244,244,245,0.55)] border-[rgba(255,255,255,0.12)]"
+              className={`pill ${PILL_BASE} bg-card text-[0.66rem] text-accent border-[rgba(200,241,53,0.25)]`}
             >
               #{t}
             </span>
@@ -264,7 +257,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
       {/* CTA */}
       {p.ctaLabel && (
         <div className="mt-auto">
-          <a href={p.ctaHref ?? "#"} className="btn btn-ghost self-start text-[0.82rem]">
+          <a href={p.ctaHref ?? "#"} className="btn btn-primary self-start text-[0.82rem]">
             {p.ctaLabel}
           </a>
         </div>

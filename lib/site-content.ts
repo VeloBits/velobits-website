@@ -19,6 +19,7 @@ export const brand = {
 export const navLinks = [
   { label: "Products", href: "#products", soon: false },
   { label: "Community", href: "#community", soon: false },
+  { label: "Updates", href: "#updates", soon: false },
   { label: "About", href: "#about", soon: false },
   { label: "Blog", href: "#", soon: true },
 ];
@@ -149,3 +150,46 @@ export const featuredProductId = "fixmytext";
 export function getFeaturedProduct(): Product {
   return products.find((p) => p.id === featuredProductId)!;
 }
+
+// ── Community poll ──────────────────────────────────────────────
+// Option labels live here (source of truth for display + SEO); live vote counts
+// come from the Google Sheet, joined by `optionId`. To add an option later, add
+// it here AND add a matching row to the Sheet's "Polls" tab (same pollId/optionId).
+export type PollOption = { id: string; label: string };
+export type Poll = { id: string; question: string; options: PollOption[] };
+
+export const poll: Poll = {
+  id: "next-app",
+  question: "Which app should we build next?",
+  options: [
+    { id: "fixmytext", label: "FixMyText" },
+    { id: "note-sharing", label: "Note-sharing app" },
+  ],
+};
+
+// A single live count for one poll option, as returned by the backend.
+export type PollCount = {
+  poll_id: string;
+  option_id: string;
+  option_label: string;
+  count: number;
+};
+
+// ── Latest Updates feed ─────────────────────────────────────────
+export type UpdateType = "launch" | "feature" | "update" | "fix";
+
+export type Update = {
+  id: string;
+  date: string; // ISO date
+  type: UpdateType;
+  title: string;
+  body: string;
+  link?: string;
+};
+
+export const updateTypeMeta: Record<UpdateType, { label: string }> = {
+  launch: { label: "Launch" },
+  feature: { label: "New Feature" },
+  update: { label: "Update" },
+  fix: { label: "Bug Fix" },
+};

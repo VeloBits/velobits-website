@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { CONTAINER, SECTION, EYEBROW, DISPLAY, DISPLAY_LG } from "@/lib/ui-classes";
 
 const milestones = [
   {
@@ -69,15 +70,15 @@ export default function Roadmap() {
   }, []);
 
   return (
-    <section id="roadmap" className="section relative overflow-hidden" ref={sectionRef}>
+    <section id="roadmap" className={`${SECTION} overflow-hidden`} ref={sectionRef}>
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
         <div className="absolute top-1/4 -left-48 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(140,100,255,0.08)_0%,transparent_70%)] blur-[120px]" />
         <div className="absolute bottom-1/4 -right-48 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(200,241,53,0.06)_0%,transparent_70%)] blur-[120px]" />
       </div>
-      <div className="container relative z-1">
+      <div className={`container ${CONTAINER} relative z-1`}>
         <div className="reveal mb-16">
-          <span className="eyebrow">What&apos;s Coming</span>
-          <h2 className="display display-lg mt-3">
+          <span className={`eyebrow ${EYEBROW} text-muted`}>What&apos;s Coming</span>
+          <h2 className={`${DISPLAY} ${DISPLAY_LG} text-foreground mt-3`}>
             The road{" "}
             <span className="bg-gradient-to-r from-accent via-accent to-[rgba(200,241,53,0.7)] bg-clip-text text-transparent">
               ahead.
@@ -136,29 +137,17 @@ export default function Roadmap() {
                       className={`relative z-1 h-5 w-5 rounded-full border-2 transition-all duration-300 ${m.now ? "border-accent bg-accent shadow-[0_0_24px_rgba(200,241,53,0.6)] scale-125" : m.done ? "border-accent bg-[rgba(200,241,53,0.6)]" : "border-border-subtle bg-card hover:border-accent/50"}`}
                     />
                     {m.now && (
-                      <div
-                        className="absolute inset-0 rounded-full animate-pulse"
-                        style={{
-                          boxShadow: "0 0 32px rgba(200,241,53,0.4)",
-                          filter: "blur(1px)",
-                        }}
-                      />
+                      <div className="absolute inset-0 rounded-full animate-pulse shadow-[0_0_32px_rgba(200,241,53,0.4)] [filter:blur(1px)]" />
                     )}
                   </div>
                 </div>
 
                 <div
-                  className={`card group relative overflow-hidden p-6 transition-all duration-300 backdrop-blur-md h-full flex flex-col ${m.now ? "border-accent/40 bg-gradient-to-br from-[rgba(200,241,53,0.08)] via-[rgba(200,241,53,0.03)] to-transparent shadow-[0_16px_48px_rgba(200,241,53,0.1)]" : m.done ? "border-accent/20 bg-gradient-to-br from-[rgba(200,241,53,0.04)] to-transparent" : "border-border-subtle bg-card/50 hover:border-border-subtle/50"} ${!m.done && !m.now ? "opacity-70 hover:opacity-85" : "opacity-100"}`}
+                  className={`card group relative overflow-hidden p-8 transition-all duration-300 backdrop-blur-md h-full flex flex-col ${m.now ? "border-accent/40 bg-gradient-to-br from-[rgba(200,241,53,0.08)] via-[rgba(200,241,53,0.03)] to-transparent shadow-[0_16px_48px_rgba(200,241,53,0.1)]" : m.done ? "border-accent/20 bg-gradient-to-br from-[rgba(200,241,53,0.04)] to-transparent" : "border-border-subtle bg-card/50 hover:border-border-subtle/50"} ${!m.done && !m.now ? "opacity-70 hover:opacity-85" : "opacity-100"}`}
                 >
                   {m.now && (
                     <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                      <div
-                        className="absolute -inset-full animate-[spin_8s_linear_infinite] opacity-20"
-                        style={{
-                          backgroundImage:
-                            "conic-gradient(from 0deg, transparent, rgba(200,241,53,0.4), transparent 180deg)",
-                        }}
-                      />
+                      <div className="absolute -inset-full animate-[spin_8s_linear_infinite] opacity-20 bg-[conic-gradient(from_0deg,transparent,rgba(200,241,53,0.4),transparent_180deg)]" />
                     </div>
                   )}
 
