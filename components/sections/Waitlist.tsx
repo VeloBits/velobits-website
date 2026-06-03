@@ -74,7 +74,9 @@ export default function Waitlist() {
                 <div className="text-[3rem] animate-[scale-pulse_2s_ease-in-out_infinite]">
                   Done
                 </div>
-                <h2 className={`${DISPLAY} ${DISPLAY_MD} text-accent animate-[glow-pulse_2s_ease-in-out_infinite]`}>
+                <h2
+                  className={`${DISPLAY} ${DISPLAY_MD} text-accent animate-[glow-pulse_2s_ease-in-out_infinite]`}
+                >
                   You&apos;re in!
                 </h2>
                 <p className="max-w-[36ch] leading-[1.7] text-muted">

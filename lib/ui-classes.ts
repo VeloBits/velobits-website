@@ -22,7 +22,8 @@ export const DISPLAY_LG = "text-[clamp(2rem,8vw,3rem)] min-[769px]:text-[clamp(2
 export const DISPLAY_MD = "text-[clamp(1.8rem,2.5vw,3rem)]";
 // Arbitrary gradient (not bg-gradient-to-r) to keep the original sRGB interpolation —
 // Tailwind's gradient utilities interpolate in oklab, which alters a transparent→color ramp.
-export const DIVIDER = "h-0.5 opacity-50 bg-[linear-gradient(to_right,transparent,#c8f135,transparent)]";
+export const DIVIDER =
+  "h-0.5 opacity-50 bg-[linear-gradient(to_right,transparent,#c8f135,transparent)]";
 
 /**
  * Pill base: layout / shape / weight only. bg, border-color, text-color and
