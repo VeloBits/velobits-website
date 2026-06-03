@@ -90,6 +90,141 @@
   /* Typography (.display*, .eyebrow), layout (.container, .section) and .pill
      base have moved to Tailwind utilities — see lib/ui-classes.ts. */
 
+  /* ── Blog article prose ──────────────────────
+     Vertical rhythm + defaults for Markdown-rendered articles (no
+     @tailwindcss/typography plugin). Per-element classes come from the
+     MarkdownContent react-markdown component map; this handles spacing and
+     any element the map doesn't explicitly style. */
+  .blog-prose {
+    color: var(--text);
+    font-size: 1.02rem;
+    line-height: 1.8;
+  }
+  .blog-prose > * + * {
+    margin-top: 1.35rem;
+  }
+  .blog-prose h2,
+  .blog-prose h3,
+  .blog-prose h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--text);
+  }
+  .blog-prose h2 {
+    margin-top: 2.6rem;
+    font-size: 1.7rem;
+  }
+  .blog-prose h3 {
+    margin-top: 2rem;
+    font-size: 1.3rem;
+  }
+  .blog-prose p,
+  .blog-prose li {
+    color: var(--text);
+  }
+  .blog-prose a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .blog-prose ul,
+  .blog-prose ol {
+    padding-left: 1.4rem;
+  }
+  .blog-prose ul {
+    list-style: disc;
+  }
+  .blog-prose ol {
+    list-style: decimal;
+  }
+  .blog-prose li + li {
+    margin-top: 0.5rem;
+  }
+  .blog-prose blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 0.25rem 0 0.25rem 1.1rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+  .blog-prose code {
+    font-family: var(--font-mono), monospace;
+    font-size: 0.86em;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.12em 0.4em;
+  }
+  .blog-prose pre {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem;
+    overflow-x: auto;
+  }
+  .blog-prose pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* ── highlight.js theme overrides (github-dark base + site palette) ── */
+  .blog-prose .hljs {
+    background: var(--bg-card-alt);
+    color: #e2e8f0;
+  }
+  .blog-prose .hljs-keyword,
+  .blog-prose .hljs-selector-tag,
+  .blog-prose .hljs-built_in {
+    color: var(--accent);
+  }
+  .blog-prose .hljs-string,
+  .blog-prose .hljs-attr {
+    color: #86efac;
+  }
+  .blog-prose .hljs-comment,
+  .blog-prose .hljs-quote {
+    color: #6b7280;
+    font-style: italic;
+  }
+  .blog-prose .hljs-number,
+  .blog-prose .hljs-literal {
+    color: #fbbf24;
+  }
+  .blog-prose .hljs-function,
+  .blog-prose .hljs-title {
+    color: #93c5fd;
+  }
+  .blog-prose img {
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    max-width: 100%;
+    height: auto;
+  }
+  .blog-prose hr {
+    border: none;
+    height: 1px;
+    background: var(--border);
+  }
+  .blog-prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  .blog-prose th,
+  .blog-prose td {
+    border: 1px solid var(--border);
+    padding: 0.55rem 0.75rem;
+    text-align: left;
+  }
+  .blog-prose th {
+    background: var(--bg-card-alt);
+    font-weight: 700;
+  }
+
   /* ── Cards ───────────────────────────────── */
   .card {
     position: relative;

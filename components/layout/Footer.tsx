@@ -14,7 +14,7 @@ export default function Footer() {
     ],
     Company: [
       { label: "About", href: "#about" },
-      { label: "Blog", href: "#" },
+      { label: "Blog", href: "/blog" },
       { label: "Join Waitlist", href: "#waitlist" },
     ],
     Legal: [

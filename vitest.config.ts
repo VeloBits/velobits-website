@@ -13,7 +13,14 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "json-summary", "html"],
-      include: ["components/**/*.tsx", "app/page.tsx", "app/api/**/*.ts", "lib/updates.ts"],
+      include: [
+        "components/**/*.tsx",
+        "app/page.tsx",
+        "app/api/**/*.ts",
+        "lib/updates.ts",
+        "lib/blog.ts",
+        "lib/reading-time.ts",
+      ],
       thresholds: {
         lines: 70,
         branches: 70,
@@ -35,6 +42,10 @@ export default defineConfig({
         // Async Server Component: does server-side fetch; has no RSC runtime in
         // jsdom. Its presentational seam (UpdatesList.tsx) is unit-tested instead.
         "components/sections/LatestUpdates.tsx",
+        // Async RSC blog pages / route handler: server-side data fetch, no RSC
+        // runtime in jsdom. Their presentational seams (components/blog/*) and
+        // the data layer (lib/blog.ts) + RSS handler are unit-tested instead.
+        "app/blog/**",
       ],
     },
   },
