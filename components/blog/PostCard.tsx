@@ -11,13 +11,7 @@ export default function PostCard({ post }: { post: BlogPostMeta }) {
     <li className="card flex flex-col gap-0 transition-all duration-300 hover:-translate-y-0.5 overflow-hidden">
       {post.coverUrl && (
         <Link href={`/blog/${post.slug}`} tabIndex={-1} aria-hidden="true" className="block">
-          <Image
-            src={post.coverUrl}
-            alt=""
-            width={640}
-            height={400}
-            className="w-full h-auto"
-          />
+          <Image src={post.coverUrl} alt="" width={640} height={400} className="w-full h-auto" />
         </Link>
       )}
       <div className="flex flex-col gap-2 p-6">
@@ -35,9 +29,7 @@ export default function PostCard({ post }: { post: BlogPostMeta }) {
             {post.title}
           </Link>
         </h3>
-        {post.excerpt && (
-          <p className="text-[0.85rem] leading-[1.7] text-muted">{post.excerpt}</p>
-        )}
+        {post.excerpt && <p className="text-[0.85rem] leading-[1.7] text-muted">{post.excerpt}</p>}
         <div className="mt-1 flex items-center justify-between">
           <span className="text-[0.72rem] text-faint">By {post.author}</span>
           <Link
