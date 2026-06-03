@@ -21,7 +21,7 @@ export const navLinks = [
   { label: "Community", href: "#community", soon: false },
   { label: "Updates", href: "#updates", soon: false },
   { label: "About", href: "#about", soon: false },
-  { label: "Blog", href: "#", soon: true },
+  { label: "Blog", href: "/blog", soon: false },
 ];
 
 export const taglines = [

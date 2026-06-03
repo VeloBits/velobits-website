@@ -37,10 +37,9 @@ describe("Navbar", () => {
     });
   });
 
-  it("marks Blog with a 'Soon' badge", () => {
+  it("links Blog to the blog index", () => {
     render(<Navbar />);
-    const soonBadge = screen.getAllByText(/Soon/i);
-    expect(soonBadge.length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("Blog").closest("a")).toHaveAttribute("href", "/blog");
   });
 
   it("renders the Join Waitlist CTA", () => {
