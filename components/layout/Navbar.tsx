@@ -80,7 +80,7 @@ export default function Navbar() {
         </a>
 
         {/* Desktop nav links */}
-        <div className="desktop-nav flex flex-1 items-center justify-center gap-[0.25rem]">
+        <div className="hidden flex-1 items-center justify-center gap-[0.25rem] min-[641px]:flex">
           {navLinks.map((item) => (
             <a
               key={item.label}
@@ -100,8 +100,8 @@ export default function Navbar() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="flex items-center gap-4 shrink-0">
-          <div className="nav-divider h-[18px] w-[1px] bg-[rgba(255,255,255,0.1)] rounded-full" />
+        <div className="hidden items-center gap-4 shrink-0 min-[641px]:flex">
+          <div className="h-[18px] w-[1px] bg-[rgba(255,255,255,0.1)] rounded-full" />
           <a
             href="#waitlist"
             className="btn btn-primary rounded-full px-5 py-[0.55rem] text-[0.82rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -122,7 +122,7 @@ export default function Navbar() {
         {/* Mobile menu toggle */}
         <button
           ref={toggleRef}
-          className="menu-toggle hidden shrink-0 cursor-pointer rounded-[8px] border-none bg-transparent p-[0.4rem] text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          className="flex min-[641px]:hidden shrink-0 cursor-pointer rounded-[8px] border-none bg-transparent p-[0.4rem] text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
@@ -185,19 +185,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-
-      <style>{`
-        @media (max-width: 640px) {
-          .desktop-nav { display: none !important; }
-          .menu-toggle { display: flex !important; }
-          #navbar > div { display: none !important; }
-          .nav-divider { display: none !important; }
-        }
-        @keyframes menu-slide-in {
-          from { opacity: 0; transform: translateY(-8px) scale(0.98); }
-          to   { opacity: 1; transform: translateY(0) scale(1); }
-        }
-      `}</style>
     </header>
   );
 }

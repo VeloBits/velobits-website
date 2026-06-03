@@ -1,9 +1,36 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import CommunityPulse from "@/components/sections/CommunityPulse";
 
+function jsonOk(body: unknown) {
+  return Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve(body),
+  }) as unknown as Promise<Response>;
+}
+
+const VOTE_COUNTS = [
+  { poll_id: "next-app", option_id: "fixmytext", option_label: "FixMyText", count: 1 },
+  { poll_id: "next-app", option_id: "note-sharing", option_label: "Note-sharing app", count: 0 },
+];
+
 describe("CommunityPulse", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    global.fetch = vi.fn((input: RequestInfo | URL) => {
+      const url = typeof input === "string" ? input : input.toString();
+      if (url.includes("/api/poll")) return jsonOk({ ok: true, counts: [] });
+      if (url.includes("/api/vote")) return jsonOk({ ok: true, counts: VOTE_COUNTS });
+      if (url.includes("/api/ideas")) return jsonOk({ ok: true });
+      return jsonOk({ ok: false });
+    }) as unknown as typeof fetch;
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("renders the community section with id", () => {
     render(<CommunityPulse />);
     expect(document.getElementById("community")).toBeInTheDocument();
@@ -25,10 +52,10 @@ describe("CommunityPulse", () => {
     expect(screen.getByText(/Drop a product idea, vote on existing ones/i)).toBeInTheDocument();
   });
 
-  it("renders the 'Active Poll' section", () => {
+  it("renders the 'Active Poll' section with the new question", () => {
     render(<CommunityPulse />);
     expect(screen.getByText(/Active Poll/i)).toBeInTheDocument();
-    expect(screen.getByText(/What should we build next for FixMyText?/i)).toBeInTheDocument();
+    expect(screen.getByText(/Which app should we build next\?/i)).toBeInTheDocument();
   });
 
   it("renders the 'Live' pill in the poll section", () => {
@@ -36,18 +63,25 @@ describe("CommunityPulse", () => {
     expect(screen.getByText("Live")).toBeInTheDocument();
   });
 
-  it("renders all poll options with vote percentages", () => {
+  it("renders the real poll options (FixMyText + Note-sharing app)", () => {
     render(<CommunityPulse />);
-    expect(screen.getByText(/Browser & editor plugins/i)).toBeInTheDocument();
-    expect(screen.getByText(/Team workspaces/i)).toBeInTheDocument();
-    expect(screen.getByText(/Leaderboard & profiles/i)).toBeInTheDocument();
-    expect(screen.getByText(/Offline mode/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /FixMyText/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Note-sharing app/i })).toBeInTheDocument();
   });
 
-  it("displays vote counts and days left", () => {
+  it("shows the zero-vote state with no dummy data", () => {
     render(<CommunityPulse />);
-    expect(screen.getByText(/1,247 votes/i)).toBeInTheDocument();
-    expect(screen.getByText(/14 days left/i)).toBeInTheDocument();
+    expect(screen.getByText(/Be the first to vote/i)).toBeInTheDocument();
+    // no hardcoded vote counts / days-left copy
+    expect(screen.queryByText(/1,247 votes/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/days left/i)).not.toBeInTheDocument();
+  });
+
+  it("does not render any category buttons", () => {
+    render(<CommunityPulse />);
+    expect(screen.queryByRole("button", { name: /^Productivity$/i })).toBeNull();
+    expect(screen.queryByRole("button", { name: /^Dev Tools$/i })).toBeNull();
+    expect(screen.queryByText(/^Category$/i)).toBeNull();
   });
 
   it("renders the 'Got an Idea?' section", () => {
@@ -58,17 +92,7 @@ describe("CommunityPulse", () => {
 
   it("renders the idea textarea with placeholder", () => {
     render(<CommunityPulse />);
-    const textarea = screen.getByPlaceholderText(/e.g. I wish there was/i);
-    expect(textarea).toBeInTheDocument();
-  });
-
-  it("renders all category buttons", () => {
-    render(<CommunityPulse />);
-    expect(screen.getByRole("button", { name: /Productivity/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Writing/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Dev Tools/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Design/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Other/i })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/e.g. I wish there was/i)).toBeInTheDocument();
   });
 
   it("renders the Submit Idea button", () => {
@@ -85,127 +109,65 @@ describe("CommunityPulse", () => {
     const user = userEvent.setup();
     render(<CommunityPulse />);
     const textarea = screen.getByPlaceholderText(/e.g. I wish there was/i) as HTMLTextAreaElement;
-
     await user.type(textarea, "A tool for managing projects");
     expect(textarea.value).toBe("A tool for managing projects");
   });
 
-  it("updates selected category when clicked", async () => {
+  it("does not submit an empty idea", async () => {
     const user = userEvent.setup();
     render(<CommunityPulse />);
-    const writingButton = screen.getByRole("button", { name: /Writing/i });
-
-    await user.click(writingButton);
-    expect(writingButton).toHaveClass("text-accent");
-  });
-
-  it("does not submit empty idea", async () => {
-    const user = userEvent.setup();
-    render(<CommunityPulse />);
-    const submitButton = screen.getByRole("button", { name: /Submit Idea/i });
-
-    await user.click(submitButton);
+    await user.click(screen.getByRole("button", { name: /Submit Idea/i }));
     expect(screen.getByText(/Describe a problem you'd love us to solve/i)).toBeInTheDocument();
+    // /api/ideas should never have been called for an empty idea
+    expect(global.fetch).not.toHaveBeenCalledWith(
+      expect.stringContaining("/api/ideas"),
+      expect.anything()
+    );
   });
 
   it("shows success message on idea submission", async () => {
     const user = userEvent.setup();
     render(<CommunityPulse />);
     const textarea = screen.getByPlaceholderText(/e.g. I wish there was/i);
-    const submitButton = screen.getByRole("button", { name: /Submit Idea/i });
-
     await user.type(textarea, "A great idea");
-    await user.click(submitButton);
+    await user.click(screen.getByRole("button", { name: /Submit Idea/i }));
 
-    await waitFor(
-      () => {
-        expect(screen.getByText("Done")).toBeInTheDocument();
-        expect(screen.getByText(/Idea submitted!/i)).toBeInTheDocument();
-      },
-      { timeout: 5000 }
-    );
+    await waitFor(() => {
+      expect(screen.getByText("Done")).toBeInTheDocument();
+      expect(screen.getByText(/Idea submitted!/i)).toBeInTheDocument();
+      expect(screen.getByText(/We read every single one. Thank you!/i)).toBeInTheDocument();
+    });
   });
 
-  it("clears textarea after successful submission", async () => {
+  it("clears the textarea after a successful submission", async () => {
     const user = userEvent.setup();
     render(<CommunityPulse />);
     const textarea = screen.getByPlaceholderText(/e.g. I wish there was/i) as HTMLTextAreaElement;
-    const submitButton = screen.getByRole("button", { name: /Submit Idea/i });
-
     await user.type(textarea, "A great idea");
-    await user.click(submitButton);
+    await user.click(screen.getByRole("button", { name: /Submit Idea/i }));
 
-    await waitFor(
-      () => {
-        expect(textarea.value).toBe("");
-      },
-      { timeout: 5000 }
-    );
+    await waitFor(() => expect(textarea.value).toBe(""), { timeout: 5000 });
   });
 
-  it("displays 'Cast Vote' button when no vote selected", () => {
+  it("displays 'Cast Vote' when no vote has been cast", () => {
     render(<CommunityPulse />);
-    const voteButton = screen.getByRole("button", { name: /Cast Vote/i });
-    expect(voteButton).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Cast Vote/i })).toBeInTheDocument();
   });
 
-  it("updates vote when poll option is clicked", async () => {
+  it("casts a vote, shows 'Voted', and persists it", async () => {
     const user = userEvent.setup();
     render(<CommunityPulse />);
-    const firstOptionButton = screen.getByRole("button", {
-      name: /Browser & editor plugins/i,
-    });
+    await user.click(screen.getByRole("button", { name: /FixMyText/i }));
+    await user.click(screen.getByRole("button", { name: /Cast Vote/i }));
 
-    await user.click(firstOptionButton);
-
-    // The button's opacity should change to indicate selection
-    expect(firstOptionButton).toHaveClass("opacity-100");
+    await waitFor(() => expect(screen.getByRole("button", { name: /Voted/i })).toBeInTheDocument());
+    expect(global.fetch).toHaveBeenCalledWith("/api/vote", expect.anything());
+    expect(localStorage.getItem("vb_voted_next-app")).toBe("fixmytext");
   });
 
-  it("shows 'Voted' button after selecting an option", async () => {
-    const user = userEvent.setup();
+  it("restores a prior vote from localStorage", async () => {
+    localStorage.setItem("vb_voted_next-app", "note-sharing");
     render(<CommunityPulse />);
-    const firstOptionButton = screen.getByRole("button", {
-      name: /Browser & editor plugins/i,
-    });
-
-    await user.click(firstOptionButton);
-
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: /Voted/i })).toBeInTheDocument();
-    });
-  });
-
-  it("handles category selection", async () => {
-    const user = userEvent.setup();
-    render(<CommunityPulse />);
-
-    const devToolsButton = screen.getByRole("button", { name: /Dev Tools/i });
-    await user.click(devToolsButton);
-
-    expect(devToolsButton).toHaveClass("text-accent");
-  });
-
-  it("defaults to 'Productivity' category", () => {
-    render(<CommunityPulse />);
-    const productivityButton = screen.getByRole("button", { name: /^Productivity$/i });
-    expect(productivityButton).toHaveClass("text-accent");
-  });
-
-  it("renders the success message with confirmation text", async () => {
-    const user = userEvent.setup();
-    render(<CommunityPulse />);
-    const textarea = screen.getByPlaceholderText(/e.g. I wish there was/i);
-    const submitButton = screen.getByRole("button", { name: /Submit Idea/i });
-
-    await user.type(textarea, "An amazing idea");
-    await user.click(submitButton);
-
-    await waitFor(
-      () => {
-        expect(screen.getByText(/We read every single one. Thank you!/i)).toBeInTheDocument();
-      },
-      { timeout: 5000 }
-    );
+    await waitFor(() => expect(screen.getByRole("button", { name: /Voted/i })).toBeInTheDocument());
   });
 });

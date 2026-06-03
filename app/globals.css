@@ -87,56 +87,8 @@
    COMPONENTS — Tailwind utilities CAN override
 ───────────────────────────────────────────── */
 @layer components {
-  /* ── Typography ──────────────────────────── */
-  .display {
-    font-family: var(--font-display);
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    line-height: 0.95;
-    color: var(--text);
-  }
-  .display-xl {
-    font-size: clamp(2rem, 3vw, 3.8rem);
-  }
-  .display-lg {
-    font-size: clamp(2.5rem, 4vw, 5rem);
-  }
-  .display-md {
-    font-size: clamp(1.8rem, 2.5vw, 3rem);
-  }
-
-  .eyebrow {
-    font-family: var(--font-display);
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: var(--text-muted);
-  }
-
-  /* ── Layout ──────────────────────────────── */
-  .container {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-  .section {
-    padding: 7rem 0;
-    position: relative;
-  }
-
-  @media (max-width: 768px) {
-    .section {
-      padding: 4.5rem 0;
-    }
-    .container {
-      padding: 0 1.25rem;
-    }
-    .display-lg {
-      font-size: clamp(2rem, 8vw, 3rem);
-    }
-  }
+  /* Typography (.display*, .eyebrow), layout (.container, .section) and .pill
+     base have moved to Tailwind utilities — see lib/ui-classes.ts. */
 
   /* ── Cards ───────────────────────────────── */
   .card {
@@ -184,35 +136,6 @@
   .card-glow > * {
     position: relative;
     z-index: 1;
-  }
-
-  .card-gradient-border {
-    position: relative;
-    background: var(--bg-card);
-    border-radius: var(--radius-card);
-  }
-  .card-gradient-border::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      rgba(200, 241, 53, 0.3),
-      rgba(255, 255, 255, 0.06) 50%,
-      rgba(100, 60, 220, 0.2)
-    );
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    animation: gradient-border-spin 6s linear infinite;
-    pointer-events: none;
   }
 
   /* ── Buttons ─────────────────────────────── */
@@ -277,24 +200,7 @@
     background: rgba(255, 255, 255, 0.03);
   }
 
-  /* ── Pills / Badges ──────────────────────── */
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.32rem 0.85rem;
-    border-radius: var(--radius-pill);
-    font-size: 0.73rem;
-    font-weight: 600;
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    color: var(--text-muted);
-  }
-  .pill-accent {
-    background: var(--accent-dim);
-    border-color: rgba(200, 241, 53, 0.28);
-    color: var(--accent);
-  }
+  /* ── Pills / Badges (.pill base → utilities; .pill-dot stays for ::before) ── */
   .pill-dot::before {
     content: "";
     width: 6px;
@@ -303,35 +209,6 @@
     background: currentColor;
     flex-shrink: 0;
     animation: pulse-dot 2s ease-in-out infinite;
-  }
-
-  /* ── Sticker burst ───────────────────────── */
-  .sticker {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    clip-path: polygon(
-      50% 0%,
-      61% 35%,
-      98% 35%,
-      68% 57%,
-      79% 91%,
-      50% 70%,
-      21% 91%,
-      32% 57%,
-      2% 35%,
-      39% 35%
-    );
-    background: var(--accent);
-    color: #0c0c0c;
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    text-align: center;
-    line-height: 1.2;
-    animation: sticker-wobble 3s ease-in-out infinite;
   }
 
   /* ── Scroll reveal ───────────────────────── */
@@ -397,45 +274,6 @@
     background: var(--accent);
     width: 0%;
     transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* ── Dashed border card ──────────────────── */
-  .dashed-card {
-    border: none !important;
-    position: relative;
-  }
-  .dashed-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: var(--radius-card);
-    border: 1.5px dashed rgba(255, 255, 255, 0.12);
-    pointer-events: none;
-    animation: border-pulse 3.5s ease-in-out infinite;
-  }
-
-  /* ── Marquee ─────────────────────────────── */
-  .marquee-track {
-    display: flex;
-    overflow: hidden;
-    width: 100%;
-    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      black 8%,
-      black 92%,
-      transparent 100%
-    );
-  }
-  .marquee-inner {
-    display: flex;
-    gap: 0;
-    animation: marquee 30s linear infinite;
-    will-change: transform;
-  }
-  .marquee-inner:hover {
-    animation-play-state: paused;
   }
 
   /* ── Cursor glow ─────────────────────────── */
@@ -535,21 +373,6 @@
     mask-image: radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%);
     -webkit-mask-image: radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%);
   }
-
-  /* ── Divider ─────────────────────────────── */
-  .divider {
-    height: 2px;
-    background: linear-gradient(to right, transparent, #c8f135, transparent);
-    opacity: 0.5;
-  }
-
-  /* ── Navbar glass ────────────────────────── */
-  .navbar-glass {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    background: rgba(12, 12, 12, 0.8);
-    border-bottom: 1px solid var(--border);
-  }
 } /* end @layer components */
 
 /* ─────────────────────────────────────────────
@@ -564,15 +387,6 @@
   50% {
     opacity: 0.4;
     transform: scale(0.65);
-  }
-}
-@keyframes sticker-wobble {
-  0%,
-  100% {
-    transform: rotate(-7deg) scale(1);
-  }
-  50% {
-    transform: rotate(7deg) scale(1.04);
   }
 }
 @keyframes float-a {
@@ -637,12 +451,12 @@
     transform: rotate(-360deg) translateX(108px) rotate(360deg);
   }
 }
-@keyframes orbit-xl {
+@keyframes orbit-reverse-xl {
   from {
     transform: rotate(0deg) translateX(200px) rotate(0deg);
   }
   to {
-    transform: rotate(360deg) translateX(200px) rotate(-360deg);
+    transform: rotate(-360deg) translateX(200px) rotate(360deg);
   }
 }
 @keyframes pop-in {
@@ -658,85 +472,12 @@
     transform: scale(1) translateY(0);
   }
 }
-@keyframes glow-pulse {
-  0%,
-  100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-@keyframes shimmer-sweep {
-  from {
-    transform: translateX(-150%);
-  }
-  to {
-    transform: translateX(150%);
-  }
-}
-@keyframes draw-line {
-  from {
-    stroke-dashoffset: 700;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-@keyframes border-pulse {
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
 @keyframes marquee {
   from {
     transform: translateX(0);
   }
   to {
     transform: translateX(-50%);
-  }
-}
-@keyframes gradient-border-spin {
-  from {
-    filter: hue-rotate(0deg);
-  }
-  to {
-    filter: hue-rotate(360deg);
-  }
-}
-@keyframes count-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes slide-up-reveal {
-  from {
-    clip-path: inset(100% 0 0 0);
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    clip-path: inset(0% 0 0 0);
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-@keyframes type-cursor {
-  0%,
-  100% {
-    border-right-color: var(--accent);
-  }
-  50% {
-    border-right-color: transparent;
   }
 }
 @keyframes ping {
@@ -751,11 +492,11 @@
 @keyframes menu-slide-in {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-8px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -780,17 +521,6 @@
   }
 }
 
-/* Gradient shift animation */
-@keyframes gradient-shift {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
 /* Subtle scale animation */
 @keyframes scale-pulse {
   0%,
@@ -799,38 +529,6 @@
   }
   50% {
     transform: scale(1.02);
-  }
-}
-
-/* Border glow animation */
-@keyframes border-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(200, 241, 53, 0);
-  }
-  50% {
-    box-shadow: 0 0 20px 0 rgba(200, 241, 53, 0.1);
-  }
-}
-
-/* Text shimmer animation */
-@keyframes text-shimmer {
-  0% {
-    background-position: 0% center;
-  }
-  100% {
-    background-position: 200% center;
-  }
-}
-
-/* Rotate subtle */
-@keyframes rotate-subtle {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(1deg);
   }
 }
 
@@ -858,49 +556,28 @@
   }
 }
 
-/* Fade in left */
-@keyframes fade-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Fade in right */
-@keyframes fade-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Bounce soft */
-@keyframes bounce-soft {
+/* ─────────────────────────────────────────────
+   CARD FLOAT — every card gently floats.
+   Unlayered (like the former CommunityPulse <style> inject) so it
+   takes precedence over Tailwind utility classes, matching prior behavior.
+───────────────────────────────────────────── */
+@keyframes soft-float {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translateY(0px);
   }
   50% {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
   }
 }
-
-/* Underline animation */
-@keyframes underline-grow {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
+.card {
+  animation: soft-float 3.5s ease-in-out infinite;
+}
+.community-grid > div:first-child {
+  animation-delay: 0s;
+}
+.community-grid > div:last-child {
+  animation-delay: 0.2s;
 }
 
 /* ─────────────────────────────────────────────
@@ -920,9 +597,5 @@
   #cursor-ring-outer,
   #cursor-grid-highlight {
     display: none !important;
-  }
-  .marquee-inner {
-    animation: none !important;
-    transform: none !important;
   }
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { CONTAINER, EYEBROW, DISPLAY, DISPLAY_LG } from "@/lib/ui-classes";
 
 const stats = [
   { value: 1, suffix: "", label: "Product Launching", display: null },
@@ -54,14 +55,14 @@ export default function About() {
   const stat1 = useCountUp(100, 1200, statsActive);
 
   return (
-    <section id="about" className="section relative pt-20 pb-20 overflow-x-hidden" ref={sectionRef}>
+    <section id="about" className="relative pt-20 pb-20 overflow-x-hidden" ref={sectionRef}>
       <div className="pointer-events-none absolute top-[10%] right-[-5%] h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(200,241,53,0.05)_0%,transparent_68%)] blur-[55px]" />
 
-      <div className="container">
+      <div className={`container ${CONTAINER}`}>
         <div className="reveal mb-12">
-          <span className="eyebrow">Our Mission</span>
+          <span className={`eyebrow ${EYEBROW} text-muted`}>Our Mission</span>
           <div className="mt-[0.6rem] flex flex-wrap items-center gap-5">
-            <h2 className="display display-lg">
+            <h2 className={`${DISPLAY} ${DISPLAY_LG} text-foreground`}>
               Built with <span className="text-accent">purpose.</span>
             </h2>
             <div className="h-[2px] w-12 shrink-0 rounded-[2px] bg-[rgba(200,241,53,0.38)]" />
@@ -138,93 +139,104 @@ export default function About() {
                 />
               </div>
 
-              {/* ── Ring 1: glowing dots at r=108px ── */}
-              {[
-                {
-                  key: "r1a",
-                  anim: "animate-[orbit-reverse-lg_8s_linear_0s_infinite]",
-                  solid: true,
-                },
-                {
-                  key: "r1b",
-                  anim: "animate-[orbit-reverse-lg_8s_linear_-2.67s_infinite]",
-                  solid: false,
-                },
-                {
-                  key: "r1c",
-                  anim: "animate-[orbit-reverse-lg_8s_linear_-5.33s_infinite]",
-                  solid: false,
-                },
-              ].map(({ key, anim, solid }) => (
-                <div
-                  key={key}
-                  className={`absolute top-1/2 left-1/2 h-[10px] w-[10px] -translate-x-[5px] -translate-y-[5px] ${anim}`}
-                >
-                  <div
-                    className={`h-full w-full rounded-full ${solid ? "bg-accent shadow-[0_0_8px_rgba(200,241,53,0.9)]" : "border border-[rgba(200,241,53,0.55)] bg-transparent"}`}
-                  />
+              {/* ── Ring 1 (r=108): 3 icons, 120° apart — delays 0, -3.33s, -6.67s ── */}
+              <div className="absolute top-1/2 left-1/2 h-[36px] w-[36px] -translate-x-[18px] -translate-y-[18px] animate-[orbit-reverse-lg_10s_linear_0s_infinite]">
+                <div className="flex h-full w-full items-center justify-center rounded-[9px] border border-[rgba(200,241,53,0.4)] bg-[#0f1a00] shadow-[0_0_10px_rgba(200,241,53,0.18)]">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M4 7h16M4 12h10M4 17h7"
+                      stroke="#c8f135"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <circle cx="19" cy="17" r="3" stroke="#c8f135" strokeWidth="1.8" />
+                    <path
+                      d="M21.5 19.5l1.5 1.5"
+                      stroke="#c8f135"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                    />
+                  </svg>
                 </div>
-              ))}
+              </div>
+              <div className="absolute top-1/2 left-1/2 h-[36px] w-[36px] -translate-x-[18px] -translate-y-[18px] animate-[orbit-reverse-lg_10s_linear_-3.33s_infinite]">
+                <div className="flex h-full w-full items-center justify-center rounded-[9px] border border-[rgba(200,241,53,0.4)] bg-[#0f1a00] shadow-[0_0_10px_rgba(200,241,53,0.18)]">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M10 20l4-16M4 15l-2-3 2-3M20 15l2-3-2-3"
+                      stroke="#c8f135"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div className="absolute top-1/2 left-1/2 h-[36px] w-[36px] -translate-x-[18px] -translate-y-[18px] animate-[orbit-reverse-lg_10s_linear_-6.67s_infinite]">
+                <div className="flex h-full w-full items-center justify-center rounded-[9px] border border-[rgba(200,241,53,0.4)] bg-[#0f1a00] shadow-[0_0_10px_rgba(200,241,53,0.18)]">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"
+                      stroke="#c8f135"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <circle cx="12" cy="12" r="3" stroke="#c8f135" strokeWidth="1.8" />
+                  </svg>
+                </div>
+              </div>
 
-              {/* ── Ring 2: product planets at r=148px ── */}
-              {/* FixMyText — edit/document icon, accent green */}
-              <div className="absolute top-1/2 left-1/2 h-[44px] w-[44px] -translate-x-[22px] -translate-y-[22px] animate-[orbit-lg_15s_linear_0s_infinite]">
+              {/* ── Ring 2 (r=148): 3 icons, 120° apart — delays 0, -5s, -10s ── */}
+              <div className="absolute top-1/2 left-1/2 h-[40px] w-[40px] -translate-x-[20px] -translate-y-[20px] animate-[orbit-lg_15s_linear_-2.5s_infinite]">
                 <div
-                  className="flex h-full w-full items-center justify-center rounded-full border-2 border-accent bg-[rgba(200,241,53,0.07)] shadow-[0_0_20px_rgba(200,241,53,0.3),0_4px_14px_rgba(0,0,0,0.5)] backdrop-blur-sm"
+                  className="flex h-full w-full items-center justify-center rounded-[11px] border-2 border-[rgba(200,241,53,0.55)] bg-[#0f1a00] shadow-[0_0_16px_rgba(200,241,53,0.22)]"
                   title="FixMyText"
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 20h9" stroke="#c8f135" strokeWidth="1.8" strokeLinecap="round" />
                     <path
-                      d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
-                      stroke="rgba(200,241,53,0.95)"
-                      strokeWidth="1.9"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
-                      stroke="rgba(200,241,53,0.95)"
-                      strokeWidth="1.9"
+                      d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"
+                      stroke="#c8f135"
+                      strokeWidth="1.8"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </svg>
                 </div>
               </div>
-              {/* Coming Soon — flask/lab icon, purple */}
-              <div className="absolute top-1/2 left-1/2 h-[44px] w-[44px] -translate-x-[22px] -translate-y-[22px] animate-[orbit-lg_15s_linear_-5s_infinite]">
+              <div className="absolute top-1/2 left-1/2 h-[40px] w-[40px] -translate-x-[20px] -translate-y-[20px] animate-[orbit-lg_15s_linear_-7.5s_infinite]">
                 <div
-                  className="flex h-full w-full items-center justify-center rounded-full border-2 border-[rgba(140,80,220,0.7)] bg-[rgba(140,80,220,0.07)] shadow-[0_0_16px_rgba(140,80,220,0.25),0_4px_12px_rgba(0,0,0,0.5)] backdrop-blur-sm"
+                  className="flex h-full w-full items-center justify-center rounded-[11px] border-2 border-[rgba(200,241,53,0.45)] bg-[#0f1a00] shadow-[0_0_14px_rgba(200,241,53,0.18)]"
                   title="Coming Soon"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                     <path
-                      d="M9 3h6M12 3v6.5m0 0L7 18a2 2 0 0 0 1.7 3h6.6A2 2 0 0 0 17 18l-5-8.5z"
-                      stroke="rgba(140,80,220,0.95)"
-                      strokeWidth="1.9"
+                      d="M14.5 2v6.5l4.5 9a2 2 0 0 1-1.8 2.9H6.8A2 2 0 0 1 5 17.5l4.5-9V2"
+                      stroke="#c8f135"
+                      strokeWidth="1.8"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
-                    <circle cx="9" cy="17" r="1" fill="rgba(140,80,220,0.7)" />
-                    <circle cx="14" cy="19" r="0.8" fill="rgba(140,80,220,0.5)" />
+                    <path d="M9 2h6" stroke="#c8f135" strokeWidth="1.8" strokeLinecap="round" />
+                    <circle cx="9.5" cy="16" r="1" fill="#c8f135" />
+                    <circle cx="13.5" cy="14" r="0.8" fill="rgba(200,241,53,0.6)" />
                   </svg>
                 </div>
               </div>
-              {/* Suite — 2×2 grid icon, faint white */}
-              <div className="absolute top-1/2 left-1/2 h-[44px] w-[44px] -translate-x-[22px] -translate-y-[22px] animate-[orbit-lg_15s_linear_-10s_infinite]">
+              <div className="absolute top-1/2 left-1/2 h-[40px] w-[40px] -translate-x-[20px] -translate-y-[20px] animate-[orbit-lg_15s_linear_-12.5s_infinite]">
                 <div
-                  className="flex h-full w-full items-center justify-center rounded-full border-2 border-[rgba(255,255,255,0.2)] bg-[rgba(255,255,255,0.03)] shadow-[0_4px_12px_rgba(0,0,0,0.5)] backdrop-blur-sm"
+                  className="flex h-full w-full items-center justify-center rounded-[11px] border-2 border-[rgba(200,241,53,0.35)] bg-[#0f1a00] shadow-[0_0_12px_rgba(200,241,53,0.14)]"
                   title="Suite"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                     <rect
                       x="3"
                       y="3"
                       width="7"
                       height="7"
                       rx="1.5"
-                      stroke="rgba(255,255,255,0.6)"
-                      strokeWidth="1.6"
+                      stroke="#c8f135"
+                      strokeWidth="1.7"
                     />
                     <rect
                       x="14"
@@ -232,8 +244,8 @@ export default function About() {
                       width="7"
                       height="7"
                       rx="1.5"
-                      stroke="rgba(255,255,255,0.6)"
-                      strokeWidth="1.6"
+                      stroke="#c8f135"
+                      strokeWidth="1.7"
                     />
                     <rect
                       x="3"
@@ -241,8 +253,8 @@ export default function About() {
                       width="7"
                       height="7"
                       rx="1.5"
-                      stroke="rgba(255,255,255,0.6)"
-                      strokeWidth="1.6"
+                      stroke="#c8f135"
+                      strokeWidth="1.7"
                     />
                     <rect
                       x="14"
@@ -250,47 +262,74 @@ export default function About() {
                       width="7"
                       height="7"
                       rx="1.5"
-                      stroke="rgba(255,255,255,0.6)"
-                      strokeWidth="1.6"
+                      stroke="#c8f135"
+                      strokeWidth="1.7"
                     />
                   </svg>
                 </div>
               </div>
 
-              {/* ── Ring 3: concept elements at r=200px ── */}
-              {/* Community — accent circle */}
-              <div className="absolute top-1/2 left-1/2 h-[40px] w-[40px] -translate-x-[20px] -translate-y-[20px] animate-[orbit-xl_24s_linear_0s_infinite]">
+              {/* ── Ring 3 (r=200): 3 icons, 120° apart — delays 0, -8s, -16s ── */}
+              <div className="absolute top-1/2 left-1/2 h-[36px] w-[36px] -translate-x-[18px] -translate-y-[18px] animate-[orbit-reverse-xl_24s_linear_0s_infinite]">
                 <div
-                  className="flex h-full w-full items-center justify-center rounded-full border border-[rgba(200,241,53,0.5)] bg-[rgba(200,241,53,0.05)] text-[0.9rem] shadow-[0_0_12px_rgba(200,241,53,0.15)]"
+                  className="flex h-full w-full items-center justify-center rounded-[9px] border border-[rgba(200,241,53,0.35)] bg-[#0f1a00] shadow-[0_0_10px_rgba(200,241,53,0.12)]"
                   title="Community"
                 >
-                  💬
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                      stroke="#c8f135"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </div>
               </div>
-              {/* Saturn-style planet — purple ring */}
-              <div className="absolute top-1/2 left-1/2 h-[36px] w-[36px] -translate-x-[18px] -translate-y-[18px] animate-[orbit-xl_24s_linear_-8s_infinite]">
+              <div className="absolute top-1/2 left-1/2 h-[36px] w-[36px] -translate-x-[18px] -translate-y-[18px] animate-[orbit-reverse-xl_24s_linear_-8s_infinite]">
                 <div
-                  className="relative flex h-full w-full items-center justify-center rounded-full border border-[rgba(140,80,220,0.65)] bg-[rgba(140,80,220,0.06)] shadow-[0_0_12px_rgba(140,80,220,0.2)]"
-                  title="Vision"
-                >
-                  {/* Saturn ring oval extending beyond the circle */}
-                  <div className="absolute left-1/2 top-1/2 h-[35%] w-[175%] -translate-x-1/2 -translate-y-1/2 rotate-[-22deg] rounded-[50%] border border-[rgba(140,80,220,0.45)]" />
-                </div>
-              </div>
-              {/* Privacy — soft white circle */}
-              <div className="absolute top-1/2 left-1/2 h-[38px] w-[38px] -translate-x-[19px] -translate-y-[19px] animate-[orbit-xl_24s_linear_-16s_infinite]">
-                <div
-                  className="flex h-full w-full items-center justify-center rounded-full border border-[rgba(255,255,255,0.22)] bg-[rgba(255,255,255,0.04)] text-[0.85rem] shadow-[0_4px_10px_rgba(0,0,0,0.4)]"
+                  className="flex h-full w-full items-center justify-center rounded-[9px] border border-[rgba(200,241,53,0.35)] bg-[#0f1a00] shadow-[0_0_10px_rgba(200,241,53,0.12)]"
                   title="Privacy"
                 >
-                  🔒
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+                      stroke="#c8f135"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M9 12l2 2 4-4"
+                      stroke="#c8f135"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div className="absolute top-1/2 left-1/2 h-[36px] w-[36px] -translate-x-[18px] -translate-y-[18px] animate-[orbit-reverse-xl_24s_linear_-16s_infinite]">
+                <div
+                  className="flex h-full w-full items-center justify-center rounded-[9px] border border-[rgba(200,241,53,0.35)] bg-[#0f1a00] shadow-[0_0_10px_rgba(200,241,53,0.12)]"
+                  title="Roadmap"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="#c8f135" strokeWidth="1.7" />
+                    <polygon
+                      points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+                      stroke="#c8f135"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </div>
               </div>
 
-              {/* ── Scatter decorative elements ── */}
-              {/* Zigzag top-right */}
+              {/* ── Scatter decorative elements — soft float animations ── */}
               <svg
-                className="absolute top-[52px] right-[-18px]"
+                className="absolute top-[52px] right-[-18px] animate-[float-b_4s_ease-in-out_0s_infinite]"
                 width="28"
                 height="16"
                 viewBox="0 0 28 16"
@@ -304,9 +343,8 @@ export default function About() {
                   strokeLinejoin="round"
                 />
               </svg>
-              {/* Cross left */}
               <svg
-                className="absolute top-[115px] left-[4px]"
+                className="absolute top-[115px] left-[4px] animate-[float-a_5s_ease-in-out_0.8s_infinite]"
                 width="14"
                 height="14"
                 viewBox="0 0 14 14"
@@ -319,11 +357,9 @@ export default function About() {
                   strokeLinecap="round"
                 />
               </svg>
-              {/* Small glowing dot right-upper */}
-              <div className="absolute top-[132px] right-[8px] h-[7px] w-[7px] rounded-full bg-[rgba(200,241,53,0.45)] shadow-[0_0_6px_rgba(200,241,53,0.6)]" />
-              {/* Zigzag bottom-left */}
+              <div className="absolute top-[132px] right-[8px] h-[7px] w-[7px] rounded-full bg-[rgba(200,241,53,0.45)] shadow-[0_0_6px_rgba(200,241,53,0.6)] animate-[float-c_3.5s_ease-in-out_0.3s_infinite]" />
               <svg
-                className="absolute bottom-[85px] left-[-12px]"
+                className="absolute bottom-[85px] left-[-12px] animate-[float-a_4.5s_ease-in-out_1.2s_infinite]"
                 width="22"
                 height="13"
                 viewBox="0 0 22 13"
@@ -337,9 +373,8 @@ export default function About() {
                   strokeLinejoin="round"
                 />
               </svg>
-              {/* Cross bottom-right */}
               <svg
-                className="absolute bottom-[115px] right-[4px]"
+                className="absolute bottom-[115px] right-[4px] animate-[float-b_5.5s_ease-in-out_0.5s_infinite]"
                 width="12"
                 height="12"
                 viewBox="0 0 12 12"
@@ -352,14 +387,12 @@ export default function About() {
                   strokeLinecap="round"
                 />
               </svg>
-              {/* Tiny dot left-middle */}
-              <div className="absolute top-[205px] left-[6px] h-[5px] w-[5px] rounded-full bg-[rgba(200,241,53,0.3)]" />
-              {/* Tiny dot bottom */}
-              <div className="absolute bottom-[225px] right-[-45px] h-[4px] w-[4px] rounded-full bg-[rgba(140,80,220,0.5)]" />
+              <div className="absolute top-[205px] left-[6px] h-[5px] w-[5px] rounded-full bg-[rgba(200,241,53,0.3)] animate-[float-c_4s_ease-in-out_1.5s_infinite]" />
+              <div className="absolute bottom-[225px] right-[-45px] h-[4px] w-[4px] rounded-full bg-[rgba(200,241,53,0.4)] animate-[float-a_3.8s_ease-in-out_0.7s_infinite]" />
 
               {/* Floating corner accents */}
               <div className="absolute top-[-20px] right-[-100px] h-10 w-10 rotate-[12deg] rounded-[10px] border border-[rgba(200,241,53,0.22)] bg-[var(--accent-dim)] animate-[float-b_5s_ease-in-out_infinite]" />
-              <div className="absolute bottom-[-10px] left-[-84px] h-7 w-7 rounded-full border border-[rgba(200,241,53,0.12)] bg-[rgba(255,255,255,0.025)] animate-[float-a_6s_ease-in-out_1s_infinite]" />
+              <div className="absolute bottom-[-10px] left-[-84px] h-7 w-7 rounded-full border border-[rgba(200,241,53,0.4)] bg-[rgba(200,241,53,0.05)] shadow-[0_0_8px_rgba(200,241,53,0.15)] animate-[float-a_6s_ease-in-out_1s_infinite]" />
             </div>
           </div>
         </div>
