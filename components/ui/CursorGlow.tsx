@@ -15,7 +15,8 @@ export default function CursorGlow() {
     let rafId: number;
 
     const CONTENT_SELECTOR =
-      ".card, nav, footer, a, button, input, textarea, select, [data-no-spark]";
+      ".container, .card, nav, footer, header, .pill, .btn, button, a, input, " +
+      "textarea, select, h1, h2, h3, h4, p, li, label, .eyebrow, [data-no-spark]";
 
     let dirty = false;
 

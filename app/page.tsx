@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import CursorGlow from "@/components/ui/CursorGlow";
 import BackgroundSpark from "@/components/ui/BackgroundSpark";
 import Navbar from "@/components/layout/Navbar";
@@ -7,8 +8,10 @@ import Products from "@/components/sections/Products";
 import CommunityPulse from "@/components/sections/CommunityPulse";
 import About from "@/components/sections/About";
 import Roadmap from "@/components/sections/Roadmap";
+import LatestUpdates from "@/components/sections/LatestUpdates";
 import Waitlist from "@/components/sections/Waitlist";
 import Footer from "@/components/layout/Footer";
+import { DIVIDER, SECTION } from "@/lib/ui-classes";
 
 export default function Home() {
   return (
@@ -20,13 +23,17 @@ export default function Home() {
         <Hero />
         <Marquee />
         <Products />
-        <div className="divider mx-8" />
+        <div className={`${DIVIDER} mx-8`} />
         <CommunityPulse />
-        <div className="divider mx-8" />
+        <div className={`${DIVIDER} mx-8`} />
         <About />
-        <div className="divider mx-8" />
+        <div className={`${DIVIDER} mx-8`} />
         <Roadmap />
-        <div className="divider mx-8" />
+        <div className={`${DIVIDER} mx-8`} />
+        <Suspense fallback={<div className={SECTION} aria-hidden="true" />}>
+          <LatestUpdates />
+        </Suspense>
+        <div className={`${DIVIDER} mx-8`} />
         <Waitlist />
       </main>
       <Footer />

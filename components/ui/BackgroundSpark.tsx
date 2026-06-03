@@ -262,9 +262,6 @@ const TOOL_ICONS: string[] = [
 const GRID_PX = 48;
 const REVEAL_RADIUS = 160; // px — matches cursor-glow visible radius
 
-const CONTENT_SELECTOR =
-  ".card, a, button, input, textarea, select, [role='button'], h1, h2, h3, h4, p, label, .pill, .btn, nav, footer, img, [data-no-spark]";
-
 type Cell = { x: number; y: number; icon: string };
 
 function buildGrid(vw: number, vh: number): Cell[] {
@@ -345,26 +342,34 @@ export default function BackgroundSpark() {
       return el;
     });
 
+    // elementFromPoint returns the actual element beneath a point (skips pointer-events:none).
+    // .closest() walks the real DOM tree, so isolation:isolate cards are handled correctly.
+    // .container covers the full content area of every section so gaps between
+    // headings/paragraphs are also blocked. Icons only appear in true empty margins.
+    const CONTENT_SELECTOR =
+      ".container, .card, nav, footer, header, .pill, .btn, button, a, input, " +
+      "textarea, select, h1, h2, h3, h4, p, li, label, .eyebrow, [data-no-spark]";
+
+    const isBlocked = (x: number, y: number): boolean => {
+      const el = document.elementFromPoint(x, y);
+      return !!el && !!el.closest(CONTENT_SELECTOR);
+    };
+
     let mouseX = -9999;
     let mouseY = -9999;
-    let dirty = false;
     let rafId = 0;
 
     const onMove = (e: MouseEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      dirty = true;
     };
     const onLeave = () => {
       mouseX = -9999;
       mouseY = -9999;
-      dirty = true;
     };
 
     const tick = () => {
       rafId = requestAnimationFrame(tick);
-      if (!dirty) return;
-      dirty = false;
 
       nodes.forEach((el, i) => {
         const cell = cells[i];
@@ -374,10 +379,8 @@ export default function BackgroundSpark() {
         const t = Math.max(0, 1 - dist / REVEAL_RADIUS);
         let eased = t * t * (3 - 2 * t); // smoothstep
 
-        if (eased > 0) {
-          const under = document.elementFromPoint(cell.x, cell.y);
-          if (under && under.closest(CONTENT_SELECTOR)) eased = 0;
-        }
+        // Only hit-test cells within the spotlight — at most ~6 cells at a time.
+        if (eased > 0 && isBlocked(cell.x, cell.y)) eased = 0;
 
         el.style.opacity = eased > 0 ? String(eased) : "0";
         // Play animation only while in spotlight, pause when hidden.
