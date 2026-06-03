@@ -373,7 +373,6 @@
     mask-image: radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%);
     -webkit-mask-image: radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%);
   }
-
 } /* end @layer components */
 
 /* ─────────────────────────────────────────────

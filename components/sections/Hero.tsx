@@ -36,7 +36,9 @@ export default function Hero() {
         <div className="absolute bottom-[20%] left-[25%] h-[2px] w-[2px] rounded-full bg-[rgba(140,100,255,0.12)] animate-[float-b_4.5s_ease-in-out_infinite]" />
       </div>
 
-      <div className={`container ${CONTAINER} relative z-[1] w-full flex-1 flex flex-col justify-center`}>
+      <div
+        className={`container ${CONTAINER} relative z-[1] w-full flex-1 flex flex-col justify-center`}
+      >
         <div className="grid items-center gap-16 [grid-template-columns:1.15fr_1fr] max-[960px]:grid-cols-1 max-[960px]:gap-10">
           {/* Left: copy */}
           <div className="flex flex-col gap-[1.5rem] max-[960px]:items-center max-[960px]:text-center">
@@ -113,9 +115,7 @@ export default function Hero() {
             aria-label="FixMyText product preview"
           >
             {/* Browser frame */}
-            <div
-              className="card relative mt-8 flex flex-col gap-3 px-5 pt-4 pb-5 border-2 border-[rgba(200,241,53,0.2)] bg-gradient-to-br from-[rgba(200,241,53,0.03)] to-transparent transition-all duration-300 hover:-translate-y-2 hover:border-[rgba(200,241,53,0.35)]"
-            >
+            <div className="card relative mt-8 flex flex-col gap-3 px-5 pt-4 pb-5 border-2 border-[rgba(200,241,53,0.2)] bg-gradient-to-br from-[rgba(200,241,53,0.03)] to-transparent transition-all duration-300 hover:-translate-y-2 hover:border-[rgba(200,241,53,0.35)]">
               {/* Browser chrome */}
               <div className="flex items-center gap-[0.35rem] border-b border-border-subtle pb-3">
                 <span

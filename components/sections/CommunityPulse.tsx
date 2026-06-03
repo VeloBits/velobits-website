@@ -177,7 +177,11 @@ export default function CommunityPulse() {
                   {poll.question}
                 </h3>
               </div>
-              <span className={`pill ${PILL_BASE} pill-dot self-start bg-card border-border-subtle text-[0.73rem] text-accent`}>Live</span>
+              <span
+                className={`pill ${PILL_BASE} pill-dot self-start bg-card border-border-subtle text-[0.73rem] text-accent`}
+              >
+                Live
+              </span>
             </div>
 
             <div className="flex flex-col gap-4">
@@ -283,7 +287,6 @@ export default function CommunityPulse() {
           </div>
         </div>
       </div>
-
     </section>
   );
 }

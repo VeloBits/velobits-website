@@ -3,7 +3,9 @@ import { postToScript, isConfigured } from "@/lib/apps-script";
 
 export const runtime = "nodejs";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// [^\s@.]+ excludes dots from each label, making the groups mutually exclusive
+// with the literal \. separators — no backtracking ambiguity.
+const EMAIL_RE = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/;
 
 export async function POST(req: Request) {
   let body: Record<string, unknown>;
@@ -21,7 +23,7 @@ export async function POST(req: Request) {
   const email = String(body.email ?? "")
     .trim()
     .toLowerCase();
-  if (!EMAIL_RE.test(email) || email.length > 254) {
+  if (email.length > 254 || !EMAIL_RE.test(email)) {
     return NextResponse.json({ ok: false, error: "invalid_email" }, { status: 400 });
   }
 
