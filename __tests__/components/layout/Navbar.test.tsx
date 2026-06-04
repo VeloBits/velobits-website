@@ -50,9 +50,9 @@ describe("Navbar", () => {
 
   it("has correct href for nav links", () => {
     render(<Navbar />);
-    expect(screen.getByText("Products").closest("a")).toHaveAttribute("href", "#products");
-    expect(screen.getByText("Community").closest("a")).toHaveAttribute("href", "#community");
-    expect(screen.getByText("About").closest("a")).toHaveAttribute("href", "#about");
+    expect(screen.getByText("Products").closest("a")).toHaveAttribute("href", "/#products");
+    expect(screen.getByText("Community").closest("a")).toHaveAttribute("href", "/#community");
+    expect(screen.getByText("About").closest("a")).toHaveAttribute("href", "/#about");
   });
 
   it("renders the navbar element with id", () => {

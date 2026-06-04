@@ -60,7 +60,7 @@ export default function Navbar() {
       >
         {/* Logo */}
         <a
-          href="#"
+          href="/"
           aria-label="Velobits home"
           className="group flex shrink-0 items-center gap-[0.6rem] no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-[6px] transition-transform duration-200 hover:scale-[1.03]"
         >
@@ -103,7 +103,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-4 shrink-0 min-[641px]:flex">
           <div className="h-[18px] w-[1px] bg-[rgba(255,255,255,0.1)] rounded-full" />
           <a
-            href="#waitlist"
+            href="/#waitlist"
             className="btn btn-primary rounded-full px-5 py-[0.55rem] text-[0.82rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             Join Waitlist
@@ -176,7 +176,7 @@ export default function Navbar() {
           ))}
           <div className="mt-1 border-t border-border-subtle pt-3">
             <a
-              href="#waitlist"
+              href="/#waitlist"
               className="btn btn-primary w-full justify-center text-[0.9rem]"
               onClick={() => setMenuOpen(false)}
             >

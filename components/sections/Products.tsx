@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { products, type Product } from "@/lib/site-content";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import ProductIcon from "@/components/ui/ProductIcon";
 import { CONTAINER, SECTION, EYEBROW, DISPLAY, DISPLAY_LG, PILL_BASE } from "@/lib/ui-classes";
 
 export default function Products() {
@@ -57,7 +58,10 @@ export default function Products() {
 function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const statusClass = "bg-[rgba(200,241,53,0.09)] border-[rgba(200,241,53,0.25)] text-accent";
+  const isAccent = p.statusColor === "#c8f135";
+  const statusClass = isAccent
+    ? "bg-[rgba(200,241,53,0.09)] border-[rgba(200,241,53,0.25)] text-accent"
+    : "bg-[rgba(255,255,255,0.04)] border-[rgba(200,241,53,0.25)] text-muted";
 
   const tilt = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current;
@@ -105,7 +109,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
             className="flex items-center justify-center rounded-xl border-2 border-[rgba(200,241,53,0.25)] h-[42px] w-[42px] bg-gradient-to-br from-[rgba(200,241,53,0.15)] to-[rgba(200,241,53,0.05)] text-[1.35rem] transition-all duration-500 ease-in-out hover:scale-[1.1] hover:border-[rgba(200,241,53,0.4)] hover:shadow-[0_0_16px_rgba(200,241,53,0.2)]"
             aria-hidden="true"
           >
-            {p.icon}
+            <ProductIcon id={p.id} size={22} />
           </div>
         </div>
 
@@ -220,13 +224,13 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
       {/* Status + icon */}
       <div className="flex items-center justify-between">
         <span className={`pill ${PILL_BASE} text-[0.73rem] ${statusClass}`}>
-          {p.id !== "suite" && <span className="pill-dot" />}&nbsp;{p.status}
+          {isAccent && <span className="pill-dot" />}&nbsp;{p.status}
         </span>
         <div
           className={`flex items-center justify-center rounded-xl border-2 border-[rgba(200,241,53,0.2)] h-10 w-10 bg-gradient-to-br from-[rgba(200,241,53,0.08)] to-transparent text-[1.15rem] transition-all duration-500 ease-in-out hover:scale-[1.1] hover:border-[rgba(200,241,53,0.35)] hover:shadow-[0_0_12px_rgba(200,241,53,0.15)] ${p.id === "suite" ? "animate-[glow-pulse_5s_ease-in-out_infinite]" : "animate-[glow-pulse_2.5s_ease-in-out_infinite]"}`}
           aria-hidden="true"
         >
-          {p.icon}
+          <ProductIcon id={p.id} size={20} />
         </div>
       </div>
 
