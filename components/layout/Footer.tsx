@@ -9,13 +9,13 @@ export default function Footer() {
   const links = {
     Products: [
       { label: "FixMyText", href: "https://app.velobits.dev" },
-      { label: "Community Pulse", href: "#community" },
-      { label: "Roadmap", href: "#roadmap" },
+      { label: "Community Pulse", href: "/#community" },
+      { label: "Roadmap", href: "/#roadmap" },
     ],
     Company: [
-      { label: "About", href: "#about" },
+      { label: "About", href: "/#about" },
       { label: "Blog", href: "/blog" },
-      { label: "Join Waitlist", href: "#waitlist" },
+      { label: "Join Waitlist", href: "/#waitlist" },
     ],
     Legal: [
       { label: "Privacy Policy", href: "#" },

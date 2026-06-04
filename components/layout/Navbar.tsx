@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { navLinks, brand } from "@/lib/site-content";
 
 export default function Navbar() {
@@ -59,8 +60,8 @@ export default function Navbar() {
         }`}
       >
         {/* Logo */}
-        <a
-          href="#"
+        <Link
+          href="/"
           aria-label="Velobits home"
           className="group flex shrink-0 items-center gap-[0.6rem] no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-[6px] transition-transform duration-200 hover:scale-[1.03]"
         >
@@ -77,7 +78,7 @@ export default function Navbar() {
           <span className="font-[var(--font-display)] text-[1.2rem] font-extrabold tracking-[-0.03em] text-accent uppercase">
             {brand.name}
           </span>
-        </a>
+        </Link>
 
         {/* Desktop nav links */}
         <div className="hidden flex-1 items-center justify-center gap-[0.25rem] min-[641px]:flex">
@@ -102,8 +103,8 @@ export default function Navbar() {
         {/* Desktop CTA */}
         <div className="hidden items-center gap-4 shrink-0 min-[641px]:flex">
           <div className="h-[18px] w-[1px] bg-[rgba(255,255,255,0.1)] rounded-full" />
-          <a
-            href="#waitlist"
+          <Link
+            href="/#waitlist"
             className="btn btn-primary rounded-full px-5 py-[0.55rem] text-[0.82rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             Join Waitlist
@@ -116,7 +117,7 @@ export default function Navbar() {
                 strokeLinejoin="round"
               />
             </svg>
-          </a>
+          </Link>
         </div>
 
         {/* Mobile menu toggle */}
@@ -175,13 +176,13 @@ export default function Navbar() {
             </a>
           ))}
           <div className="mt-1 border-t border-border-subtle pt-3">
-            <a
-              href="#waitlist"
+            <Link
+              href="/#waitlist"
               className="btn btn-primary w-full justify-center text-[0.9rem]"
               onClick={() => setMenuOpen(false)}
             >
               Join Waitlist →
-            </a>
+            </Link>
           </div>
         </div>
       )}

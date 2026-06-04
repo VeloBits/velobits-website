@@ -49,6 +49,10 @@
     cursor: none;
   }
 
+  section[id] {
+    scroll-margin-top: 80px;
+  }
+
   * {
     cursor: none !important;
   }
@@ -67,8 +71,8 @@
     min-height: 100vh;
     overflow-x: hidden;
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+      linear-gradient(rgba(255, 255, 255, 0.008) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.008) 1px, transparent 1px);
     background-size: 48px 48px;
     background-attachment: fixed;
     background-position: 0 1px;

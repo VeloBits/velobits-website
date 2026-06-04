@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import CursorGlow from "@/components/ui/CursorGlow";
 import BackgroundSpark from "@/components/ui/BackgroundSpark";
 import Navbar from "@/components/layout/Navbar";
+import ScrollToHash from "@/components/layout/ScrollToHash";
 import Hero from "@/components/sections/Hero";
 import Marquee from "@/components/ui/Marquee";
 import Products from "@/components/sections/Products";
@@ -16,6 +17,7 @@ import { DIVIDER, SECTION } from "@/lib/ui-classes";
 export default function Home() {
   return (
     <>
+      <ScrollToHash />
       <CursorGlow />
       <BackgroundSpark />
       <Navbar />

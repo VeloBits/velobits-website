@@ -17,10 +17,10 @@ export const brand = {
 };
 
 export const navLinks = [
-  { label: "Products", href: "#products", soon: false },
-  { label: "Community", href: "#community", soon: false },
-  { label: "Updates", href: "#updates", soon: false },
-  { label: "About", href: "#about", soon: false },
+  { label: "Products", href: "/#products", soon: false },
+  { label: "Community", href: "/#community", soon: false },
+  { label: "Updates", href: "/#updates", soon: false },
+  { label: "About", href: "/#about", soon: false },
   { label: "Blog", href: "/blog", soon: false },
 ];
 
@@ -99,7 +99,7 @@ export const products: Product[] = [
     ],
     metric: "254",
     metricLabel: "Text tools",
-    icon: "✏️",
+    icon: "fixmytext",
     featured: true,
   },
   {
@@ -119,7 +119,7 @@ export const products: Product[] = [
     seoKeywords: [],
     metric: null,
     metricLabel: null,
-    icon: "?",
+    icon: "mystery",
     featured: false,
   },
   {
@@ -140,7 +140,7 @@ export const products: Product[] = [
     seoKeywords: [],
     metric: null,
     metricLabel: null,
-    icon: "🌌",
+    icon: "suite",
     featured: false,
   },
 ];

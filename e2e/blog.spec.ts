@@ -36,4 +36,30 @@ test.describe("Blog", () => {
     await page.goto("/blog");
     expect(errors).toHaveLength(0);
   });
+
+  test("blog page logo links to '/'", async ({ page }) => {
+    await page.goto("/blog");
+    const logo = page.getByRole("link", { name: /Velobits home/i });
+    await expect(logo).toHaveAttribute("href", "/");
+  });
+
+  test("section nav links on /blog use root-relative hash hrefs", async ({ page }) => {
+    await page.goto("/blog");
+    const nav = page.getByRole("navigation", { name: /Main navigation/i });
+    await expect(nav.getByRole("link", { name: "Products" })).toHaveAttribute("href", "/#products");
+    await expect(nav.getByRole("link", { name: "Community" })).toHaveAttribute(
+      "href",
+      "/#community"
+    );
+    await expect(nav.getByRole("link", { name: "About" })).toHaveAttribute("href", "/#about");
+  });
+
+  test("Join Waitlist CTA on /blog has '/#waitlist' href", async ({ page }) => {
+    await page.goto("/blog");
+    const nav = page.getByRole("navigation", { name: /Main navigation/i });
+    await expect(nav.getByRole("link", { name: /Join Waitlist/i })).toHaveAttribute(
+      "href",
+      "/#waitlist"
+    );
+  });
 });
