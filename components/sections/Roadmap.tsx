@@ -143,7 +143,7 @@ export default function Roadmap() {
                 </div>
 
                 <div
-                  className={`card group relative overflow-hidden p-8 transition-all duration-300 backdrop-blur-md h-full flex flex-col ${m.now ? "border-accent/40 bg-gradient-to-br from-[rgba(200,241,53,0.08)] via-[rgba(200,241,53,0.03)] to-transparent shadow-[0_16px_48px_rgba(200,241,53,0.1)]" : m.done ? "border-accent/20 bg-gradient-to-br from-[rgba(200,241,53,0.04)] to-transparent" : "border-border-subtle bg-card/50 hover:border-border-subtle/50"} ${!m.done && !m.now ? "opacity-70 hover:opacity-85" : "opacity-100"}`}
+                  className={`card group relative overflow-hidden p-5 transition-all duration-300 backdrop-blur-md h-full flex flex-col ${m.now ? "border-accent/40 bg-gradient-to-br from-[rgba(200,241,53,0.08)] via-[rgba(200,241,53,0.03)] to-transparent shadow-[0_16px_48px_rgba(200,241,53,0.1)]" : m.done ? "border-accent/20 bg-gradient-to-br from-[rgba(200,241,53,0.04)] to-transparent" : "border-border-subtle bg-card/50 hover:border-border-subtle/50"} ${!m.done && !m.now ? "opacity-70 hover:opacity-85" : "opacity-100"}`}
                 >
                   {m.now && (
                     <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -170,7 +170,7 @@ export default function Roadmap() {
                       {m.date}
                     </div>
                     <div
-                      className={`mb-3 font-display text-[1rem] font-extrabold tracking-[-0.01em] uppercase transition-colors ${m.now ? "bg-gradient-to-r from-accent to-[rgba(200,241,53,0.8)] bg-clip-text text-transparent" : "text-foreground"}`}
+                      className={`mb-3 font-display text-[0.85rem] font-extrabold tracking-[-0.01em] uppercase leading-[1.2] transition-colors ${m.now ? "bg-gradient-to-r from-accent to-[rgba(200,241,53,0.8)] bg-clip-text text-transparent" : "text-foreground"}`}
                     >
                       {m.label}
                     </div>
