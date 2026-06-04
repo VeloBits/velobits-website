@@ -7,7 +7,10 @@ test.describe("Navbar link hrefs", () => {
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: /Main navigation/i });
     await expect(nav.getByRole("link", { name: "Products" })).toHaveAttribute("href", "/#products");
-    await expect(nav.getByRole("link", { name: "Community" })).toHaveAttribute("href", "/#community");
+    await expect(nav.getByRole("link", { name: "Community" })).toHaveAttribute(
+      "href",
+      "/#community"
+    );
     await expect(nav.getByRole("link", { name: "Updates" })).toHaveAttribute("href", "/#updates");
     await expect(nav.getByRole("link", { name: "About" })).toHaveAttribute("href", "/#about");
     await expect(nav.getByRole("link", { name: "Blog" })).toHaveAttribute("href", "/blog");
@@ -22,7 +25,10 @@ test.describe("Navbar link hrefs", () => {
   test("desktop Join Waitlist CTA has href '/#waitlist'", async ({ page }) => {
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: /Main navigation/i });
-    await expect(nav.getByRole("link", { name: /Join Waitlist/i })).toHaveAttribute("href", "/#waitlist");
+    await expect(nav.getByRole("link", { name: /Join Waitlist/i })).toHaveAttribute(
+      "href",
+      "/#waitlist"
+    );
   });
 });
 

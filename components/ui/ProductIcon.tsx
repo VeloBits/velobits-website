@@ -1,11 +1,5 @@
 /** Accent-colored SVG icons for each product. `size` defaults to 22px. */
-export default function ProductIcon({
-  id,
-  size = 22,
-}: {
-  id: string;
-  size?: number;
-}) {
+export default function ProductIcon({ id, size = 22 }: { id: string; size?: number }) {
   const props = { width: size, height: size, fill: "none", viewBox: "0 0 24 24" } as const;
   const stroke = "var(--accent)";
   const sw = "1.6";

@@ -67,7 +67,10 @@ test.describe("Homepage", () => {
   test("navbar Join Waitlist CTA has href '/#waitlist'", async ({ page }) => {
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: /Main navigation/i });
-    await expect(nav.getByRole("link", { name: /Join Waitlist/i })).toHaveAttribute("href", "/#waitlist");
+    await expect(nav.getByRole("link", { name: /Join Waitlist/i })).toHaveAttribute(
+      "href",
+      "/#waitlist"
+    );
   });
 
   test("homepage renders all expected section IDs", async ({ page }) => {

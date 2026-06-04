@@ -47,13 +47,19 @@ test.describe("Blog", () => {
     await page.goto("/blog");
     const nav = page.getByRole("navigation", { name: /Main navigation/i });
     await expect(nav.getByRole("link", { name: "Products" })).toHaveAttribute("href", "/#products");
-    await expect(nav.getByRole("link", { name: "Community" })).toHaveAttribute("href", "/#community");
+    await expect(nav.getByRole("link", { name: "Community" })).toHaveAttribute(
+      "href",
+      "/#community"
+    );
     await expect(nav.getByRole("link", { name: "About" })).toHaveAttribute("href", "/#about");
   });
 
   test("Join Waitlist CTA on /blog has '/#waitlist' href", async ({ page }) => {
     await page.goto("/blog");
     const nav = page.getByRole("navigation", { name: /Main navigation/i });
-    await expect(nav.getByRole("link", { name: /Join Waitlist/i })).toHaveAttribute("href", "/#waitlist");
+    await expect(nav.getByRole("link", { name: /Join Waitlist/i })).toHaveAttribute(
+      "href",
+      "/#waitlist"
+    );
   });
 });
