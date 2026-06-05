@@ -127,6 +127,7 @@ export default function Waitlist() {
                   <button
                     type="submit"
                     className="btn btn-primary w-1/2 justify-center px-4 py-[0.65rem]"
+                    aria-label="Get Early Access"
                     disabled={loading}
                   >
                     {loading ? (

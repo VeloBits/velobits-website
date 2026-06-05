@@ -42,7 +42,7 @@ describe("Waitlist", () => {
 
   it("renders the email input field with placeholder", () => {
     render(<Waitlist />);
-    const input = screen.getByPlaceholderText("your@email.com");
+    const input = screen.getByPlaceholderText("your@email");
     expect(input).toBeInTheDocument();
     expect(input).toHaveAttribute("type", "email");
   });
@@ -60,7 +60,7 @@ describe("Waitlist", () => {
   it("updates email state when user types", async () => {
     const user = userEvent.setup();
     render(<Waitlist />);
-    const input = screen.getByPlaceholderText("your@email.com") as HTMLInputElement;
+    const input = screen.getByPlaceholderText("your@email") as HTMLInputElement;
     await user.type(input, "test@example.com");
     expect(input.value).toBe("test@example.com");
   });
@@ -69,23 +69,23 @@ describe("Waitlist", () => {
     const user = userEvent.setup();
     render(<Waitlist />);
     await user.click(screen.getByRole("button", { name: /Get Early Access/i }));
-    expect(screen.getByPlaceholderText("your@email.com")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("your@email")).toBeInTheDocument();
     expect(global.fetch).not.toHaveBeenCalled();
   });
 
   it("does not submit when email has no @ symbol", async () => {
     const user = userEvent.setup();
     render(<Waitlist />);
-    await user.type(screen.getByPlaceholderText("your@email.com"), "invalidemail");
+    await user.type(screen.getByPlaceholderText("your@email"), "invalidemail");
     await user.click(screen.getByRole("button", { name: /Get Early Access/i }));
-    expect(screen.getByPlaceholderText("your@email.com")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("your@email")).toBeInTheDocument();
     expect(global.fetch).not.toHaveBeenCalled();
   });
 
   it("posts to /api/subscribe and shows success on a valid submission", async () => {
     const user = userEvent.setup();
     render(<Waitlist />);
-    await user.type(screen.getByPlaceholderText("your@email.com"), "test@example.com");
+    await user.type(screen.getByPlaceholderText("your@email"), "test@example.com");
     await user.click(screen.getByRole("button", { name: /Get Early Access/i }));
 
     await waitFor(() => {
@@ -101,7 +101,7 @@ describe("Waitlist", () => {
     ) as unknown as typeof fetch;
     const user = userEvent.setup();
     render(<Waitlist />);
-    await user.type(screen.getByPlaceholderText("your@email.com"), "test@example.com");
+    await user.type(screen.getByPlaceholderText("your@email"), "test@example.com");
     const button = screen.getByRole("button", { name: /Get Early Access/i });
     await user.click(button);
 
@@ -113,7 +113,7 @@ describe("Waitlist", () => {
     global.fetch = vi.fn(async () => res({ ok: false }, true)) as unknown as typeof fetch;
     const user = userEvent.setup();
     render(<Waitlist />);
-    await user.type(screen.getByPlaceholderText("your@email.com"), "test@example.com");
+    await user.type(screen.getByPlaceholderText("your@email"), "test@example.com");
     await user.click(screen.getByRole("button", { name: /Get Early Access/i }));
 
     await waitFor(() =>
@@ -125,7 +125,7 @@ describe("Waitlist", () => {
   it("displays 'Done' on success", async () => {
     const user = userEvent.setup();
     render(<Waitlist />);
-    await user.type(screen.getByPlaceholderText("your@email.com"), "test@example.com");
+    await user.type(screen.getByPlaceholderText("your@email"), "test@example.com");
     await user.click(screen.getByRole("button", { name: /Get Early Access/i }));
     await waitFor(() => expect(screen.getByText("Done")).toBeInTheDocument());
   });
