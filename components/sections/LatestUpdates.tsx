@@ -10,7 +10,7 @@ export default async function LatestUpdates() {
   const updates = await getUpdates();
 
   return (
-    <section id="updates" className={SECTION}>
+    <section id="updates" className={`${SECTION} overflow-hidden`}>
       <div className="pointer-events-none absolute top-[15%] left-1/2 h-[360px] w-[640px] -translate-x-1/2 bg-[radial-gradient(ellipse,rgba(200,241,53,0.04)_0%,transparent_70%)]" />
       <div className={`container ${CONTAINER} relative`}>
         <div className="mb-12">

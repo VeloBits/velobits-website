@@ -94,7 +94,7 @@ test.describe("Cross-route: blog to home sections", () => {
   test("logo from /blog navigates to homepage", async ({ page }) => {
     await page.goto("/blog");
     await page.getByRole("link", { name: /Velobits home/i }).click();
-    await expect(page).toHaveURL(/^http:\/\/localhost:3000\/$/);
+    await expect(page).toHaveURL(/^http:\/\/localhost:\d+\/$/);
   });
 
   test("clicking Products from /blog scrolls #products into view", async ({ page }) => {
@@ -178,7 +178,7 @@ test.describe("Console errors during navigation", () => {
     await nav.getByRole("link", { name: "Blog" }).click();
     await page.waitForURL(/\/blog/);
     await page.getByRole("link", { name: /Velobits home/i }).click();
-    await page.waitForURL(/^http:\/\/localhost:3000\/$/);
+    await page.waitForURL(/^http:\/\/localhost:\d+\/$/);
 
     expect(errors).toHaveLength(0);
   });

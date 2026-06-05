@@ -150,7 +150,7 @@ export default function CommunityPulse() {
   };
 
   return (
-    <section id="community" className={SECTION} ref={sectionRef}>
+    <section id="community" className={`${SECTION} overflow-hidden`} ref={sectionRef}>
       <div className="pointer-events-none absolute top-[20%] left-1/2 h-[400px] w-[700px] -translate-x-1/2 bg-[radial-gradient(ellipse,rgba(200,241,53,0.04)_0%,transparent_70%)]" />
 
       <div className={`container ${CONTAINER} relative`}>
@@ -167,21 +167,19 @@ export default function CommunityPulse() {
 
         <div className="community-grid grid gap-6 [grid-template-columns:1fr_1fr] max-md:grid-cols-1">
           <div
-            className="card reveal flex flex-col p-8 border-2 border-[rgba(200,241,53,0.15)] transition-all duration-500 hover:border-[rgba(200,241,53,0.3)] hover:shadow-[0_12px_40px_rgba(200,241,53,0.1)] hover:-translate-y-1"
+            className="card reveal relative flex flex-col p-8 border-2 border-[rgba(200,241,53,0.15)] transition-all duration-500 hover:border-[rgba(200,241,53,0.3)] hover:shadow-[0_12px_40px_rgba(200,241,53,0.1)] hover:-translate-y-1"
             ref={barsRef}
           >
-            <div className="mb-6 flex items-center justify-between">
-              <div>
-                <div className={`eyebrow ${EYEBROW} text-muted mb-[0.3rem]`}>Active Poll</div>
-                <h3 className="max-w-[26ch] font-display text-[1.05rem] leading-[1.45] font-extrabold tracking-[-0.01em] uppercase">
-                  {poll.question}
-                </h3>
-              </div>
-              <span
-                className={`pill ${PILL_BASE} pill-dot self-start bg-card border-border-subtle text-[0.73rem] text-accent`}
-              >
-                Live
-              </span>
+            <span
+              className={`pill ${PILL_BASE} pill-dot absolute top-[1.1rem] right-[1.1rem] bg-card border-border-subtle text-[0.73rem] text-accent`}
+            >
+              Live
+            </span>
+            <div className="mb-6">
+              <div className={`eyebrow ${EYEBROW} text-muted mb-[0.3rem]`}>Active Poll</div>
+              <h3 className="max-w-[26ch] font-display text-[1.05rem] leading-[1.45] font-extrabold tracking-[-0.01em] uppercase">
+                {poll.question}
+              </h3>
             </div>
 
             <div className="flex flex-col gap-4">

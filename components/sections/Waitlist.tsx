@@ -109,9 +109,9 @@ export default function Waitlist() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
+                    placeholder="your@email"
                     required
-                    className="min-w-0 flex-1 border-none bg-transparent font-inherit text-[0.9rem] text-foreground outline-none"
+                    className="min-w-0 w-1/2 border-none bg-transparent font-inherit text-[0.9rem] text-foreground outline-none placeholder:text-muted pr-3 text-ellipsis"
                   />
                   {/* Honeypot: hidden from users, catches bots. */}
                   <input
@@ -126,7 +126,7 @@ export default function Waitlist() {
                   />
                   <button
                     type="submit"
-                    className="btn btn-primary shrink-0 px-6 py-[0.65rem]"
+                    className="btn btn-primary w-1/2 justify-center px-4 py-[0.65rem]"
                     disabled={loading}
                   >
                     {loading ? (
@@ -137,7 +137,7 @@ export default function Waitlist() {
                       </span>
                     ) : (
                       <>
-                        Get Early Access
+                        Get<span className="hidden min-[481px]:inline"> Early</span> Access
                         <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
                           <path
                             d="M3 8h10M9 4l4 4-4 4"

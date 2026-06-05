@@ -57,7 +57,7 @@ export default function Hero() {
             </div>
 
             {/* H1 */}
-            <h1 className="animate-[pop-in_0.6s_ease_0.2s_both] font-[var(--font-display)] text-[clamp(2.8rem,5vw,5rem)] leading-[0.93] font-extrabold tracking-[-0.03em] text-foreground uppercase">
+            <h1 className="animate-[pop-in_0.6s_ease_0.2s_both] font-[var(--font-display)] text-[clamp(2rem,8.5vw,5rem)] leading-[0.93] font-extrabold tracking-[-0.03em] text-foreground uppercase">
               FixMyText
               <br />
               <span className="text-accent [text-shadow:0_0_60px_rgba(200,241,53,0.12)]">

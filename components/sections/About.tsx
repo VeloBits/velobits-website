@@ -70,7 +70,7 @@ export default function About() {
         </div>
 
         <div className="about-grid grid items-center gap-12 grid-cols-2 max-[1024px]:grid-cols-1 max-[1024px]:gap-10">
-          <div className="flex flex-col gap-[1.4rem] pr-8">
+          <div className="flex flex-col gap-[1.4rem] pr-8 max-[1024px]:pr-0">
             <p className="reveal text-[0.97rem] leading-[1.9] text-muted">
               We started Velobits because we kept hitting the same wall - great ideas, terrible
               tools. So we decided to build them ourselves and give them to the world.
@@ -88,7 +88,7 @@ export default function About() {
               </p>
             </div>
 
-            <div className="reveal reveal-delay-3 mt-2 grid grid-cols-3 gap-[0.8rem]">
+            <div className="reveal reveal-delay-3 mt-2 grid grid-cols-3 gap-[0.8rem] max-[480px]:grid-cols-1 max-[480px]:gap-3">
               {stats.map((s, i) => (
                 <div
                   key={s.label}

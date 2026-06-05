@@ -26,9 +26,9 @@ export default function Footer() {
   return (
     <footer className="mt-auto pt-16 pb-8 relative z-[1] bg-[var(--bg)] border-t-[0.5px] border-[rgba(200,241,53,0.4)]">
       <div className={`container ${CONTAINER}`}>
-        <div className="footer-grid mb-12 grid gap-12 [grid-template-columns:2fr_1fr_1fr_1fr] max-md:grid-cols-2 max-md:gap-8 max-[480px]:grid-cols-1">
-          <div className="flex flex-col gap-4 max-md:col-span-2 max-[480px]:col-span-1">
-            <div className="flex items-center gap-2">
+        <div className="footer-grid mb-12 grid gap-8 md:gap-12 [grid-template-columns:minmax(0,1fr)] min-[481px]:[grid-template-columns:repeat(2,minmax(0,1fr))] md:[grid-template-columns:2fr_1fr_1fr_1fr]">
+          <div className="flex flex-col gap-4 min-[481px]:col-span-2 md:col-span-1 max-[480px]:items-center max-[480px]:text-center">
+            <div className="flex items-center gap-2 max-[480px]:justify-center">
               <Image
                 src="/velobits-color-png.png"
                 alt="Velobits"
@@ -45,7 +45,7 @@ export default function Footer() {
               Software that works for you. Building everyday tools that solve real problems - one
               product at a time.
             </p>
-            <div className="mt-1 flex gap-2">
+            <div className="mt-1 flex gap-2 max-[480px]:justify-center">
               {[
                 {
                   label: "GitHub",
@@ -70,11 +70,11 @@ export default function Footer() {
           </div>
 
           {Object.entries(links).map(([group, items]) => (
-            <div key={group}>
+            <div key={group} className="max-[480px]:text-center">
               <div className="mb-4 text-[0.72rem] font-bold tracking-[0.1em] text-accent uppercase">
                 {group}
               </div>
-              <div className="flex flex-col gap-[0.6rem]">
+              <div className="flex flex-col gap-[0.6rem] max-[480px]:items-center">
                 {items.map((item) => (
                   <a
                     key={item.label}
@@ -91,7 +91,7 @@ export default function Footer() {
 
         <div className="h-[0.5px] opacity-30 bg-[linear-gradient(to_right,transparent,#c8f135,transparent)]" />
 
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-6 max-[480px]:flex-col max-[480px]:items-center max-[480px]:text-center">
           <p className="text-[0.78rem] text-accent">© {year} Velobits. All rights reserved.</p>
           <p className="text-[0.78rem] text-accent">Made by the Velobits team</p>
         </div>

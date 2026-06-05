@@ -89,7 +89,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
         onMouseMove={tilt}
         onMouseLeave={resetTilt}
         style={{ borderColor: "rgba(200,241,53,0.3)" }}
-        className={`card card-glow reveal ${delayClass} col-span-1 md:col-span-2 relative flex flex-col overflow-hidden p-8 md:p-10 border-2 [will-change:transform] transition-all duration-500 ease-out hover:border-[rgba(200,241,53,0.45)] hover:shadow-[0_16px_48px_rgba(200,241,53,0.15)]`}
+        className={`card card-glow reveal ${delayClass} col-span-1 md:col-span-2 relative flex flex-col overflow-hidden p-6 sm:p-8 md:p-10 border-2 [will-change:transform] transition-all duration-500 ease-out hover:border-[rgba(200,241,53,0.45)] hover:shadow-[0_16px_48px_rgba(200,241,53,0.15)]`}
       >
         <GlowingEffect spread={50} proximity={80} inactiveZone={0.01} />
 
@@ -114,7 +114,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
         </div>
 
         {/* ── Body: two columns, both start at the same point ── */}
-        <div className="relative flex flex-col md:flex-row gap-8 flex-1">
+        <div className="relative flex flex-col md:flex-row gap-6 md:gap-8 flex-1">
           {/* Left: title + description + tags */}
           <div className="flex flex-col gap-[1.2rem] md:w-[55%]">
             <div>

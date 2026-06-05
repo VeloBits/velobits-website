@@ -4,6 +4,14 @@ import { useEffect } from "react";
 
 export default function CursorGlow() {
   useEffect(() => {
+    // Skip entirely on touch / no-hover devices and when reduced motion is
+    // requested — the cursor effect is invisible there, so don't attach the
+    // mousemove listener or run the rAF loop. Mirrors BackgroundSpark's guard.
+    if (typeof window.matchMedia !== "function") return;
+    const noHover = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (noHover || reduced) return;
+
     const blob = document.getElementById("cursor-glow");
     const inner = document.getElementById("cursor-ring-inner");
     const outer = document.getElementById("cursor-ring-outer");
