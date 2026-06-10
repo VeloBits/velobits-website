@@ -418,8 +418,8 @@
   /* ── Cursor glow ─────────────────────────── */
   #cursor-glow {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: -9999px;
+    left: -9999px;
     width: 560px;
     height: 560px;
     border-radius: 50%;
@@ -438,8 +438,8 @@
   /* Inner sharp ring — tight, bright, follows cursor with lerp */
   #cursor-ring-inner {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: -9999px;
+    left: -9999px;
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -456,8 +456,8 @@
   /* Outer faint ring — wider, slow pulse */
   #cursor-ring-outer {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: -9999px;
+    left: -9999px;
     width: 72px;
     height: 72px;
     border-radius: 50%;
@@ -717,6 +717,54 @@
 }
 .community-grid > div:last-child {
   animation-delay: 0.2s;
+}
+
+/* ─────────────────────────────────────────────
+   TOUCH / MOBILE — no cursor effects, sunlight
+───────────────────────────────────────────── */
+@media (hover: none), (pointer: coarse) {
+  /* Restore real cursor and remove desktop-only grid background */
+  html,
+  * {
+    cursor: auto !important;
+  }
+  body {
+    background-image: none;
+  }
+
+  /* Hide all cursor/spotlight/grid overlay elements */
+  #cursor-glow,
+  #cursor-ring-inner,
+  #cursor-ring-outer,
+  #cursor-grid-highlight {
+    display: none !important;
+  }
+
+}
+
+/* Mobile sunlight overlay — shown via the class below, hidden on desktop */
+.mobile-sunlight {
+  display: none;
+}
+@media (hover: none), (pointer: coarse) {
+  .mobile-sunlight {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160%;
+    height: 70vh;
+    background: radial-gradient(
+      ellipse 85% 55% at 50% 0%,
+      rgba(200, 241, 53, 0.7) 0%,
+      rgba(200, 241, 53, 0.3) 30%,
+      rgba(200, 241, 53, 0.1) 60%,
+      transparent 75%
+    );
+    pointer-events: none;
+    z-index: 50;
+  }
 }
 
 /* ─────────────────────────────────────────────

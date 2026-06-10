@@ -20,6 +20,7 @@ export default function Home() {
       <ScrollToHash />
       <CursorGlow />
       <BackgroundSpark />
+      <div className="mobile-sunlight" aria-hidden="true" />
       <Navbar />
       <main className="flex-1">
         <Hero />
