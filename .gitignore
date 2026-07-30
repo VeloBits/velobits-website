@@ -45,8 +45,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-
+# AI Files
+*.ai
 .claude/*
+
+# Playwright
 .playwright-test/
 .playwright-cli/
 .playwright-mcp/
