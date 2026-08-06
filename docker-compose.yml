@@ -12,7 +12,7 @@ services:
   # ══════════════════════════════════════════════════════════════════════════
   # DEV — profile: dev
   # ══════════════════════════════════════════════════════════════════════════
-  velobits-dev:
+  velobits-website-dev:
     profiles: ["dev"]
     build:
       context: .
@@ -26,11 +26,13 @@ services:
     environment:
       - NODE_ENV=development
       - NEXT_TELEMETRY_DISABLED=1
+    networks:
+      - velobits-proxy-net
 
   # ══════════════════════════════════════════════════════════════════════════
   # PROD — profile: prod
   # ══════════════════════════════════════════════════════════════════════════
-  velobits-prod:
+  velobits-website-prod:
     profiles: ["prod"]
     build:
       context: .
@@ -49,3 +51,10 @@ services:
       timeout: 5s
       retries: 3
       start_period: 15s
+    networks:
+      - velobits-proxy-net
+
+networks:
+  velobits-proxy-net:
+    name: velobits-proxy-net
+    external: true
