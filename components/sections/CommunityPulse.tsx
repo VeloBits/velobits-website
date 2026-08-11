@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { poll, type PollCount } from "@/lib/site-content";
-import { CONTAINER, SECTION, EYEBROW, DISPLAY, DISPLAY_LG, PILL_BASE } from "@/lib/ui-classes";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { CONTAINER, SECTION, EYEBROW, PILL_BASE } from "@/lib/ui-classes";
 
 const VOTER_KEY = "vb_voter_id";
 const votedKey = (pollId: string) => `vb_voted_${pollId}`;
@@ -151,23 +152,20 @@ export default function CommunityPulse() {
 
   return (
     <section id="community" className={SECTION} ref={sectionRef}>
-      <div className="pointer-events-none absolute top-[20%] left-1/2 h-[400px] w-[700px] -translate-x-1/2 bg-[radial-gradient(ellipse,rgba(200,241,53,0.04)_0%,transparent_70%)]" />
+      <div className="pointer-events-none absolute top-[20%] left-1/2 h-[400px] w-[700px] -translate-x-1/2 bg-[radial-gradient(ellipse,rgb(from_var(--accent-ink)_r_g_b/0.04)_0%,transparent_70%)]"/>
 
       <div className={`container ${CONTAINER} relative`}>
-        <div className="reveal mb-14 text-center">
-          <span className={`eyebrow ${EYEBROW} text-muted`}>Community Pulse</span>
-          <h2 className={`${DISPLAY} ${DISPLAY_LG} text-foreground mt-3`}>
-            You decide what we <span className="text-accent">build next.</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-[50ch] leading-[1.7] text-muted">
-            Drop a product idea, vote on existing ones, or just tell us what problem you wish
-            someone would solve.
-          </p>
-        </div>
+        <SectionHeader
+          index="02"
+          eyebrow="Community Pulse"
+          titleLines={["You decide what we", "build next."]}
+          align="center"
+          lede="Drop a product idea, vote on existing ones, or just tell us what problem you wish someone would solve."
+        />
 
         <div className="community-grid grid gap-6 [grid-template-columns:1fr_1fr] max-md:grid-cols-1">
           <div
-            className="card reveal flex flex-col p-8 border-2 border-[rgba(200,241,53,0.15)] transition-all duration-500 hover:border-[rgba(200,241,53,0.3)] hover:shadow-[0_12px_40px_rgba(200,241,53,0.1)] hover:-translate-y-1"
+            className="card reveal flex flex-col p-8 transition-all duration-500 hover:-translate-y-1"
             ref={barsRef}
           >
             <div className="mb-6 flex items-center justify-between">
@@ -211,7 +209,7 @@ export default function CommunityPulse() {
                     </div>
                     <div className="poll-bar-track">
                       <div
-                        className={`poll-bar-fill ${selected ? "bg-accent" : "bg-[rgba(200,241,53,0.45)]"}`}
+                        className={`poll-bar-fill ${selected ? "bg-accent" : "bg-accent/45"}`}
                         style={{
                           width: barsVisible ? `${pct}%` : "0%",
                           transitionDelay: `${i * 150}ms`,
@@ -239,7 +237,7 @@ export default function CommunityPulse() {
             </div>
           </div>
 
-          <div className="card reveal reveal-delay-2 relative overflow-hidden p-8 border-2 border-[rgba(200,241,53,0.15)] transition-all duration-500 hover:border-[rgba(200,241,53,0.3)] hover:shadow-[0_12px_40px_rgba(200,241,53,0.1)] hover:-translate-y-1">
+          <div className="card reveal reveal-delay-2 relative overflow-hidden p-8 transition-all duration-500 hover:-translate-y-1">
             {submitted && (
               <div className="absolute inset-0 z-10 flex animate-[pop-in_0.4s_ease] flex-col items-center justify-center gap-4 rounded-[var(--radius-card)] bg-card">
                 <div className="text-[2.5rem]">Done</div>
@@ -261,7 +259,7 @@ export default function CommunityPulse() {
                 onChange={(e) => setIdea(e.target.value)}
                 placeholder="e.g. I wish there was a tool that automatically summarizes long articles into bullet points..."
                 rows={5}
-                className="w-full resize-y rounded-[14px] border-2 border-[rgba(200,241,53,0.1)] bg-card-alt p-4 font-inherit text-[0.85rem] leading-[1.7] text-foreground outline-none transition-all duration-300 hover:border-[rgba(200,241,53,0.2)] focus:border-[rgba(200,241,53,0.4)] focus:shadow-[0_0_0_4px_rgba(200,241,53,0.12)]"
+                className="field resize-y text-[0.85rem] leading-[1.7]"
               />
 
               {/* Honeypot: hidden from users, catches bots. */}
@@ -276,7 +274,7 @@ export default function CommunityPulse() {
                 className="absolute left-[-9999px] h-0 w-0 opacity-0"
               />
 
-              <button type="submit" className="btn btn-primary self-start px-4 py-2 text-[0.78rem]">
+              <button data-pet-perch type="submit" className="btn btn-primary self-start px-4 py-2 text-[0.78rem]">
                 Submit Idea
               </button>
 

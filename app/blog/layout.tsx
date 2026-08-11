@@ -1,5 +1,6 @@
 import CursorGlow from "@/components/ui/CursorGlow";
-import BackgroundSpark from "@/components/ui/BackgroundSpark";
+import ScrollReveal from "@/components/ui/ScrollReveal";
+import FabricBackground from "@/components/ui/FabricBackground";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -11,8 +12,9 @@ import Footer from "@/components/layout/Footer";
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <ScrollReveal />
       <CursorGlow />
-      <BackgroundSpark />
+      <FabricBackground />
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />

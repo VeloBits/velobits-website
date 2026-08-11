@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CONTAINER, SECTION, EYEBROW, DISPLAY, DISPLAY_LG } from "@/lib/ui-classes";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { CONTAINER, SECTION } from "@/lib/ui-classes";
 
 const milestones = [
   {
@@ -72,23 +73,15 @@ export default function Roadmap() {
   return (
     <section id="roadmap" className={`${SECTION} overflow-hidden`} ref={sectionRef}>
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-        <div className="absolute top-1/4 -left-48 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(140,100,255,0.08)_0%,transparent_70%)] blur-[120px]" />
-        <div className="absolute bottom-1/4 -right-48 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(200,241,53,0.06)_0%,transparent_70%)] blur-[120px]" />
+        <div className="absolute bottom-1/4 -right-48 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgb(from_var(--accent-ink)_r_g_b/0.06)_0%,transparent_70%)] blur-[120px]" />
       </div>
       <div className={`container ${CONTAINER} relative z-1`}>
-        <div className="reveal mb-16">
-          <span className={`eyebrow ${EYEBROW} text-muted`}>What&apos;s Coming</span>
-          <h2 className={`${DISPLAY} ${DISPLAY_LG} text-foreground mt-3`}>
-            The road{" "}
-            <span className="bg-gradient-to-r from-accent via-accent to-[rgba(200,241,53,0.7)] bg-clip-text text-transparent">
-              ahead.
-            </span>
-          </h2>
-          <p className="mt-5 max-w-[44ch] leading-[1.8] text-muted">
-            We move fast, build thoughtfully, and ship often. Here&apos;s what&apos;s on the
-            horizon.
-          </p>
-        </div>
+        <SectionHeader
+          index="04"
+          eyebrow="What's Coming"
+          titleLines={["The road", "ahead."]}
+          lede="We move fast, build thoughtfully, and ship often. Here's what's on the horizon."
+        />
 
         <div className="relative pt-8">
           <svg className="timeline-svg pointer-events-none absolute top-14 left-0 block h-1 w-full overflow-visible max-[900px]:hidden">
@@ -106,7 +99,7 @@ export default function Roadmap() {
               y1="2"
               x2="98%"
               y2="2"
-              stroke="rgba(255,255,255,0.08)"
+              stroke="rgb(from var(--ink) r g b / 0.08)"
               strokeWidth="2"
               strokeLinecap="round"
             />
@@ -134,20 +127,20 @@ export default function Roadmap() {
                 <div className="flex justify-start">
                   <div className="relative">
                     <div
-                      className={`relative z-1 h-5 w-5 rounded-full border-2 transition-all duration-300 ${m.now ? "border-accent bg-accent shadow-[0_0_24px_rgba(200,241,53,0.6)] scale-125" : m.done ? "border-accent bg-[rgba(200,241,53,0.6)]" : "border-border-subtle bg-card hover:border-accent/50"}`}
+                      className={`relative z-1 h-5 w-5 rounded-full border-2 transition-all duration-300 ${m.now ? "border-accent bg-accent shadow-[0_0_24px_rgb(from_var(--accent-ink)_r_g_b/0.6)] scale-125" : m.done ? "border-accent bg-accent/60" : "border-border-subtle bg-card"}`}
                     />
                     {m.now && (
-                      <div className="absolute inset-0 rounded-full animate-pulse shadow-[0_0_32px_rgba(200,241,53,0.4)] [filter:blur(1px)]" />
+                      <div className="absolute inset-0 rounded-full animate-pulse shadow-[0_0_32px_rgb(from_var(--accent-ink)_r_g_b/0.4)] [filter:blur(1px)]" />
                     )}
                   </div>
                 </div>
 
                 <div
-                  className={`card group relative overflow-hidden p-5 transition-all duration-300 backdrop-blur-md h-full flex flex-col ${m.now ? "border-accent/40 bg-gradient-to-br from-[rgba(200,241,53,0.08)] via-[rgba(200,241,53,0.03)] to-transparent shadow-[0_16px_48px_rgba(200,241,53,0.1)]" : m.done ? "border-accent/20 bg-gradient-to-br from-[rgba(200,241,53,0.04)] to-transparent" : "border-border-subtle bg-card/50 hover:border-border-subtle/50"} ${!m.done && !m.now ? "opacity-70 hover:opacity-85" : "opacity-100"}`}
+                  className={`card group relative overflow-hidden p-5 transition-all duration-300 backdrop-blur-md h-full flex flex-col ${m.now ? "border-accent/40 bg-gradient-to-br from-accent/8 via-accent/3 to-transparent" : m.done ? "border-accent/20 bg-gradient-to-br from-accent/4 to-transparent" : "border-border-subtle bg-card/50 hover:border-border-subtle/50"} ${!m.done && !m.now ? "opacity-70 hover:opacity-85" : "opacity-100"}`}
                 >
                   {m.now && (
                     <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                      <div className="absolute -inset-full animate-[spin_8s_linear_infinite] opacity-20 bg-[conic-gradient(from_0deg,transparent,rgba(200,241,53,0.4),transparent_180deg)]" />
+                      <div className="absolute -inset-full animate-[spin_8s_linear_infinite] opacity-20 bg-[conic-gradient(from_0deg,transparent,rgb(from_var(--accent-ink)_r_g_b/0.4),transparent_180deg)]" />
                     </div>
                   )}
 
@@ -165,12 +158,12 @@ export default function Roadmap() {
 
                   <div className="relative z-1">
                     <div
-                      className={`mb-2 text-[0.68rem] font-bold tracking-[0.12em] uppercase ${m.now ? "bg-gradient-to-r from-accent to-[rgba(200,241,53,0.7)] bg-clip-text text-transparent" : m.done ? "text-accent" : "text-muted"}`}
+                      className={`mb-2 text-[0.68rem] font-bold tracking-[0.12em] uppercase ${m.now ? "text-accent" : m.done ? "text-accent" : "text-muted"}`}
                     >
                       {m.date}
                     </div>
                     <div
-                      className={`mb-3 font-display text-[0.85rem] font-extrabold tracking-[-0.01em] uppercase leading-[1.2] transition-colors ${m.now ? "bg-gradient-to-r from-accent to-[rgba(200,241,53,0.8)] bg-clip-text text-transparent" : "text-foreground"}`}
+                      className={`mb-3 font-display text-[0.85rem] font-extrabold tracking-[-0.01em] uppercase leading-[1.2] transition-colors ${m.now ? "text-accent" : "text-foreground"}`}
                     >
                       {m.label}
                     </div>

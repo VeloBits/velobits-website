@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/blog";
 import { brand } from "@/lib/site-content";
-import { SECTION } from "@/lib/ui-classes";
 import ArticleHeader from "@/components/blog/ArticleHeader";
 import MarkdownContent from "@/components/blog/MarkdownContent";
 import RelatedPosts from "@/components/blog/RelatedPosts";
+import { SECTION } from "@/lib/ui-classes";
 
 // 5-min ISR (BLOG_REVALIDATE). Segment config must be a static literal.
 export const revalidate = 300;

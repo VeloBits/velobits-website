@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CONTAINER, SECTION, EYEBROW, DISPLAY, DISPLAY_LG, DISPLAY_MD } from "@/lib/ui-classes";
+
+import AsciiField from "@/components/ui/AsciiField";
+import { CONTAINER, SECTION, DISPLAY_LG, DISPLAY_MD, DISPLAY } from "@/lib/ui-classes";
 
 export default function Waitlist() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -58,15 +60,14 @@ export default function Waitlist() {
   return (
     <section id="waitlist" className={SECTION} ref={sectionRef}>
       <div className={`container ${CONTAINER} relative`}>
-        <div className="card reveal relative overflow-hidden border-2 border-[rgba(200,241,53,0.15)] bg-card px-16 py-20 text-center max-sm:px-6 max-sm:py-12 shadow-[0_8px_32px_rgba(200,241,53,0.08)] transition-all duration-500 hover:border-[rgba(200,241,53,0.25)] hover:shadow-[0_16px_48px_rgba(200,241,53,0.12)]">
-          {/* Elegant left accent line */}
-          <div className="pointer-events-none absolute left-0 top-1/4 h-1/2 w-[2px] bg-gradient-to-b from-transparent via-accent to-transparent opacity-50" />
-
-          {/* Elegant right accent line */}
-          <div className="pointer-events-none absolute right-0 top-1/4 h-1/2 w-[2px] bg-gradient-to-b from-transparent via-accent to-transparent opacity-50" />
-
-          {/* Center radial glow */}
-          <div className="pointer-events-none absolute top-1/2 left-1/2 h-[60%] w-[80%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse,rgba(200,241,53,0.07)_0%,transparent_70%)]" />
+        {/* Was: a 2px accent-bordered card with two vertical accent bars, a radial
+            glow and a hover shadow — five decorations around one email field.
+            Now the panel is the emphasis and the button carries the colour. */}
+        <div className="card reveal relative overflow-hidden bg-card px-16 py-20 text-center max-sm:px-6 max-sm:py-12">
+          {/* Signature: a sparse ASCII isoline field. Thematically load-bearing
+              for a text-transformation product rather than generic decoration.
+              Masked to fade toward the centre so it never fights the copy. */}
+          <AsciiField className="mask-[radial-gradient(ellipse_at_center,transparent_14%,black_58%)]" />
 
           <div className="relative z-1">
             {submitted ? (
@@ -75,7 +76,7 @@ export default function Waitlist() {
                   Done
                 </div>
                 <h2
-                  className={`${DISPLAY} ${DISPLAY_MD} text-accent animate-[glow-pulse_2s_ease-in-out_infinite]`}
+                  className={`${DISPLAY} ${DISPLAY_MD} text-accent`}
                 >
                   You&apos;re in!
                 </h2>
@@ -87,13 +88,11 @@ export default function Waitlist() {
             ) : (
               <>
                 <div className="reveal animate-[fade-in-down_0.8s_ease_0.1s_both]">
-                  <span className={`eyebrow ${EYEBROW} mb-3 block text-accent`}>Early Access</span>
+                  <span className="label-mono mb-4 block text-accent">Early Access</span>
                   <h2 className={`${DISPLAY} ${DISPLAY_LG} text-foreground`}>
                     Don&apos;t miss
                     <br />
-                    <span className="text-accent animate-[glow-pulse_2.5s_ease-in-out_infinite]">
-                      what&apos;s next.
-                    </span>
+                    what&apos;s next.
                   </h2>
                   <p className="mx-auto mt-4 max-w-[46ch] leading-[1.7] text-muted">
                     Join early believers. Get first access to every Velobits launch before anyone
@@ -103,15 +102,19 @@ export default function Waitlist() {
 
                 <form
                   onSubmit={handleSubmit}
-                  className="reveal reveal-delay-2 mx-auto mt-10 flex max-w-[500px] rounded-full border-2 border-[rgba(200,241,53,0.2)] bg-card-alt py-[0.3rem] pr-[0.3rem] pl-6 transition-all duration-300 hover:border-[rgba(200,241,53,0.35)] focus-within:border-[rgba(200,241,53,0.4)] focus-within:shadow-[0_0_0_4px_rgba(200,241,53,0.1)] animate-[fade-in-up_0.8s_ease_0.3s_both]"
+                  className="reveal reveal-delay-2 mx-auto mt-10 flex max-w-[440px] items-end gap-3 animate-[fade-in-up_0.8s_ease_0.3s_both]"
                 >
+                  <label htmlFor="waitlist-email" className="sr-only">
+                    Email address
+                  </label>
                   <input
+                    id="waitlist-email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
                     required
-                    className="min-w-0 flex-1 border-none bg-transparent font-inherit text-[0.9rem] text-foreground outline-none"
+                    className="field min-w-0 flex-1 text-[0.9rem]"
                   />
                   {/* Honeypot: hidden from users, catches bots. */}
                   <input
@@ -131,9 +134,9 @@ export default function Waitlist() {
                   >
                     {loading ? (
                       <span className="inline-flex gap-1">
-                        <span className="h-[5px] w-[5px] rounded-full bg-background animate-[glow-pulse_0.8s_ease-in-out_infinite]" />
-                        <span className="h-[5px] w-[5px] rounded-full bg-background animate-[glow-pulse_0.8s_ease-in-out_0.2s_infinite]" />
-                        <span className="h-[5px] w-[5px] rounded-full bg-background animate-[glow-pulse_0.8s_ease-in-out_0.4s_infinite]" />
+                        <span className="h-[5px] w-[5px] rounded-full bg-[var(--accent-on-fill)] animate-[glow-pulse_0.8s_ease-in-out_infinite]" />
+                        <span className="h-[5px] w-[5px] rounded-full bg-[var(--accent-on-fill)] animate-[glow-pulse_0.8s_ease-in-out_0.2s_infinite]" />
+                        <span className="h-[5px] w-[5px] rounded-full bg-[var(--accent-on-fill)] animate-[glow-pulse_0.8s_ease-in-out_0.4s_infinite]" />
                       </span>
                     ) : (
                       <>
@@ -153,12 +156,12 @@ export default function Waitlist() {
                 </form>
 
                 {error && (
-                  <p className="mt-4 text-[0.78rem] text-[#ff8a8a]" role="alert">
+                  <p className="mt-4 text-[0.78rem] text-danger" role="alert">
                     Something went wrong. Please try again.
                   </p>
                 )}
 
-                <p className="reveal reveal-delay-3 mt-4 text-[0.75rem] text-accent/60 animate-[fade-in_0.8s_ease_0.4s_both]">
+                <p className="reveal reveal-delay-3 mt-4 text-[0.75rem] text-subtle animate-[fade-in_0.8s_ease_0.4s_both]">
                   No spam. Unsubscribe anytime.
                 </p>
               </>
