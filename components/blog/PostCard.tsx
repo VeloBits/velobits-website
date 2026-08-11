@@ -19,7 +19,7 @@ export default function PostCard({ post }: { post: BlogPostMeta }) {
           {post.tags.slice(0, 2).map((tag) => (
             <TagBadge key={tag.slug} tag={tag} />
           ))}
-          {date && <span className="text-[0.72rem] text-faint">{date}</span>}
+          {date && <span className="text-[0.72rem] text-subtle">{date}</span>}
         </div>
         <h3 className="font-display text-[1.05rem] leading-[1.4] font-extrabold tracking-[-0.01em] text-foreground">
           <Link
@@ -31,7 +31,7 @@ export default function PostCard({ post }: { post: BlogPostMeta }) {
         </h3>
         {post.excerpt && <p className="text-[0.85rem] leading-[1.7] text-muted">{post.excerpt}</p>}
         <div className="mt-1 flex items-center justify-between">
-          <span className="text-[0.72rem] text-faint">By {post.author}</span>
+          <span className="text-[0.72rem] text-subtle">By {post.author}</span>
           <Link
             href={`/blog/${post.slug}`}
             className="inline-flex items-center gap-1 self-start text-[0.78rem] font-semibold text-accent hover:underline"

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { navLinks, brand } from "@/lib/site-content";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -53,10 +54,10 @@ export default function Navbar() {
       <nav
         id="navbar"
         aria-label="Main navigation"
-        className={`pointer-events-auto flex w-full max-w-[1100px] items-center justify-between gap-6 rounded-[10px] border px-4 py-[0.55rem] pl-[1.1rem] backdrop-blur-[18px] transition-[background,box-shadow,border-color] duration-300 ${
+        className={`pointer-events-auto flex w-full max-w-[1100px] items-center justify-between gap-6 rounded-[14px] border px-4 py-[0.55rem] pl-[1.1rem] backdrop-blur-[18px] transition-[background-color,box-shadow,border-color] duration-300 ${
           scrolled
-            ? "border-[rgba(200,241,53,0.25)] bg-[rgba(10,10,10,0.92)] shadow-[0_8px_40px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.05),inset_0_-1px_0_rgba(200,241,53,0.08)]"
-            : "border-[rgba(200,241,53,0.15)] bg-[rgba(16,16,16,0.75)] shadow-[0_4px_24px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.04)]"
+            ? "border-border-strong bg-[var(--surface-nav-scrolled)] shadow-[0_8px_40px_var(--shadow-color)]"
+            : "border-border-subtle bg-[var(--surface-nav)] shadow-[0_4px_24px_var(--shadow-color)]"
         }`}
       >
         {/* Logo */}
@@ -73,9 +74,9 @@ export default function Navbar() {
             priority
             sizes="(max-width: 640px) 40px, 52px"
             style={{ height: "auto", width: "auto" }}
-            className="h-[26px] transition-[filter] duration-200 group-hover:drop-shadow-[0_0_8px_rgba(200,241,53,0.35)]"
+            className="h-[26px] transition-[filter] duration-200 group-hover:drop-shadow-[0_0_8px_var(--accent-a45)]"
           />
-          <span className="font-[var(--font-display)] text-[1.2rem] font-extrabold tracking-[-0.03em] text-accent uppercase">
+          <span className="font-[var(--font-display)] text-[1.2rem] font-extrabold tracking-[-0.03em] text-foreground uppercase">
             {brand.name}
           </span>
         </Link>
@@ -86,13 +87,13 @@ export default function Navbar() {
             <a
               key={item.label}
               href={item.href}
-              className={`inline-flex items-center gap-[0.35rem] rounded-full px-[0.85rem] py-[0.42rem] text-[0.84rem] font-medium whitespace-nowrap no-underline transition-[background,color] duration-200 hover:bg-[rgba(255,255,255,0.07)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                item.soon ? "text-muted" : "text-foreground hover:text-white"
+              className={`inline-flex items-center gap-[0.35rem] rounded-full px-[0.85rem] py-[0.42rem] text-[0.84rem] font-medium whitespace-nowrap no-underline transition-[background-color,color] duration-200 hover:bg-[var(--hover-wash)] ${
+                item.soon ? "text-muted" : "text-muted hover:text-foreground"
               }`}
             >
               {item.label}
               {item.soon && (
-                <span className="rounded-full bg-[rgba(255,255,255,0.07)] px-[0.45rem] py-[0.15rem] text-[0.55rem] font-bold tracking-[0.1em] text-muted uppercase">
+                <span className="rounded-full bg-[var(--hover-wash)] px-[0.45rem] py-[0.15rem] text-[0.55rem] font-bold tracking-[0.1em] text-subtle uppercase">
                   Soon
                 </span>
               )}
@@ -101,11 +102,12 @@ export default function Navbar() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden items-center gap-4 shrink-0 min-[641px]:flex">
-          <div className="h-[18px] w-[1px] bg-[rgba(255,255,255,0.1)] rounded-full" />
+        <div className="hidden items-center gap-3 shrink-0 min-[641px]:flex">
+          <ThemeToggle />
+          <div className="h-[18px] w-[1px] rounded-full bg-border-strong" />
           <Link
             href="/#waitlist"
-            className="btn btn-primary rounded-full px-5 py-[0.55rem] text-[0.82rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="btn btn-primary rounded-full px-5 py-[0.55rem] text-[0.82rem]"
           >
             Join Waitlist
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -120,33 +122,37 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile menu toggle */}
-        <button
-          ref={toggleRef}
-          className="flex min-[641px]:hidden shrink-0 cursor-pointer rounded-[8px] border-none bg-transparent p-[0.4rem] text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          onClick={() => setMenuOpen((o) => !o)}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            {menuOpen ? (
-              <path
-                d="M6 6l12 12M6 18L18 6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            ) : (
-              <path
-                d="M4 6h16M4 12h16M4 18h16"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            )}
-          </svg>
-        </button>
+        {/* Mobile: theme toggle sits outside the menu so it is reachable without
+            opening it — changing theme should never require two taps. */}
+        <div className="flex items-center gap-1 min-[641px]:hidden">
+          <ThemeToggle />
+          <button
+            ref={toggleRef}
+            className="flex shrink-0 cursor-pointer rounded-[8px] border-none bg-transparent p-[0.4rem] text-foreground"
+            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              {menuOpen ? (
+                <path
+                  d="M6 6l12 12M6 18L18 6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              ) : (
+                <path
+                  d="M4 6h16M4 12h16M4 18h16"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              )}
+            </svg>
+          </button>
+        </div>
       </nav>
 
       {/* Mobile dropdown */}
@@ -155,7 +161,7 @@ export default function Navbar() {
           ref={menuRef}
           id="mobile-menu"
           role="menu"
-          className="pointer-events-auto absolute top-[4.6rem] right-4 left-4 z-[99] flex flex-col gap-1 rounded-[12px] border border-[rgba(255,255,255,0.09)] bg-[rgba(12,12,12,0.97)] p-3 shadow-[0_16px_48px_rgba(0,0,0,0.5)] backdrop-blur-[20px] animate-[menu-slide-in_0.2s_ease_both]"
+          className="pointer-events-auto absolute top-[4.6rem] right-4 left-4 z-[99] flex flex-col gap-1 rounded-[16px] border border-border-subtle bg-[var(--surface-overlay)] p-3 shadow-[0_16px_48px_var(--shadow-color-strong)] backdrop-blur-[20px] animate-[menu-slide-in_0.2s_ease_both]"
         >
           {navLinks.map((item) => (
             <a
@@ -163,13 +169,13 @@ export default function Navbar() {
               href={item.href}
               role="menuitem"
               onClick={() => setMenuOpen(false)}
-              className={`flex items-center gap-2 rounded-[10px] px-4 py-3 text-[0.95rem] font-medium no-underline transition-colors duration-150 hover:bg-[rgba(255,255,255,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+              className={`flex items-center gap-2 rounded-[10px] px-4 py-3 text-[0.95rem] font-medium no-underline transition-colors duration-150 hover:bg-[var(--hover-wash)] ${
                 item.soon ? "text-muted" : "text-foreground"
               }`}
             >
               {item.label}
               {item.soon && (
-                <span className="rounded-full bg-[rgba(255,255,255,0.07)] px-[0.4rem] py-[0.12rem] text-[0.58rem] font-bold tracking-[0.1em] text-muted uppercase">
+                <span className="rounded-full bg-[var(--hover-wash)] px-[0.4rem] py-[0.12rem] text-[0.58rem] font-bold tracking-[0.1em] text-subtle uppercase">
                   Soon
                 </span>
               )}

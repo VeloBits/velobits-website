@@ -96,8 +96,8 @@ export function GlowingEffect({
           background: `conic-gradient(
             from calc((var(--start) - var(--spread)) * 1deg) at 50% 50%,
             transparent 0deg,
-            rgba(200,241,53,0.9) 1deg,
-            rgba(200,241,53,0.9) calc(var(--spread) * 2deg),
+            rgb(from var(--accent-ink) r g b / 0.9) 1deg,
+            rgb(from var(--accent-ink) r g b / 0.9) calc(var(--spread) * 2deg),
             transparent calc(var(--spread) * 2deg + 1deg)
           )`,
           WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",

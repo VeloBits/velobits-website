@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { PILL_BASE } from "@/lib/ui-classes";
+
 import TagBadge from "./TagBadge";
 import type { BlogTag } from "@/lib/blog";
+import { PILL_BASE } from "@/lib/ui-classes";
 
 /**
  * Route-based tag filter row: an "All" link plus one TagBadge per tag.
@@ -15,8 +16,8 @@ export default function TagFilter({ tags, activeSlug }: { tags: BlogTag[]; activ
         href="/blog"
         className={`${PILL_BASE} text-[0.72rem] no-underline transition-colors duration-200 ${
           activeSlug
-            ? "border-border-subtle bg-[rgba(255,255,255,0.03)] text-muted hover:text-foreground"
-            : "border-[rgba(200,241,53,0.4)] bg-[var(--accent-dim)] text-accent"
+            ? "border-border-subtle bg-foreground/3 text-muted hover:text-foreground"
+            : "border-accent/40 bg-[var(--accent-dim)] text-accent"
         }`}
       >
         All
