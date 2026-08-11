@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { DISPLAY, DISPLAY_LG, EYEBROW } from "@/lib/ui-classes";
+
 import TagBadge from "./TagBadge";
 import ReadingTime from "./ReadingTime";
 import { formatDate } from "./format";
 import type { BlogPost } from "@/lib/blog";
+import { EYEBROW, DISPLAY_LG, DISPLAY } from "@/lib/ui-classes";
 
 /** Article title block: eyebrow, h1, byline (author · date · reading time), tags, hero cover. */
 export default function ArticleHeader({ post }: { post: BlogPost }) {

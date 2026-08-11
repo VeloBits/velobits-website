@@ -1,0 +1,31 @@
+- Introduced ScrollReveal component to manage element visibility using IntersectionObserver.
+- Elements are revealed with staggered delays based on their index within groups.
+- Added support for reduced motion preferences.
+
+feat: create SectionHeader component for consistent section headers
+
+- Consolidated section header structure into a reusable SectionHeader component.
+- Supports index, eyebrow, title lines, and optional lede with proper styling and reveal effects.
+
+feat: implement ThemeToggle component for theme switching
+
+- Added ThemeToggle component to allow users to switch between light and dark themes.
+- Utilizes localStorage to persist user preferences and applies themes without flash of unstyled content.
+
+fix: update glowing effect to use CSS variables for accent color
+
+- Modified glowing effect to use CSS variables for better theme integration and maintainability.
+
+refactor: change product status representation from color to tone
+
+- Updated Product type to use statusTone instead of statusColor for semantic emphasis.
+- Adjusted product data to reflect new statusTone values.
+
+refactor: enhance section styling for better responsiveness
+
+- Updated SECTION class to use viewport-relative padding for improved layout across devices.
+- Ensured overflow-x-clip is applied to prevent horizontal scrolling due to decorative elements.
+
+fix: update divider background to use CSS variable for accent color
+
+- Changed divider background to utilize CSS variable for better theme consistency.

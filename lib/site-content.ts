@@ -35,7 +35,9 @@ export type Product = {
   id: string;
   name: string;
   status: string;
-  statusColor: string;
+  /** Semantic emphasis for the status pill. Was a raw hex string, which meant
+   *  content data carried presentation and could not follow the theme. */
+  statusTone: "accent" | "neutral";
   shortDescription: string;
   longDescription: string;
   features: string[];
@@ -63,7 +65,7 @@ export const products: Product[] = [
     id: "fixmytext",
     name: "FixMyText",
     status: "Launching Soon",
-    statusColor: "#c8f135",
+    statusTone: "accent",
     shortDescription:
       "254 text tools in one editor — case, encode, hash, cipher, JSON/XML formatting, plus 50+ AI tools for rewriting, summarizing, and analysis.",
     longDescription:
@@ -106,7 +108,7 @@ export const products: Product[] = [
     id: "mystery",
     name: "Coming Soon",
     status: "In the Lab",
-    statusColor: "#666",
+    statusTone: "neutral",
     shortDescription: "Something new is brewing. Vote on what you'd like us to build next.",
     longDescription:
       "We're exploring what to build next. No promises, no roadmap locked in — just community votes that guide the next product.",
@@ -126,7 +128,7 @@ export const products: Product[] = [
     id: "suite",
     name: "Velobits Suite",
     status: "2027",
-    statusColor: "#444",
+    statusTone: "neutral",
     shortDescription:
       "A full ecosystem of everyday tools — built product by product, driven by this community.",
     longDescription:

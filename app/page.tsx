@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import CursorGlow from "@/components/ui/CursorGlow";
-import BackgroundSpark from "@/components/ui/BackgroundSpark";
+import ScrollReveal from "@/components/ui/ScrollReveal";
+import FabricBackground from "@/components/ui/FabricBackground";
+import ScrollPet from "@/components/ui/ScrollPet";
 import Navbar from "@/components/layout/Navbar";
 import ScrollToHash from "@/components/layout/ScrollToHash";
 import Hero from "@/components/sections/Hero";
@@ -12,31 +14,45 @@ import Roadmap from "@/components/sections/Roadmap";
 import LatestUpdates from "@/components/sections/LatestUpdates";
 import Waitlist from "@/components/sections/Waitlist";
 import Footer from "@/components/layout/Footer";
-import { DIVIDER, SECTION } from "@/lib/ui-classes";
+import { SECTION } from "@/lib/ui-classes";
 
+/**
+ * `data-pet-perch` marks a landing spot for ScrollPet. Keeping them declared
+ * here rather than inside each section means the pet's route is legible in one
+ * place, and a section can be added to the page without touching the pet.
+ *
+ * The gradient DIVIDER rules between sections are gone: the fabric background
+ * now separates sections, and a stack of identical accent lines was the main
+ * thing making every section feel like the same section.
+ */
 export default function Home() {
   return (
     <>
       <ScrollToHash />
+      <ScrollReveal />
       <CursorGlow />
-      <BackgroundSpark />
+      <FabricBackground />
+      <ScrollPet />
       <Navbar />
-      <main className="flex-1">
-        <Hero />
+      <main className="relative z-1 flex-1">
+        <div data-pet-perch>
+          <Hero />
+        </div>
         <Marquee />
-        <Products />
-        <div className={`${DIVIDER} mx-8`} />
+        <div data-pet-perch>
+          <Products />
+        </div>
         <CommunityPulse />
-        <div className={`${DIVIDER} mx-8`} />
         <About />
-        <div className={`${DIVIDER} mx-8`} />
         <Roadmap />
-        <div className={`${DIVIDER} mx-8`} />
         <Suspense fallback={<div className={SECTION} aria-hidden="true" />}>
-          <LatestUpdates />
+          <div data-pet-perch>
+            <LatestUpdates />
+          </div>
         </Suspense>
-        <div className={`${DIVIDER} mx-8`} />
-        <Waitlist />
+        <div data-pet-perch>
+          <Waitlist />
+        </div>
       </main>
       <Footer />
     </>

@@ -7,16 +7,22 @@ export default function CursorGlow() {
     const blob = document.getElementById("cursor-glow");
     const inner = document.getElementById("cursor-ring-inner");
     const outer = document.getElementById("cursor-ring-outer");
-    const grid = document.getElementById("cursor-grid-highlight");
-    if (!blob || !inner || !outer || !grid) return;
+    if (!blob || !inner || !outer) return;
+
+    // Only hide the native cursor once a replacement is actually mounted, and
+    // only where the replacement is allowed to show (fine pointer + motion OK
+    // — see the gating @media block in globals.css). Without this opt-in a
+    // reduced-motion visitor got `cursor: none` with the ring display:none,
+    // i.e. no visible pointer at all.
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    const motionOk = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const useCustomCursor = finePointer && motionOk;
+    if (useCustomCursor) document.documentElement.classList.add("has-custom-cursor");
+    if (!useCustomCursor) return;
 
     let x = 0,
       y = 0;
     let rafId: number;
-
-    const CONTENT_SELECTOR =
-      ".container, .card, nav, footer, header, .pill, .btn, button, a, input, " +
-      "textarea, select, h1, h2, h3, h4, p, li, label, .eyebrow, [data-no-spark]";
 
     let dirty = false;
 
@@ -39,25 +45,13 @@ export default function CursorGlow() {
 
       // Blob snaps to real cursor — no lag
       blob.setAttribute("style", `left:${x}px;top:${y}px;`);
-
-      // Grid highlight: hide entirely when cursor is over any card or content.
-      const under = document.elementFromPoint(x, y);
-      const overContent = under && under.closest(CONTENT_SELECTOR);
-      if (overContent) {
-        grid.style.maskImage =
-          "radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%)";
-        grid.style.webkitMaskImage =
-          "radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%)";
-      } else {
-        grid.style.maskImage = `radial-gradient(circle 220px at ${x}px ${y}px, black 30%, transparent 100%)`;
-        grid.style.webkitMaskImage = `radial-gradient(circle 220px at ${x}px ${y}px, black 30%, transparent 100%)`;
-      }
     };
     rafId = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(rafId);
+      document.documentElement.classList.remove("has-custom-cursor");
     };
   }, []);
 
@@ -69,8 +63,6 @@ export default function CursorGlow() {
       <div id="cursor-ring-inner" aria-hidden="true" />
       {/* Outer slow-pulse ring */}
       <div id="cursor-ring-outer" aria-hidden="true" />
-      {/* Brighter grid layer masked to cursor radius */}
-      <div id="cursor-grid-highlight" aria-hidden="true" />
     </>
   );
 }

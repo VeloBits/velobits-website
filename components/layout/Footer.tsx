@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { CONTAINER } from "@/lib/ui-classes";
 
+
 export default function Footer() {
   const year = new Date().getFullYear();
 
@@ -24,7 +25,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="mt-auto pt-16 pb-8 relative z-[1] bg-[var(--bg)] border-t-[0.5px] border-[rgba(200,241,53,0.4)]">
+    <footer className="mt-auto pt-16 pb-8 relative z-[1] bg-[var(--bg)] border-t-[0.5px] border-accent/40">
       <div className={`container ${CONTAINER}`}>
         <div className="footer-grid mb-12 grid gap-12 [grid-template-columns:2fr_1fr_1fr_1fr] max-md:grid-cols-2 max-md:gap-8 max-[480px]:grid-cols-1">
           <div className="flex flex-col gap-4 max-md:col-span-2 max-[480px]:col-span-1">
@@ -37,7 +38,7 @@ export default function Footer() {
                 className="h-auto w-[30px]"
                 priority
               />
-              <span className="font-display text-[1rem] font-extrabold tracking-[0.04em] uppercase text-accent">
+              <span className="font-display text-[1rem] font-extrabold tracking-[0.04em] uppercase text-foreground">
                 Velobits
               </span>
             </div>
@@ -61,7 +62,7 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-[10px] border-2 border-[rgba(200,241,53,0.3)] bg-card text-accent no-underline transition-colors duration-200 hover:border-[rgba(200,241,53,0.6)]"
+                  className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-border-subtle bg-card text-muted no-underline hover:text-accent transition-colors duration-200"
                 >
                   {icon}
                 </a>
@@ -71,7 +72,7 @@ export default function Footer() {
 
           {Object.entries(links).map(([group, items]) => (
             <div key={group}>
-              <div className="mb-4 text-[0.72rem] font-bold tracking-[0.1em] text-accent uppercase">
+              <div className="mb-4 label text-subtle">
                 {group}
               </div>
               <div className="flex flex-col gap-[0.6rem]">
@@ -89,11 +90,11 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="h-[0.5px] opacity-30 bg-[linear-gradient(to_right,transparent,#c8f135,transparent)]" />
+        <div className="h-[0.5px] opacity-30 bg-[linear-gradient(to_right,transparent,var(--accent-ink),transparent)]" />
 
         <div className="flex flex-wrap items-center justify-between gap-3 pt-6">
-          <p className="text-[0.78rem] text-accent">© {year} Velobits. All rights reserved.</p>
-          <p className="text-[0.78rem] text-accent">Made by the Velobits team</p>
+          <p className="text-[0.78rem] text-subtle">© {year} Velobits. All rights reserved.</p>
+          <p className="text-[0.78rem] text-subtle">Made by the Velobits team</p>
         </div>
       </div>
     </footer>

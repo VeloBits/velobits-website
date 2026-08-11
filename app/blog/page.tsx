@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { getAllPosts, getAllTags } from "@/lib/blog";
 import { brand } from "@/lib/site-content";
-import { CONTAINER, SECTION, EYEBROW, DISPLAY, DISPLAY_LG } from "@/lib/ui-classes";
 import PostList from "@/components/blog/PostList";
 import TagFilter from "@/components/blog/TagFilter";
+import { CONTAINER, SECTION, EYEBROW, DISPLAY_LG, DISPLAY } from "@/lib/ui-classes";
 
 // 5-min ISR (BLOG_REVALIDATE). Segment config must be a static literal.
 export const revalidate = 300;
