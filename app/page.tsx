@@ -34,7 +34,7 @@ export default function Home() {
       <FabricBackground />
       <ScrollPet />
       <Navbar />
-      <main className="relative z-[1] flex-1">
+      <main className="relative z-1 flex-1">
         <div data-pet-perch>
           <Hero />
         </div>
@@ -42,15 +42,9 @@ export default function Home() {
         <div data-pet-perch>
           <Products />
         </div>
-        <div data-pet-perch>
-          <CommunityPulse />
-        </div>
-        <div data-pet-perch>
-          <About />
-        </div>
-        <div data-pet-perch>
-          <Roadmap />
-        </div>
+        <CommunityPulse />
+        <About />
+        <Roadmap />
         <Suspense fallback={<div className={SECTION} aria-hidden="true" />}>
           <div data-pet-perch>
             <LatestUpdates />

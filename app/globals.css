@@ -126,16 +126,22 @@
      Its shell is the raised surface so it always reads as sitting ON the page,
      and its eye whites stay light in both themes — dark eye-whites make a face
      look unwell rather than friendly. */
-  --pet-shell: light-dark(#ffffff, #1c1c1c);
-  --pet-edge: light-dark(rgb(20 20 15 / 0.22), rgb(255 255 255 / 0.2));
-  --pet-limb: light-dark(#3a3a33, #cfcfc6);
-  --pet-eye-bg: light-dark(#ffffff, #f2f2ec);
-  /* The pupil sits on the light eye-white, so it stays dark in both themes. */
+  /* The shell stays LIGHT in both themes — a cream creature that glows against
+     the dark page rather than a dark box that disappears into it. Keeping the
+     shell on one side of the light/dark divide is what makes it the same
+     character in both themes, and it means every mark ON the shell (mouth,
+     pupils, outline, limbs) can be dark in both, so none of them can ever
+     vanish the way the old dark-on-dark mouth did. */
+  --pet-shell: light-dark(#ffffff, #efeee6);
+  --pet-shell-2: light-dark(#f1efe7, #dcdad0); /* underside / shading */
+  --pet-sheen: light-dark(rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.75));
+  --pet-edge: light-dark(rgb(20 20 15 / 0.3), rgb(20 20 15 / 0.22));
+  --pet-limb: light-dark(#43433c, #4a4a42);
+  --pet-eye-bg: #ffffff;
   --pet-pupil: #14140f;
-  /* The MOUTH is drawn straight onto the shell, so unlike the pupil it must
-     flip with the shell — a #14140f mouth on the #1c1c1c dark shell was
-     invisible. This is the case that makes "same ink everywhere" wrong. */
-  --pet-mouth: light-dark(#14140f, #f2f2ec);
+  --pet-mouth: #14140f;
+  /* Cheeks. A warm blush is the single biggest cuteness lever available. */
+  --pet-blush: light-dark(rgb(255 122 106 / 0.42), rgb(255 122 106 / 0.5));
   --pet-glint: light-dark(rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.85));
   --pet-accent: var(--accent-fill);
   /* Contact patch. It stays on the surface the pet is standing on, so during a

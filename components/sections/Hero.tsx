@@ -77,7 +77,7 @@ export default function Hero() {
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-3 animate-[pop-in_0.6s_ease_0.42s_both] max-[960px]:justify-center">
-              <a href="#waitlist" className="btn btn-primary">
+              <a href="#waitlist" className="btn btn-primary" data-pet-perch>
                 Join FixMyText Waitlist
                 <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                   <path
@@ -206,6 +206,7 @@ export default function Hero() {
           Scroll to explore
         </span>
         <svg
+          data-pet-perch
           width="14"
           height="22"
           viewBox="0 0 14 22"

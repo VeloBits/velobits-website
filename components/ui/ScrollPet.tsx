@@ -71,11 +71,22 @@ const LANDING_FRACTIONS_SM = [0.12, 0.88, 0.18, 0.82];
 const SMALL_SCREEN = 640;
 const SCALE_SM = 0.74;
 
+/* Mouth sits low on the face, under the big low-set eyes. */
 const MOUTH = {
-  smile: "M20.2 34.5 q3.8 3.8 7.6 0",
-  grin: "M19.4 33.8 q4.6 5.6 9.2 0",
-  flat: "M20.6 35.2 h6.8",
+  smile: "M20.8 34.6 q3.2 3.4 6.4 0",
+  grin: "M19.9 34.0 q4.1 5.2 8.2 0",
+  flat: "M21 35.4 h6",
 };
+
+/* Joint pivots, matched to the redesigned SVG. Rotating a limb about the wrong
+   point is what makes a character look dislocated rather than animated. */
+const PIVOT = {
+  armL: "6.6 26",
+  armR: "41.4 26",
+  legL: "18.5 39",
+  legR: "29.5 39",
+};
+const EYE_R = 5.2; // base eye radius in the new design
 
 export default function ScrollPet() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -106,6 +117,8 @@ export default function ScrollPet() {
     const mouth = q<SVGPathElement>("[data-pet-mouth]");
     const mouthOpen = q<SVGEllipseElement>("[data-pet-mouth-open]");
     const antenna = q<SVGCircleElement>("[data-pet-antenna]");
+    const blushL = q<SVGEllipseElement>("[data-pet-blush-l]");
+    const blushR = q<SVGEllipseElement>("[data-pet-blush-r]");
     if (!body || !mouth || !mouthOpen) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -428,14 +441,20 @@ export default function ScrollPet() {
       const pointR = attention.cur * (pointDir > 0 ? 62 : 0);
       armL?.setAttribute(
         "transform",
-        `rotate(${(-swing - airborne * 34 + pointL - wave).toFixed(1)} 11 28)`
+        `rotate(${(-swing - airborne * 34 + pointL - wave).toFixed(1)} ${PIVOT.armL})`
       );
       armR?.setAttribute(
         "transform",
-        `rotate(${(swing + airborne * 34 + pointR + wave).toFixed(1)} 37 28)`
+        `rotate(${(swing + airborne * 34 + pointR + wave).toFixed(1)} ${PIVOT.armR})`
       );
-      legL?.setAttribute("transform", `rotate(${(swing * 0.7 + airborne * 22).toFixed(1)} 18 41)`);
-      legR?.setAttribute("transform", `rotate(${(-swing * 0.7 - airborne * 22).toFixed(1)} 30 41)`);
+      legL?.setAttribute(
+        "transform",
+        `rotate(${(swing * 0.7 + airborne * 22).toFixed(1)} ${PIVOT.legL})`
+      );
+      legR?.setAttribute(
+        "transform",
+        `rotate(${(-swing * 0.7 - airborne * 22).toFixed(1)} ${PIVOT.legR})`
+      );
 
       // Pupils track the cursor inside the eye whites.
       const pxo = (px.cur * 1.7).toFixed(2);
@@ -444,9 +463,14 @@ export default function ScrollPet() {
       pupilR?.setAttribute("transform", `translate(${pxo} ${pyo})`);
 
       // Eyes widen mid-hop, on click, and while paying attention.
-      const wide = 4.1 + airborne * 0.5 + (sinceClick < 380 ? 0.7 : 0) + attention.cur * 0.35;
+      const wide = EYE_R + airborne * 0.55 + (sinceClick < 380 ? 0.8 : 0) + attention.cur * 0.4;
       eyeL?.setAttribute("r", wide.toFixed(2));
       eyeR?.setAttribute("r", wide.toFixed(2));
+
+      // Cheeks flush when it is excited — the cheapest possible charm.
+      const blush = (0.85 + attention.cur * 0.5 + Math.max(0, cheer) * 0.6).toFixed(2);
+      blushL?.setAttribute("opacity", blush);
+      blushR?.setAttribute("opacity", blush);
 
       // Mouth: open when airborne or startled, grin when excited, else smile.
       const open = airborne > 0.25 || sinceClick < 300;
@@ -570,100 +594,156 @@ export default function ScrollPet() {
       >
         <svg width="48" height="52" viewBox="0 0 48 52" fill="none">
           <g data-pet-body>
+            {/* Legs: short and stubby with big rounded feet. Stubby limbs on a
+                large head is the neotenous proportion that reads as "cute";
+                thin sticks read as "robot". Soles bottom out at y=49.6, which
+                is what PET_SOLE_Y encodes. */}
             <g data-pet-leg-l>
-              <rect x="15.5" y="38" width="4" height="9" rx="2" className="fill-(--pet-limb)" />
-              <ellipse cx="17.5" cy="47.4" rx="3.6" ry="2.2" className="fill-(--pet-limb)" />
+              <rect x="16" y="37" width="5" height="9" rx="2.5" className="fill-(--pet-limb)" />
+              <ellipse cx="18.1" cy="47.2" rx="4.1" ry="2.4" className="fill-(--pet-limb)" />
             </g>
             <g data-pet-leg-r>
-              <rect x="28.5" y="38" width="4" height="9" rx="2" className="fill-(--pet-limb)" />
-              <ellipse cx="30.5" cy="47.4" rx="3.6" ry="2.2" className="fill-(--pet-limb)" />
+              <rect x="27" y="37" width="5" height="9" rx="2.5" className="fill-(--pet-limb)" />
+              <ellipse cx="29.9" cy="47.2" rx="4.1" ry="2.4" className="fill-(--pet-limb)" />
             </g>
 
+            {/* Arms end in mitten hands rather than points. They are drawn BEFORE
+                the shell so the shoulder tucks behind the body, but they must
+                extend past the shell's edge (x 7..41) to be visible at all —
+                at x=7.4 they were completely hidden behind it. */}
             <g data-pet-arm-l>
-              <rect x="8.5" y="26" width="3.6" height="10" rx="1.8" className="fill-(--pet-limb)" />
-              <circle cx="10.3" cy="36.4" r="2.6" className="fill-(--pet-limb)" />
+              <rect
+                x="4.4"
+                y="25"
+                width="4.4"
+                height="9.5"
+                rx="2.2"
+                className="fill-(--pet-limb)"
+              />
+              <circle cx="6.6" cy="35.2" r="3.2" className="fill-(--pet-limb)" />
             </g>
             <g data-pet-arm-r>
               <rect
-                x="35.9"
-                y="26"
-                width="3.6"
-                height="10"
-                rx="1.8"
+                x="39.2"
+                y="25"
+                width="4.4"
+                height="9.5"
+                rx="2.2"
                 className="fill-(--pet-limb)"
               />
-              <circle cx="37.7" cy="36.4" r="2.6" className="fill-(--pet-limb)" />
+              <circle cx="41.4" cy="35.2" r="3.2" className="fill-(--pet-limb)" />
             </g>
 
             <path
-              d="M24 14 L24 8"
+              d="M24 11.5 L24 6.6"
               className="stroke-(--pet-limb)"
-              strokeWidth="2"
+              strokeWidth="1.9"
               strokeLinecap="round"
             />
-            <circle data-pet-antenna cx="24" cy="6.4" r="2.6" className="fill-(--pet-accent)" />
+            <circle data-pet-antenna cx="24" cy="5" r="2.8" className="fill-(--pet-accent)" />
 
+            {/* Head/body: one big rounded mass. rx is nearly half the height, so
+                it reads as a soft marshmallow instead of a rounded rectangle. */}
             <rect
-              x="9"
-              y="13"
-              width="30"
-              height="27"
-              rx="10"
+              x="7"
+              y="11"
+              width="34"
+              height="31"
+              rx="14"
               className="fill-(--pet-shell) stroke-(--pet-edge)"
-              strokeWidth="1.6"
+              strokeWidth="1.5"
+            />
+            {/* Underside shading — grounds the body so it is not a flat sticker. */}
+            <path
+              d="M8.6 33.5 Q24 44 39.4 33.5 Q39 42 24 42 Q9 42 8.6 33.5 Z"
+              className="fill-(--pet-shell-2)"
+              opacity="0.75"
+            />
+            {/* Glossy sheen, top-left, where a single light source would hit. */}
+            <ellipse
+              cx="16.4"
+              cy="17.6"
+              rx="5.4"
+              ry="3.1"
+              transform="rotate(-24 16.4 17.6)"
+              className="fill-(--pet-sheen)"
+              opacity="0.75"
             />
 
+            {/* Cheeks sit under the eyes and outside them — the blush is what
+                turns a face into a friendly one. */}
+            <ellipse
+              data-pet-blush-l
+              cx="12.9"
+              cy="32.4"
+              rx="3.3"
+              ry="2"
+              className="fill-(--pet-blush)"
+            />
+            <ellipse
+              data-pet-blush-r
+              cx="35.1"
+              cy="32.4"
+              rx="3.3"
+              ry="2"
+              className="fill-(--pet-blush)"
+            />
+
+            {/* Big eyes, set low and wide. Both are baby-schema cues. */}
             <g>
-              <circle data-pet-eye-l cx="18.6" cy="26" r="4.1" className="fill-(--pet-eye-bg)" />
+              <circle data-pet-eye-l cx="17.6" cy="26.6" r="5.2" className="fill-(--pet-eye-bg)" />
               <g data-pet-pupil-l>
-                <circle cx="18.6" cy="26" r="2.1" className="fill-(--pet-pupil)" />
-                <circle cx="19.5" cy="25.1" r="0.75" className="fill-(--pet-glint)" />
+                <circle cx="17.6" cy="26.6" r="2.7" className="fill-(--pet-pupil)" />
+                <circle cx="18.8" cy="25.4" r="1" className="fill-(--pet-glint)" />
+                <circle cx="16.5" cy="27.9" r="0.5" className="fill-(--pet-glint)" opacity="0.7" />
               </g>
               <rect
                 data-pet-lid
-                x="14.1"
-                y="21.4"
-                width="9"
-                height="5"
-                rx="2.4"
+                x="12.0"
+                y="21.0"
+                width="11.2"
+                height="6"
+                rx="3"
                 opacity="0"
                 className="fill-(--pet-shell)"
               />
             </g>
             <g>
-              <circle data-pet-eye-r cx="29.4" cy="26" r="4.1" className="fill-(--pet-eye-bg)" />
+              <circle data-pet-eye-r cx="30.4" cy="26.6" r="5.2" className="fill-(--pet-eye-bg)" />
               <g data-pet-pupil-r>
-                <circle cx="29.4" cy="26" r="2.1" className="fill-(--pet-pupil)" />
-                <circle cx="30.3" cy="25.1" r="0.75" className="fill-(--pet-glint)" />
+                <circle cx="30.4" cy="26.6" r="2.7" className="fill-(--pet-pupil)" />
+                <circle cx="31.6" cy="25.4" r="1" className="fill-(--pet-glint)" />
+                <circle cx="29.3" cy="27.9" r="0.5" className="fill-(--pet-glint)" opacity="0.7" />
               </g>
               <rect
                 data-pet-lid
-                x="24.9"
-                y="21.4"
-                width="9"
-                height="5"
-                rx="2.4"
+                x="24.8"
+                y="21.0"
+                width="11.2"
+                height="6"
+                rx="3"
                 opacity="0"
                 className="fill-(--pet-shell)"
               />
             </g>
 
             {/* Two mouths, toggled by opacity: a stroked curve and a filled "o".
-              Swapping `d` between a stroke and a fill shape does not work. */}
+                Swapping `d` between a stroke and a fill shape does not work. */}
             <path
               data-pet-mouth
               d={MOUTH.smile}
               className="stroke-(--pet-mouth)"
-              strokeWidth="1.8"
+              strokeWidth="1.7"
               strokeLinecap="round"
+              strokeLinejoin="round"
               fill="none"
             />
             <ellipse
               data-pet-mouth-open
               cx="24"
-              cy="35.4"
-              rx="2.6"
-              ry="3"
+              cy="35.6"
+              rx="2.3"
+              ry="2.7"
               opacity="0"
               className="fill-(--pet-mouth)"
             />

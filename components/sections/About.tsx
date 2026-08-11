@@ -80,17 +80,17 @@ export default function About() {
             </p>
 
             <div className="reveal reveal-delay-2 flex items-center gap-[1.1rem] rounded-2xl bg-[var(--bg-card)] bg-gradient-to-r from-accent/8 to-accent/3 px-[1.4rem] py-[1.1rem] transition-all duration-300">
-              <div className="h-[34px] w-[3px] shrink-0 rounded-full bg-gradient-to-b from-accent to-accent/50" />
+              <div className="h-8.5 w-[3px] shrink-0 rounded-full bg-linear-to-b from-accent to-accent/50" />
               <p className="text-[0.88rem] leading-[1.65] text-foreground italic">
                 &quot;We build tools that work for people, not the other way around.&quot;
               </p>
             </div>
 
-            <div className="reveal reveal-delay-3 mt-2 grid grid-cols-3 gap-[0.8rem]">
+            <div className="reveal reveal-delay-3 mt-2 grid-cols-3 gap-[0.8rem] flex sm:flex-wrap">
               {stats.map((s, i) => (
                 <div
                   key={s.label}
-                  className="card relative p-[1.1rem] text-center transition-all duration-300"
+                  className="card relative p-[1.1rem] text-center transition-all duration-300 flex-1"
                 >
                   <div className="relative mb-[0.35rem] font-display text-[1.6rem] leading-[1] font-extrabold text-accent">
                     {s.display

@@ -28,7 +28,7 @@ export const CONTAINER = "mx-auto max-w-[1180px] px-5 min-[769px]:px-8";
  * document wide and produce horizontal scroll. Clipping on the section contains
  * them, and does it for any decoration added later too.
  */
-export const SECTION = "relative z-[1] overflow-x-clip py-[clamp(5rem,11vh,9rem)]";
+export const SECTION = "relative z-[1] overflow-x-clip py-[clamp(2rem,11vh,1rem)]";
 export const EYEBROW = "font-display text-[0.68rem] font-bold tracking-[0.2em] uppercase";
 export const DISPLAY = "font-display font-extrabold tracking-[-0.02em] leading-[0.95] uppercase";
 export const DISPLAY_LG = "text-[clamp(2rem,8vw,3rem)] min-[769px]:text-[clamp(2.5rem,4vw,5rem)]";

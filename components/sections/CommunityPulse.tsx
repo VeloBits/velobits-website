@@ -152,7 +152,7 @@ export default function CommunityPulse() {
 
   return (
     <section id="community" className={SECTION} ref={sectionRef}>
-      <div className="pointer-events-none absolute top-[20%] left-1/2 h-[400px] w-[700px] -translate-x-1/2 bg-[radial-gradient(ellipse,rgb(from_var(--accent-ink)_r_g_b/0.04)_0%,transparent_70%)]" />
+      <div className="pointer-events-none absolute top-[20%] left-1/2 h-[400px] w-[700px] -translate-x-1/2 bg-[radial-gradient(ellipse,rgb(from_var(--accent-ink)_r_g_b/0.04)_0%,transparent_70%)]"/>
 
       <div className={`container ${CONTAINER} relative`}>
         <SectionHeader
@@ -274,7 +274,7 @@ export default function CommunityPulse() {
                 className="absolute left-[-9999px] h-0 w-0 opacity-0"
               />
 
-              <button type="submit" className="btn btn-primary self-start px-4 py-2 text-[0.78rem]">
+              <button data-pet-perch type="submit" className="btn btn-primary self-start px-4 py-2 text-[0.78rem]">
                 Submit Idea
               </button>
 

@@ -119,7 +119,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
               <p className="text-[0.9rem] leading-[1.72] text-muted">{p.longDescription}</p>
             </div>
             {p.tags.length > 0 && (
-              <div className="flex flex-wrap gap-[0.35rem]">
+              <div className="flex flex-wrap gap-[0.35rem]" data-pet-perch>
                 {p.tags.map((t) => (
                   <span
                     key={t}
@@ -176,7 +176,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
                 </div>
               )}
               {p.ctaLabel && (
-                <a href={p.ctaHref ?? "#"} className="btn btn-primary self-start text-[0.82rem]">
+                <a href={p.ctaHref ?? "#"} className="btn btn-primary self-start text-[0.82rem]" data-pet-perch>
                   {p.ctaLabel}
                   <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                     <path
