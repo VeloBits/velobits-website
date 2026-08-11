@@ -1,42 +1,299 @@
 @import "tailwindcss";
 
-/* ─────────────────────────────────────────────
-   DESIGN TOKENS
-───────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   VELOBITS DESIGN SYSTEM — dual mode (light + dark)
+   ═══════════════════════════════════════════════════════════════════════════
+
+   HOW THEMING WORKS
+   -----------------
+   Every colour token is declared ONCE using CSS `light-dark(lightValue, darkValue)`.
+   Which half resolves is decided by the used `color-scheme` of the element:
+
+     :root                      → `light`  → the default the product ships
+     :root[data-theme="light"]  → `light`  → explicit light
+     :root[data-theme="dark"]   → `dark`   → explicit dark
+
+   The OS preference is deliberately NOT consulted: light is the brand default,
+   and dark is something the visitor opts into.
+
+   Consequences worth knowing:
+     • No JS is needed for the default, so there is no theme flash on first
+       paint and no-JS visitors still get a correct, complete page.
+     • The toggle only has to set one attribute on <html>.
+     • Native UI (scrollbars, form controls, autofill) follows automatically
+       because `color-scheme` is the real CSS mechanism, not a class convention.
+
+   TWO GOTCHAS THAT ARE EASY TO REINTRODUCE (both verified in Chromium 148)
+   -----------------------------------------------------------------------
+   1. `light-dark()` is COLOUR-ONLY. Wrapping a whole shadow value —
+      `--shadow: light-dark(0 8px 30px #0001, 0 8px 30px #0009)` — silently
+      computes to `none`. So shadow GEOMETRY stays static and only the shadow
+      COLOUR is themed:  `box-shadow: 0 8px 30px var(--shadow-color)`.
+   2. Do not wrap `light-dark()` in a media query — it is not a media feature.
+
+   THE ACCENT IS ROLE-SPLIT (the crux of making this brand work in light mode)
+   --------------------------------------------------------------------------
+   Brand lime #c8f135 has a relative luminance of 0.754. Measured contrast:
+
+       lime on white  =  1.31:1   ← unusable for text, at any size
+       lime on paper  =  1.24:1   ← unusable
+       lime on #0a0a0a= 15.17:1   ← excellent
+       #0a0a0a on lime= 15.17:1   ← excellent
+
+   So the brand colour cannot simply invert. It is split by ROLE instead:
+
+       --accent-fill    #c8f135 in BOTH modes. Only ever a background/fill.
+       --accent-on-fill #0a0a0a in BOTH modes. The ink that sits on that fill.
+       --accent-ink     text/icons/hairlines. Dark olive #4d5c0a (7.00:1 AAA)
+                        in light mode, lime in dark mode.
+
+   That keeps the brand loud and recognisable on a light ground (lime buttons
+   and marks survive verbatim) while everything that must be *read* stays
+   legible. Alpha variants are derived from these tokens with
+   `rgb(from var(--token) r g b / α)` rather than being hand-written, which is
+   why swapping one token retints an entire mode.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 :root {
-  --bg: #0c0c0c;
-  --bg-card: #141414;
-  --bg-card-alt: #1a1a1a;
-  --accent: #c8f135;
-  --accent-dim: rgba(200, 241, 53, 0.1);
-  --accent-glow: rgba(200, 241, 53, 0.2);
-  --text: #f4f4f5;
-  --text-muted: #888888;
-  --text-faint: #3f3f3f;
-  --border: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(255, 255, 255, 0.13);
-  --radius-card: 24px;
+  /* LIGHT IS THE DEFAULT, deliberately — not `light dark`.
+     The brand ships light-first, so a visitor whose OS is dark still lands on
+     the light design unless they choose otherwise. `color-scheme: light` also
+     means every `light-dark()` pair below resolves to its light half with no
+     JS involved, so the correct theme is painted on the first frame. */
+  color-scheme: light;
+
+  /* ── Surfaces ───────────────────────────────────────────────────────────
+     Light is a warm paper stack (not pure white) so large fills read as
+     editorial rather than clinical. Dark is a near-black stack with real
+     separation between page / card / well. */
+  --surface-page: light-dark(#faf9f6, #0a0a0a);
+  --surface-1: light-dark(#ffffff, #121212); /* cards, raised panels     */
+  --surface-2: light-dark(#f2f0ea, #1a1a1a); /* wells, inputs, insets    */
+  --surface-3: light-dark(#e9e7df, #232323); /* hover / pressed          */
+  --surface-inverse: light-dark(#14140f, #f5f5f0); /* contrast blocks    */
+  --ink-inverse: light-dark(#faf9f6, #0a0a0a); /* text on the above      */
+
+  /* ── Ink ramp (measured against its own page colour) ────────────────────
+     light: 17.9 / 6.92 / 5.11 / 3.1      dark: 18.1 / 8.27 / 5.69 / 3.85 */
+  --ink: light-dark(#14140f, #f5f5f0); /* headings, primary body   */
+  --ink-2: light-dark(#57574f, #a8a8a0); /* secondary body           */
+  --ink-3: light-dark(#6b6b62, #8a8a82); /* meta, captions           */
+  --ink-4: light-dark(#8f8f85, #6e6e66); /* decorative / large only  */
+
+  /* ── Accent, split by role (see header) ─────────────────────────────────*/
+  --accent-fill: #c8f135; /* brand lime — fill only, both modes */
+  --accent-on-fill: #0a0a0a; /* ink on lime — 15.17:1, both modes  */
+  --accent-ink: light-dark(#4d5c0a, #c8f135); /* readable accent    */
+  --accent-ink-hover: light-dark(#3d4a08, #d8ff4a);
+
+  /* ── Hairlines ─────────────────────────────────────────────────────────
+     Alphas are deliberately NOT mirrored between modes. A white hairline on
+     near-black reads noticeably heavier than a black hairline on paper at the
+     same alpha, so every dark value is stepped DOWN. Mirroring them is what
+     makes naively-inverted dark themes look chunky and cheap. */
+  --line: light-dark(rgb(20 20 15 / 0.1), rgb(255 255 255 / 0.08));
+  --line-strong: light-dark(rgb(20 20 15 / 0.2), rgb(255 255 255 / 0.16));
+  --grid-line: light-dark(rgb(20 20 15 / 0.035), rgb(255 255 255 / 0.022));
+
+  /* ── Shadows: colour is themed, geometry is static (gotcha #1) ──────────
+     Light needs a tight, low-alpha shadow or cards look dirty. Dark needs a
+     wide, high-alpha shadow or elevation reads as nothing at all. */
+  --shadow-color: light-dark(rgb(28 28 20 / 0.08), rgb(0 0 0 / 0.5));
+  --shadow-color-strong: light-dark(rgb(28 28 20 / 0.14), rgb(0 0 0 / 0.65));
+
+  /* ── Translucent chrome (nav / overlays) ───────────────────────────────
+     These sit over live page content behind backdrop-filter, so they need
+     their own alpha rather than reusing the opaque surface stack. */
+  --surface-nav: light-dark(rgb(250 249 246 / 0.72), rgb(16 16 16 / 0.72));
+  --surface-nav-scrolled: light-dark(rgb(255 255 255 / 0.9), rgb(10 10 10 / 0.9));
+  --surface-overlay: light-dark(rgb(255 255 255 / 0.97), rgb(12 12 12 / 0.97));
+  --hover-wash: light-dark(rgb(20 20 15 / 0.06), rgb(255 255 255 / 0.07));
+
+  /* ── Feedback ──────────────────────────────────────────────────────────*/
+  --danger: light-dark(#a3341f, #ff8a8a);
+  --success: light-dark(#2f6b3f, #7fd9b4);
+
+  /* ── WebGL fabric ──────────────────────────────────────────────────────
+     The weave and its intersection nodes. Read as uniforms by
+     FabricBackground.tsx, so the render loop never branches on theme —
+     swapping these two values IS the light/dark implementation for the canvas.
+     Line alpha is stepped down in dark for the same reason hairlines are: a
+     light line on a dark ground reads heavier than the inverse. */
+  --fabric-line: light-dark(rgb(20 20 15 / 0.22), rgb(240 240 235 / 0.15));
+  --fabric-node: light-dark(rgb(77 92 10 / 0.62), rgb(200 241 53 / 0.5));
+
+  /* ── Scroll pet ────────────────────────────────────────────────────────
+     Its shell is the raised surface so it always reads as sitting ON the page,
+     and its eye whites stay light in both themes — dark eye-whites make a face
+     look unwell rather than friendly. */
+  --pet-shell: light-dark(#ffffff, #1c1c1c);
+  --pet-edge: light-dark(rgb(20 20 15 / 0.22), rgb(255 255 255 / 0.2));
+  --pet-limb: light-dark(#3a3a33, #cfcfc6);
+  --pet-eye-bg: light-dark(#ffffff, #f2f2ec);
+  /* The pupil sits on the light eye-white, so it stays dark in both themes. */
+  --pet-pupil: #14140f;
+  /* The MOUTH is drawn straight onto the shell, so unlike the pupil it must
+     flip with the shell — a #14140f mouth on the #1c1c1c dark shell was
+     invisible. This is the case that makes "same ink everywhere" wrong. */
+  --pet-mouth: light-dark(#14140f, #f2f2ec);
+  --pet-glint: light-dark(rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.85));
+  --pet-accent: var(--accent-fill);
+  /* Contact patch. It stays on the surface the pet is standing on, so during a
+     hop it slides to the landing spot while the pet arcs above it — that is the
+     cue that tells you where it is about to come down.
+
+     In dark mode this is a faint LIGHT pool, not a dark shadow. A black shadow
+     on a #121212 card is invisible, so it silently stopped doing its one job.
+     Contact on a dark ground has to read by lightening — the accent tint also
+     matches the fabric's connector nodes. */
+  --pet-shadow: light-dark(rgb(20 20 15 / 0.22), rgb(200 241 53 / 0.22));
+
+  /* ── ASCII field ───────────────────────────────────────────────────────
+     Ink for the dot-matrix backdrop. Themed as plain custom properties so the
+     render loop never branches on theme — swapping these IS the entire
+     light/dark implementation for the canvas.
+
+     Light is capped well below full strength on purpose: on paper, glyph ink
+     ADDS darkness, so a field that looks crisp on black turns to mud on white
+     unless total area coverage is limited. Dark needs no equivalent cap —
+     black ground already means "no ink", and that asymmetry is real. */
+  --ascii-ink: light-dark(rgb(20 20 15 / 0.5), rgb(245 245 240 / 0.44));
+  --ascii-ink-hot: light-dark(rgb(77 92 10 / 0.9), rgb(200 241 53 / 0.85));
+
+  /* ── Changelog category tones ──────────────────────────────────────────
+     Dark mode wants pastels (they glow on black); light mode needs the same
+     hue taken much darker or it vanishes on paper. Same hue, different value. */
+  --tone-feature: light-dark(#5b3fb8, #b9a6ff);
+  --tone-fix: light-dark(#1f6b52, #7fd9b4);
+
+  /* ── Derived accent alphas ─────────────────────────────────────────────
+     One source of truth per mode. Never hand-write rgba(200,241,53,…) again. */
+  --accent-a04: rgb(from var(--accent-ink) r g b / 0.04);
+  --accent-a08: rgb(from var(--accent-ink) r g b / 0.08);
+  --accent-a12: rgb(from var(--accent-ink) r g b / 0.12);
+  --accent-a20: rgb(from var(--accent-ink) r g b / 0.2);
+  --accent-a30: rgb(from var(--accent-ink) r g b / 0.3);
+  --accent-a45: rgb(from var(--accent-ink) r g b / 0.45);
+  --accent-a60: rgb(from var(--accent-ink) r g b / 0.6);
+
+  /* ── Radii ─────────────────────────────────────────────────────────────*/
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  --radius-card: 20px; /* legacy alias, still referenced in markup */
   --radius-pill: 9999px;
-  --font-display: "Syne", sans-serif;
+
+  /* ── Motion ────────────────────────────────────────────────────────────
+     Few curves, used consistently. `expo` for entrances (fast then settles),
+     `quart` for UI state, `inout` for reversible things. */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* power4.inOut. An ease census of the reference sites found this curve on
+     32 of 79 tweens — it is the house curve of this whole genre. Used for
+     anything that both starts and stops on screen. */
+  --ease-brand: cubic-bezier(0.76, 0, 0.24, 1);
+  --dur-fast: 160ms;
+  --dur-base: 300ms;
+  --dur-slow: 560ms;
+  --dur-reveal: 900ms;
+
+  /* ── Space ladder ──────────────────────────────────────────────────────
+     A ~1.5× geometric ladder. Every gap and pad on the page should be one of
+     these eight numbers — the reference sites each use exactly one such
+     ladder, which is most of why they feel systematic rather than assembled. */
+  --space-1: 0.25rem;
+  --space-2: 0.375rem;
+  --space-3: 0.5625rem;
+  --space-4: 0.875rem;
+  --space-5: 1.3125rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+
+  /* ── Fluid type scale ──────────────────────────────────────────────────
+     Each clamp is tuned so its MAX is reached at ~1180px — the same width the
+     content container caps at. Type therefore stops growing at exactly the
+     moment the grid stops growing, instead of drifting on past it on wide
+     monitors. (Solve: min + (vw coefficient × 11.8) = max.) */
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.0625rem;
+  --text-xl: clamp(1.2rem, 1.6vw, 1.45rem);
+  --text-2xl: clamp(1.45rem, 2.2vw, 2rem);
+  /* Minimums are sized so the longest heading line still fits a 390px phone
+     (≈350px of usable measure). A clamp floor that overflows is worse than no
+     clamp at all, because it cannot be escaped at any viewport. */
+  --text-3xl: clamp(1.6rem, 3.2vw, 2.75rem);
+  --text-4xl: clamp(1.75rem, 4.6vw, 4rem);
+  --text-5xl: clamp(2rem, 6.5vw, 5.5rem);
+
+  --font-display: var(--font-syne), "Syne", sans-serif;
+
+  /* ═══ LEGACY ALIASES ═══════════════════════════════════════════════════
+     The existing markup references these names directly via var() and via
+     Tailwind theme keys. Pointing them at the new tokens makes every
+     existing utility (text-muted, bg-card, border-border-subtle …) become
+     theme-aware without touching the component that uses it. */
+  --bg: var(--surface-page);
+  --bg-card: var(--surface-1);
+  --bg-card-alt: var(--surface-2);
+  --text: var(--ink);
+  --text-muted: var(--ink-2);
+  --text-faint: var(--ink-4);
+  --border: var(--line);
+  --border-hover: var(--line-strong);
+  --accent: var(--accent-ink); /* readable accent — used for SVG strokes */
+  --accent-dim: var(--accent-a12);
+  --accent-glow: var(--accent-a20);
+}
+
+/* An explicit choice pins the scheme and therefore pins every light-dark(). */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--bg);
-  --color-foreground: var(--text);
-  --color-card: var(--bg-card);
-  --color-card-alt: var(--bg-card-alt);
-  --color-accent: var(--accent);
-  --color-muted: var(--text-muted);
-  --color-faint: var(--text-faint);
-  --color-border-subtle: var(--border);
-  --color-border-strong: var(--border-hover);
+  --color-background: var(--surface-page);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface-1);
+  --color-card-alt: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-inverse: var(--surface-inverse);
+  --color-on-inverse: var(--ink-inverse);
+
+  --color-accent: var(--accent-ink);
+  --color-accent-fill: var(--accent-fill);
+  --color-on-accent: var(--accent-on-fill);
+
+  --color-muted: var(--ink-2);
+  --color-subtle: var(--ink-3);
+  --color-faint: var(--ink-4);
+
+  --color-border-subtle: var(--line);
+  --color-border-strong: var(--line-strong);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-display: "Syne", sans-serif;
+  --font-display: var(--font-syne), "Syne", sans-serif;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ─────────────────────────────────────────────
-   BASE — element resets & global defaults
+   BASE
 ───────────────────────────────────────────── */
 @layer base {
   *,
@@ -44,17 +301,21 @@
   *::after {
     box-sizing: border-box;
   }
+
   html {
     scroll-behavior: smooth;
-    cursor: none;
+    /* `overflow-x: hidden` on <body> ALONE does not clip page-level horizontal
+       overflow — the viewport scrolls <html>, so the scrollbar appears anyway.
+       It must be set here too.
+
+       `clip` rather than `hidden` on purpose: `hidden` on one axis forces the
+       other axis into a scroll container, which breaks `position: sticky`
+       descendants and can hijack scroll anchoring. `clip` constrains x only. */
+    overflow-x: clip;
   }
 
   section[id] {
     scroll-margin-top: 80px;
-  }
-
-  * {
-    cursor: none !important;
   }
 
   main,
@@ -64,18 +325,18 @@
   }
 
   body {
-    background: var(--bg);
-    color: var(--text);
+    background: var(--surface-page);
+    color: var(--ink);
     font-family: var(--font-geist-sans), sans-serif;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
-    overflow-x: hidden;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.008) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.008) 1px, transparent 1px);
-    background-size: 48px 48px;
-    background-attachment: fixed;
-    background-position: 0 1px;
+    overflow-x: clip;
+    /* The flat CSS grid that used to live here is gone — the WebGL fabric
+       (components/ui/FabricBackground.tsx) is the ground now. */
+    /* Theme swap should feel deliberate, not instant. */
+    transition:
+      background-color var(--dur-base) var(--ease-quart),
+      color var(--dur-base) var(--ease-quart);
   }
 
   h1,
@@ -85,22 +346,53 @@
     font-family: var(--font-display);
     font-weight: 800;
   }
+
+  /* ── Custom cursor gating ──────────────────────────────────────────────
+     Previously `* { cursor: none !important }` was unconditional while the
+     replacement ring was hidden under prefers-reduced-motion — which left
+     those users with NO visible pointer at all. The native cursor is now
+     only hidden when all three are true: a real replacement is mounted
+     (JS added .has-custom-cursor), the pointer is fine (not touch), and the
+     user has not asked for reduced motion. */
+  @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    html.has-custom-cursor,
+    html.has-custom-cursor body,
+    html.has-custom-cursor a,
+    html.has-custom-cursor button,
+    html.has-custom-cursor [role="button"] {
+      cursor: none;
+    }
+  }
+
+  /* Visible, themed focus ring everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--accent-ink);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  ::selection {
+    background: var(--accent-fill);
+    color: var(--accent-on-fill);
+  }
+
+  input,
+  textarea {
+    color: var(--ink);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--ink-4);
+  }
 }
 
 /* ─────────────────────────────────────────────
-   COMPONENTS — Tailwind utilities CAN override
+   COMPONENTS
 ───────────────────────────────────────────── */
 @layer components {
-  /* Typography (.display*, .eyebrow), layout (.container, .section) and .pill
-     base have moved to Tailwind utilities — see lib/ui-classes.ts. */
-
-  /* ── Blog article prose ──────────────────────
-     Vertical rhythm + defaults for Markdown-rendered articles (no
-     @tailwindcss/typography plugin). Per-element classes come from the
-     MarkdownContent react-markdown component map; this handles spacing and
-     any element the map doesn't explicitly style. */
+  /* ── Blog article prose ────────────────────── */
   .blog-prose {
-    color: var(--text);
+    color: var(--ink);
     font-size: 1.02rem;
     line-height: 1.8;
   }
@@ -114,7 +406,7 @@
     font-weight: 800;
     letter-spacing: -0.01em;
     line-height: 1.2;
-    color: var(--text);
+    color: var(--ink);
   }
   .blog-prose h2 {
     margin-top: 2.6rem;
@@ -126,10 +418,10 @@
   }
   .blog-prose p,
   .blog-prose li {
-    color: var(--text);
+    color: var(--ink-2);
   }
   .blog-prose a {
-    color: var(--accent);
+    color: var(--accent-ink);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
@@ -147,22 +439,22 @@
     margin-top: 0.5rem;
   }
   .blog-prose blockquote {
-    border-left: 3px solid var(--accent);
+    border-left: 3px solid var(--accent-ink);
     padding: 0.25rem 0 0.25rem 1.1rem;
-    color: var(--text-muted);
+    color: var(--ink-3);
     font-style: italic;
   }
   .blog-prose code {
-    font-family: var(--font-mono), monospace;
+    font-family: var(--font-geist-mono), monospace;
     font-size: 0.86em;
-    background: var(--bg-card-alt);
-    border: 1px solid var(--border);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
     border-radius: 6px;
     padding: 0.12em 0.4em;
   }
   .blog-prose pre {
-    background: var(--bg-card-alt);
-    border: 1px solid var(--border);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
     border-radius: 14px;
     padding: 1.1rem 1.25rem;
     overflow-x: auto;
@@ -175,43 +467,44 @@
     line-height: 1.6;
   }
 
-  /* ── highlight.js theme overrides (github-dark base + site palette) ── */
+  /* highlight.js — themed so code is legible on paper as well as on black. */
   .blog-prose .hljs {
-    background: var(--bg-card-alt);
-    color: #e2e8f0;
+    background: var(--surface-2);
+    color: var(--ink);
   }
   .blog-prose .hljs-keyword,
   .blog-prose .hljs-selector-tag,
   .blog-prose .hljs-built_in {
-    color: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 600;
   }
   .blog-prose .hljs-string,
   .blog-prose .hljs-attr {
-    color: #86efac;
+    color: light-dark(#2f6b3f, #86efac);
   }
   .blog-prose .hljs-comment,
   .blog-prose .hljs-quote {
-    color: #6b7280;
+    color: var(--ink-4);
     font-style: italic;
   }
   .blog-prose .hljs-number,
   .blog-prose .hljs-literal {
-    color: #fbbf24;
+    color: light-dark(#8a5a00, #fbbf24);
   }
   .blog-prose .hljs-function,
   .blog-prose .hljs-title {
-    color: #93c5fd;
+    color: light-dark(#1f4e8a, #93c5fd);
   }
   .blog-prose img {
     border-radius: 16px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
     max-width: 100%;
     height: auto;
   }
   .blog-prose hr {
     border: none;
     height: 1px;
-    background: var(--border);
+    background: var(--line);
   }
   .blog-prose table {
     width: 100%;
@@ -220,34 +513,42 @@
   }
   .blog-prose th,
   .blog-prose td {
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
     padding: 0.55rem 0.75rem;
     text-align: left;
   }
   .blog-prose th {
-    background: var(--bg-card-alt);
+    background: var(--surface-2);
     font-weight: 700;
   }
 
-  /* ── Cards ───────────────────────────────── */
+  /* ── Cards ─────────────────────────────────────────────────────────────
+     Light mode leans on a hairline + a tight shadow; dark mode leans on the
+     surface step + a wide shadow. Same class, different physics per mode. */
   .card {
     position: relative;
-    background: #141414;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border: 1px solid rgba(200, 241, 53, 0.15);
+    background: var(--surface-1);
+    border: 1px solid var(--line);
     border-radius: var(--radius-card);
+    box-shadow: 0 1px 2px var(--shadow-color);
     isolation: isolate;
     transition:
-      border-color 0.5s ease-out,
-      box-shadow 0.5s ease-out,
-      background-color 0.5s ease-out;
+      border-color var(--dur-base) var(--ease-quart),
+      box-shadow var(--dur-base) var(--ease-quart),
+      background-color var(--dur-base) var(--ease-quart),
+      transform var(--dur-base) var(--ease-quart);
+  }
+  .card:hover {
+    border-color: var(--line-strong);
+    box-shadow: 0 10px 34px var(--shadow-color);
   }
 
-  .card:hover {
-    border-color: rgba(200, 241, 53, 0.3);
-    background: rgba(20, 20, 20, 0.88);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  /* Accent-framed card (opt in) — replaces the old lime border on every card. */
+  .card-accent {
+    border-color: var(--accent-a30);
+  }
+  .card-accent:hover {
+    border-color: var(--accent-a45);
   }
 
   .card-glow {
@@ -258,14 +559,9 @@
     position: absolute;
     inset: -1px;
     border-radius: inherit;
-    background: linear-gradient(
-      135deg,
-      rgba(200, 241, 53, 0.15),
-      transparent 50%,
-      rgba(100, 60, 220, 0.08)
-    );
+    background: linear-gradient(135deg, var(--accent-a12), transparent 55%);
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity var(--dur-base) var(--ease-quart);
     pointer-events: none;
     z-index: 0;
   }
@@ -277,7 +573,7 @@
     z-index: 1;
   }
 
-  /* ── Buttons ─────────────────────────────── */
+  /* ── Buttons ───────────────────────────────────────────────────────────*/
   .btn {
     display: inline-flex;
     align-items: center;
@@ -287,13 +583,51 @@
     font-size: 0.88rem;
     font-weight: 600;
     cursor: pointer;
-    border: none;
-    transition: all 0.25s ease;
+    border: 1px solid transparent;
+    transition:
+      background-color var(--dur-fast) var(--ease-quart),
+      border-color var(--dur-fast) var(--ease-quart),
+      color var(--dur-fast) var(--ease-quart),
+      transform var(--dur-fast) var(--ease-quart),
+      box-shadow var(--dur-fast) var(--ease-quart);
     position: relative;
     overflow: hidden;
     text-decoration: none;
     white-space: nowrap;
   }
+
+  /* Primary stays LIME IN BOTH MODES with near-black ink on top (15.17:1).
+     This is what keeps the brand present on a light ground. */
+  .btn-primary {
+    background: var(--accent-fill);
+    color: var(--accent-on-fill);
+  }
+  .btn-primary:hover {
+    background: color-mix(in oklab, var(--accent-fill) 88%, white);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px var(--accent-a30);
+  }
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--line-strong);
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent-a45);
+    color: var(--accent-ink);
+    background: var(--accent-a04);
+    transform: translateY(-2px);
+  }
+
+  /* Sheen sweep. Kept subtle, and it no longer auto-fires on page load —
+     an unprompted animation on every button read as noise. */
   .btn::after {
     content: "";
     position: absolute;
@@ -301,45 +635,18 @@
     background: linear-gradient(
       110deg,
       transparent 25%,
-      rgba(255, 255, 255, 0.18) 50%,
+      rgb(255 255 255 / 0.22) 50%,
       transparent 75%
     );
     transform: translateX(-100%);
-    transition: transform 0.55s ease;
-    animation: btn-shimmer-load 1.5s ease 2s 1 forwards;
-  }
-  @keyframes btn-shimmer-load {
-    from {
-      transform: translateX(-100%);
-    }
-    to {
-      transform: translateX(100%);
-    }
+    transition: transform var(--dur-slow) var(--ease-quart);
+    pointer-events: none;
   }
   .btn:hover::after {
     transform: translateX(100%);
   }
-  .btn-primary {
-    background: var(--accent);
-    color: #0c0c0c;
-  }
-  .btn-primary:hover {
-    background: #d4ff4a;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 32px rgba(200, 241, 53, 0.28);
-  }
-  .btn-ghost {
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-  .btn-ghost:hover {
-    border-color: var(--border-hover);
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.03);
-  }
 
-  /* ── Pills / Badges (.pill base → utilities; .pill-dot stays for ::before) ── */
+  /* ── Pills ─────────────────────────────────────────────────────────────*/
   .pill-dot::before {
     content: "";
     width: 6px;
@@ -350,37 +657,187 @@
     animation: pulse-dot 2s ease-in-out infinite;
   }
 
-  /* ── Scroll reveal ───────────────────────── */
+  /* ── Hairline rule ─────────────────────────────────────────────────────*/
+  .rule {
+    height: 1px;
+    background: var(--line);
+    border: 0;
+  }
+
+  /* ── Underline-only fields ─────────────────────────────────────────────
+     Boxed inputs import a generic form look that fights a hairline-driven
+     layout. An underline uses the vocabulary the rest of the page already
+     speaks. The rest state is deliberately ABOVE decorative-hairline alpha:
+     a border that marks an interactive affordance has to be perceivable, not
+     merely present. */
+  .field {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--line-strong);
+    border-radius: 0;
+    padding: 0.6rem 0;
+    color: var(--ink);
+    font: inherit;
+    outline: none;
+    transition:
+      border-color var(--dur-base) var(--ease-quart),
+      background-color var(--dur-base) var(--ease-quart);
+  }
+  .field:hover {
+    border-bottom-color: var(--accent-a45);
+  }
+  .field:focus {
+    border-bottom-color: var(--accent-ink);
+    border-bottom-width: 2px;
+    padding-bottom: calc(0.6rem - 1px);
+  }
+  .field::placeholder {
+    color: var(--ink-4);
+  }
+
+  /* ── Uppercase micro-label ─────────────────────────────────────────────
+     The reference sites all pair tight NEGATIVE tracking on display type with
+     open POSITIVE tracking on small uppercase labels (+0.03em to +0.09em).
+     At 11–12px uppercase, letterspacing is what separates "label" from
+     "shouting". */
+  .label {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* Technical/telemetry micro-label. Both reference studios reserve a mono
+     face for text that reports a fact (status, count, timestamp) as opposed
+     to text that speaks — it is the single detail that makes a page read as
+     an instrument rather than a brochure.
+
+     The tracking is deliberately NEGATIVE. Monospace already carries generous
+     built-in side bearings; adding positive tracking on top is what makes
+     small mono look like a code listing instead of a label. */
+  .label-mono {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* ── Masked line reveal ────────────────────────────────────────────────
+     Text rises out of an overflow-clipped box rather than merely fading —
+     the signature entrance of every site studied.
+
+     The .15em padding / -.15em margin pair is the important detail: without
+     it the overflow mask guillotines descenders (g, y, p). Padding grows the
+     child so the descender clears the clip; the negative margin removes that
+     growth from layout, so line height is unchanged. */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    margin-bottom: -0.15em;
+  }
+  .line-mask > * {
+    display: block;
+    padding-bottom: 0.15em;
+  }
+  /* IMPORTANT — the MASK carries data-reveal, not the line inside it.
+     IntersectionObserver accounts for ancestor clipping: a child parked at
+     translateY(105%) inside `overflow:hidden` has an empty visible rect, so it
+     NEVER reports as intersecting and would stay hidden forever. Observing the
+     mask (which is always in flow) and animating its child fixes that.
+
+     The mask itself must therefore opt out of the generic reveal transform. */
+  [data-reveal="line"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .line-mask > * {
+    transform: translateY(105%);
+    transition: transform var(--dur-reveal) var(--ease-brand);
+    transition-delay: calc(var(--reveal-i, 0) * 90ms);
+  }
+  .line-mask.is-in > * {
+    transform: translateY(0);
+  }
+  /* Legacy trigger, still used by sections not yet on data-reveal. */
+  .line-mask.visible > *,
+  .visible .line-mask > * {
+    transform: translateY(0);
+  }
+
+  /* ── Scroll reveal (driven by ScrollReveal.tsx) ────────────────────────
+     Stagger is a CSS transition-delay off the element's index rather than a
+     chain of setTimeouts, so it stays frame-accurate under load. */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity var(--dur-reveal) var(--ease-expo),
+      transform var(--dur-reveal) var(--ease-expo);
+    transition-delay: calc(var(--reveal-i, 0) * 80ms);
+    will-change: opacity, transform;
+  }
+  [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+  /* Variants */
+  [data-reveal="rise"] {
+    transform: translateY(44px);
+  }
+  [data-reveal="left"] {
+    transform: translateX(-34px);
+  }
+  [data-reveal="scale"] {
+    transform: scale(0.96);
+  }
+  [data-reveal="clip"] {
+    opacity: 1;
+    clip-path: inset(0 0 100% 0);
+    transform: none;
+    transition: clip-path var(--dur-reveal) var(--ease-brand);
+    transition-delay: calc(var(--reveal-i, 0) * 80ms);
+  }
+  [data-reveal="clip"].is-in {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* ── Legacy reveal classes (still used by a few sections) ──────────────*/
   .reveal {
     opacity: 0;
-    transform: translateY(48px);
+    transform: translateY(28px);
     transition:
-      opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity var(--dur-reveal) var(--ease-expo),
+      transform var(--dur-reveal) var(--ease-expo);
   }
   .reveal.visible {
     opacity: 1;
     transform: translateY(0);
   }
   .reveal-delay-1 {
-    transition-delay: 0.1s;
+    transition-delay: 0.08s;
   }
   .reveal-delay-2 {
-    transition-delay: 0.2s;
+    transition-delay: 0.16s;
   }
   .reveal-delay-3 {
-    transition-delay: 0.3s;
+    transition-delay: 0.24s;
   }
   .reveal-delay-4 {
-    transition-delay: 0.42s;
+    transition-delay: 0.32s;
   }
 
   .reveal-left {
     opacity: 0;
-    transform: translateX(-40px);
+    transform: translateX(-32px);
     transition:
-      opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity var(--dur-reveal) var(--ease-expo),
+      transform var(--dur-reveal) var(--ease-expo);
   }
   .reveal-left.visible {
     opacity: 1;
@@ -389,133 +846,94 @@
 
   .reveal-scale {
     opacity: 0;
-    transform: scale(0.88);
+    transform: scale(0.94);
     transition:
-      opacity 0.6s ease,
-      transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      opacity var(--dur-slow) var(--ease-quart),
+      transform var(--dur-slow) var(--ease-spring);
   }
   .reveal-scale.visible {
     opacity: 1;
     transform: scale(1);
   }
 
-  /* ── Poll bars ───────────────────────────── */
+  /* ── Poll bars ─────────────────────────────────────────────────────────*/
   .poll-bar-track {
     width: 100%;
     height: 3px;
-    background: var(--bg-card-alt);
+    background: var(--surface-3);
     border-radius: 9999px;
     overflow: hidden;
   }
   .poll-bar-fill {
     height: 100%;
     border-radius: 9999px;
-    background: var(--accent);
+    background: var(--accent-ink);
     width: 0%;
-    transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 1.4s var(--ease-expo);
   }
 
-  /* ── Cursor glow ─────────────────────────── */
+  /* ── Custom cursor ─────────────────────────────────────────────────────
+     Uses the readable accent so it is a soft olive on paper and lime on
+     black — a lime ring on white would be effectively invisible. */
   #cursor-glow {
     position: fixed;
     top: 0;
     left: 0;
-    width: 560px;
-    height: 560px;
+    width: 460px;
+    height: 460px;
     border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      rgba(200, 241, 53, 0.1) 0%,
-      rgba(200, 241, 53, 0.04) 45%,
-      transparent 70%
-    );
+    background: radial-gradient(circle, var(--accent-a08) 0%, transparent 68%);
     pointer-events: none;
     z-index: 0;
     transform: translate(-50%, -50%);
-    filter: blur(24px);
+    filter: blur(26px);
   }
 
-  /* Inner sharp ring — tight, bright, follows cursor with lerp */
   #cursor-ring-inner {
     position: fixed;
     top: 0;
     left: 0;
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    border: 1.5px solid rgba(200, 241, 53, 0.7);
+    border: 1.5px solid var(--accent-a60);
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
-    box-shadow:
-      0 0 8px rgba(200, 241, 53, 0.4),
-      inset 0 0 6px rgba(200, 241, 53, 0.15);
-    animation: ring-pulse-inner 2.4s ease-in-out infinite;
   }
 
-  /* Outer faint ring — wider, slow pulse */
   #cursor-ring-outer {
     position: fixed;
     top: 0;
     left: 0;
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    border: 1px solid rgba(200, 241, 53, 0.25);
+    border: 1px solid var(--accent-a20);
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
-    animation: ring-pulse-outer 2.4s ease-in-out infinite;
-  }
-
-  @keyframes ring-pulse-inner {
-    0%,
-    100% {
-      opacity: 0.9;
-      width: 36px;
-      height: 36px;
-    }
-    50% {
-      opacity: 0.6;
-      width: 32px;
-      height: 32px;
-    }
+    animation: ring-pulse-outer 2.8s ease-in-out infinite;
   }
 
   @keyframes ring-pulse-outer {
     0%,
     100% {
-      opacity: 0.35;
-      width: 72px;
-      height: 72px;
+      opacity: 0.5;
+      width: 64px;
+      height: 64px;
     }
     50% {
-      opacity: 0.15;
-      width: 84px;
-      height: 84px;
+      opacity: 0.22;
+      width: 76px;
+      height: 76px;
     }
   }
 
-  /* Highlighted grid layer — #c8f135 grid lines revealed only within cursor radius.
-     mask-image is set inline by CursorGlow.tsx on every frame. */
-  #cursor-grid-highlight {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image:
-      linear-gradient(rgba(200, 241, 53, 0.9) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(200, 241, 53, 0.9) 1px, transparent 1px);
-    background-size: 48px 48px;
-    background-position: 0 1px;
-    /* fully hidden by default; JS sets mask to reveal within cursor radius */
-    mask-image: radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%);
-    -webkit-mask-image: radial-gradient(circle 0px at -999px -999px, black 0%, transparent 0%);
-  }
 } /* end @layer components */
 
 /* ─────────────────────────────────────────────
-   KEYFRAMES — global, no layer needed
+   KEYFRAMES
 ───────────────────────────────────────────── */
 @keyframes pulse-dot {
   0%,
@@ -626,8 +1044,6 @@
     opacity: 0;
   }
 }
-
-/* Mobile menu slide in */
 @keyframes menu-slide-in {
   from {
     opacity: 0;
@@ -638,8 +1054,6 @@
     transform: translateY(0) scale(1);
   }
 }
-
-/* Glow pulse animation */
 @keyframes glow-pulse {
   0%,
   100% {
@@ -649,8 +1063,6 @@
     opacity: 1;
   }
 }
-
-/* Soft shimmer animation */
 @keyframes shimmer-sweep {
   0% {
     transform: translateX(-100%);
@@ -659,8 +1071,6 @@
     transform: translateX(100%);
   }
 }
-
-/* Subtle scale animation */
 @keyframes scale-pulse {
   0%,
   100% {
@@ -670,8 +1080,16 @@
     transform: scale(1.02);
   }
 }
-
-/* Fade in up */
+/* `fade-in` was referenced by Waitlist but never defined — the animation was
+   a silent no-op. Defined here. */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -682,8 +1100,6 @@
     transform: translateY(0);
   }
 }
-
-/* Fade in down */
 @keyframes fade-in-down {
   from {
     opacity: 0;
@@ -694,12 +1110,6 @@
     transform: translateY(0);
   }
 }
-
-/* ─────────────────────────────────────────────
-   CARD FLOAT — every card gently floats.
-   Unlayered (like the former CommunityPulse <style> inject) so it
-   takes precedence over Tailwind utility classes, matching prior behavior.
-───────────────────────────────────────────── */
 @keyframes soft-float {
   0%,
   100% {
@@ -709,18 +1119,11 @@
     transform: translateY(-2px);
   }
 }
-.card {
-  animation: soft-float 3.5s ease-in-out infinite;
-}
-.community-grid > div:first-child {
-  animation-delay: 0s;
-}
-.community-grid > div:last-child {
-  animation-delay: 0.2s;
-}
 
 /* ─────────────────────────────────────────────
    REDUCED MOTION
+   Ambient/decorative motion is removed outright; state transitions are kept
+   but collapsed so focus and hover still register as feedback.
 ───────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -731,10 +1134,20 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  /* Reveals must not be left mid-animation when their transition is disabled —
+     otherwise reduced-motion users get invisible or clipped content. */
+  .reveal,
+  .reveal-left,
+  .reveal-scale,
+  [data-reveal],
+  .line-mask > * {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
   #cursor-glow,
   #cursor-ring-inner,
-  #cursor-ring-outer,
-  #cursor-grid-highlight {
+  #cursor-ring-outer {
     display: none !important;
   }
 }

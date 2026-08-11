@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 import { products, type Product } from "@/lib/site-content";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 import ProductIcon from "@/components/ui/ProductIcon";
-import { CONTAINER, SECTION, EYEBROW, DISPLAY, DISPLAY_LG, PILL_BASE } from "@/lib/ui-classes";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { CONTAINER, SECTION, PILL_BASE } from "@/lib/ui-classes";
 
 export default function Products() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -32,18 +33,12 @@ export default function Products() {
   return (
     <section id="products" className={SECTION} ref={sectionRef}>
       <div className={`container ${CONTAINER}`}>
-        <div className="mb-14 flex flex-wrap items-end justify-between gap-4">
-          <div className="reveal">
-            <span className={`eyebrow ${EYEBROW} text-muted`}>Our Products</span>
-            <h2 className={`${DISPLAY} ${DISPLAY_LG} text-foreground mt-[0.65rem]`}>
-              Tools that <span className="text-accent">actually</span> work.
-            </h2>
-          </div>
-          <p className="reveal reveal-delay-2 max-w-[36ch] text-[0.9rem] leading-[1.75] text-muted">
-            Every Velobits product starts with a real problem. No bloat. No vaporware. Just bits
-            that matter.
-          </p>
-        </div>
+        <SectionHeader
+          index="01"
+          eyebrow="Our Products"
+          titleLines={["Tools that", "actually work."]}
+          lede="Every Velobits product starts with a real problem. No bloat. No vaporware. Just bits that matter."
+        />
 
         <div className="products-grid grid grid-cols-1 md:grid-cols-2 items-stretch gap-5">
           {products.map((p, idx) => (
@@ -58,10 +53,10 @@ export default function Products() {
 function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const isAccent = p.statusColor === "#c8f135";
+  const isAccent = p.statusTone === "accent";
   const statusClass = isAccent
-    ? "bg-[rgba(200,241,53,0.09)] border-[rgba(200,241,53,0.25)] text-accent"
-    : "bg-[rgba(255,255,255,0.04)] border-[rgba(200,241,53,0.25)] text-muted";
+    ? "bg-accent/9 border-accent/25 text-accent"
+    : "bg-foreground/4 border-accent/25 text-muted";
 
   const tilt = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current;
@@ -88,14 +83,14 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
         ref={cardRef}
         onMouseMove={tilt}
         onMouseLeave={resetTilt}
-        style={{ borderColor: "rgba(200,241,53,0.3)" }}
-        className={`card card-glow reveal ${delayClass} col-span-1 md:col-span-2 relative flex flex-col overflow-hidden p-8 md:p-10 border-2 [will-change:transform] transition-all duration-500 ease-out hover:border-[rgba(200,241,53,0.45)] hover:shadow-[0_16px_48px_rgba(200,241,53,0.15)]`}
+        style={{ borderColor: "rgb(from var(--accent-ink) r g b / 0.3)" }}
+        className={`card card-glow reveal ${delayClass} col-span-1 md:col-span-2 relative flex flex-col overflow-hidden p-8 md:p-10 border-2 [will-change:transform] transition-all duration-500 ease-out`}
       >
         <GlowingEffect spread={50} proximity={80} inactiveZone={0.01} />
 
         {/* Background glow */}
         <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(200,241,53,0.05)_0%,transparent_60%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgb(from_var(--accent-ink)_r_g_b/0.05)_0%,transparent_60%)]"
           aria-hidden="true"
         />
 
@@ -106,7 +101,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
             &nbsp;{p.status}
           </span>
           <div
-            className="flex items-center justify-center rounded-xl border-2 border-[rgba(200,241,53,0.25)] h-[42px] w-[42px] bg-gradient-to-br from-[rgba(200,241,53,0.15)] to-[rgba(200,241,53,0.05)] text-[1.35rem] transition-all duration-500 ease-in-out hover:scale-[1.1] hover:border-[rgba(200,241,53,0.4)] hover:shadow-[0_0_16px_rgba(200,241,53,0.2)]"
+            className="flex items-center justify-center rounded-xl h-[42px] w-[42px] bg-gradient-to-br from-accent/15 to-accent/5 text-[1.35rem] transition-all duration-500 ease-in-out hover:scale-[1.1] hover:shadow-[0_0_16px_rgb(from_var(--accent-ink)_r_g_b/0.2)]"
             aria-hidden="true"
           >
             <ProductIcon id={p.id} size={22} />
@@ -128,7 +123,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
                 {p.tags.map((t) => (
                   <span
                     key={t}
-                    className={`pill ${PILL_BASE} bg-card text-[0.66rem] text-accent border-[rgba(200,241,53,0.25)]`}
+                    className={`pill ${PILL_BASE} bg-card text-[0.66rem] text-accent border-accent/25`}
                   >
                     #{t}
                   </span>
@@ -138,7 +133,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
           </div>
 
           {/* Column divider */}
-          <div className="hidden md:block w-[1px] shrink-0 bg-[rgba(255,255,255,0.05)]" />
+          <div className="hidden md:block w-[1px] shrink-0 bg-foreground/5" />
 
           {/* Right: features + metric + CTA */}
           <div className="flex flex-1 flex-col gap-[1.2rem] md:pl-2">
@@ -176,7 +171,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
                     </span>
                   </div>
                   <div className="poll-bar-track h-[5px]">
-                    <div className="poll-bar-fill w-[98%] bg-[linear-gradient(90deg,var(--accent),rgba(200,241,53,0.6))]" />
+                    <div className="poll-bar-fill w-[98%] bg-[linear-gradient(90deg,var(--accent),rgb(from_var(--accent-ink)_r_g_b/0.6))]" />
                   </div>
                 </div>
               )}
@@ -207,7 +202,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
       ref={cardRef}
       onMouseMove={tilt}
       onMouseLeave={resetTilt}
-      className={`card card-glow reveal ${delayClass} col-span-1 relative flex flex-col gap-[1.2rem] overflow-hidden p-7 border-2 border-[rgba(200,241,53,0.15)] [will-change:transform] transition-all duration-500 ease-out hover:border-[rgba(200,241,53,0.3)] hover:shadow-[0_8px_32px_rgba(200,241,53,0.1)] ${p.id === "suite" ? "opacity-85" : "opacity-100"}`}
+      className={`card card-glow reveal ${delayClass} col-span-1 relative flex flex-col gap-[1.2rem] overflow-hidden p-7 [will-change:transform] transition-all duration-500 ease-out ${p.id === "suite" ? "opacity-85" : "opacity-100"}`}
     >
       <GlowingEffect spread={40} proximity={64} inactiveZone={0.01} />
 
@@ -216,7 +211,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
         className={`pointer-events-none absolute inset-0 ${
           p.id === "suite"
             ? "animate-[glow-pulse_6s_ease-in-out_infinite] bg-[radial-gradient(circle_at_85%_15%,rgba(100,60,220,0.09)_0%,transparent_60%)]"
-            : "animate-[glow-pulse_4s_ease-in-out_infinite] bg-[radial-gradient(circle_at_85%_15%,rgba(200,241,53,0.05)_0%,transparent_60%)]"
+            : "animate-[glow-pulse_4s_ease-in-out_infinite] bg-[radial-gradient(circle_at_85%_15%,rgb(from_var(--accent-ink)_r_g_b/0.05)_0%,transparent_60%)]"
         }`}
         aria-hidden="true"
       />
@@ -227,7 +222,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
           {isAccent && <span className="pill-dot" />}&nbsp;{p.status}
         </span>
         <div
-          className={`flex items-center justify-center rounded-xl border-2 border-[rgba(200,241,53,0.2)] h-10 w-10 bg-gradient-to-br from-[rgba(200,241,53,0.08)] to-transparent text-[1.15rem] transition-all duration-500 ease-in-out hover:scale-[1.1] hover:border-[rgba(200,241,53,0.35)] hover:shadow-[0_0_12px_rgba(200,241,53,0.15)] ${p.id === "suite" ? "animate-[glow-pulse_5s_ease-in-out_infinite]" : "animate-[glow-pulse_2.5s_ease-in-out_infinite]"}`}
+          className={`flex items-center justify-center rounded-xl h-10 w-10 bg-gradient-to-br from-accent/8 to-transparent text-[1.15rem] transition-all duration-500 ease-in-out hover:scale-[1.1] hover:shadow-[0_0_12px_rgb(from_var(--accent-ink)_r_g_b/0.15)] ${p.id === "suite" ? "animate-[glow-pulse_5s_ease-in-out_infinite]" : "animate-[glow-pulse_2.5s_ease-in-out_infinite]"}`}
           aria-hidden="true"
         >
           <ProductIcon id={p.id} size={20} />
@@ -236,10 +231,10 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
 
       {/* Name + description */}
       <div>
-        <h3 className="mb-[0.55rem] font-[var(--font-display)] text-[1.15rem] text-[rgba(244,244,245,0.9)] uppercase tracking-[-0.01em]">
+        <h3 className="mb-[0.55rem] font-[var(--font-display)] text-[1.15rem] text-foreground/90 uppercase tracking-[-0.01em]">
           {p.name}
         </h3>
-        <p className="text-[0.83rem] leading-[1.72] text-[rgba(244,244,245,0.62)]">
+        <p className="text-[0.83rem] leading-[1.72] text-foreground/62">
           {p.longDescription}
         </p>
       </div>
@@ -250,7 +245,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
           {p.tags.map((t) => (
             <span
               key={t}
-              className={`pill ${PILL_BASE} bg-card text-[0.66rem] text-accent border-[rgba(200,241,53,0.25)]`}
+              className={`pill ${PILL_BASE} bg-card text-[0.66rem] text-accent border-accent/25`}
             >
               #{t}
             </span>

@@ -55,3 +55,5 @@ next-env.d.ts
 .playwright-mcp/
 playwright-report/
 test-results/
+# design research scratch (Playwright probes + screenshots)
+.design-research/

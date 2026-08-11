@@ -1,6 +1,7 @@
-import { EYEBROW } from "@/lib/ui-classes";
+
 import PostCard from "./PostCard";
 import type { BlogPostMeta } from "@/lib/blog";
+import { EYEBROW } from "@/lib/ui-classes";
 
 /** "Related posts" grid — same card/grid style as the blog index. */
 export default function RelatedPosts({ posts }: { posts: BlogPostMeta[] }) {

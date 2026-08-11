@@ -1,10 +1,11 @@
 import { updateTypeMeta, type Update, type UpdateType } from "@/lib/site-content";
 
 const typeStyles: Record<UpdateType, string> = {
-  launch: "border-[rgba(200,241,53,0.4)] bg-[var(--accent-dim)] text-accent",
-  feature: "border-[rgba(140,100,255,0.4)] bg-[rgba(140,100,255,0.12)] text-[#b9a6ff]",
-  update: "border-[rgba(255,255,255,0.16)] bg-[rgba(255,255,255,0.05)] text-muted",
-  fix: "border-[rgba(90,200,160,0.4)] bg-[rgba(90,200,160,0.12)] text-[#7fd9b4]",
+  launch: "border-accent/40 bg-[var(--accent-a12)] text-accent",
+  feature:
+    "border-[rgb(from_var(--tone-feature)_r_g_b/0.4)] bg-[rgb(from_var(--tone-feature)_r_g_b/0.12)] text-[var(--tone-feature)]",
+  update: "border-foreground/16 bg-foreground/5 text-muted",
+  fix: "border-[rgb(from_var(--tone-fix)_r_g_b/0.4)] bg-[rgb(from_var(--tone-fix)_r_g_b/0.12)] text-[var(--tone-fix)]",
 };
 
 function formatDate(iso: string): string {
@@ -55,7 +56,7 @@ export default function UpdatesList({ updates }: { updates: Update[] }) {
               >
                 {meta.label}
               </span>
-              {date && <span className="text-[0.72rem] text-faint">{date}</span>}
+              {date && <span className="text-[0.72rem] text-subtle">{date}</span>}
             </div>
             <h3 className="font-display text-[1.05rem] leading-[1.4] font-extrabold tracking-[-0.01em] text-foreground">
               {u.title}

@@ -15,7 +15,20 @@
  * (incl. iPad's 768) on the mobile value, matching the original exactly.
  */
 export const CONTAINER = "mx-auto max-w-[1180px] px-5 min-[769px]:px-8";
-export const SECTION = "relative z-[1] py-[4.5rem] min-[769px]:py-28";
+/**
+ * Section rhythm is viewport-relative, not a fixed padding. Every reference
+ * site studied sizes its vertical rhythm in viewport units so sections read as
+ * discrete full-height moments rather than stacked blocks — the clamp keeps it
+ * sane on short laptops and very tall monitors.
+ */
+/**
+ * `overflow-x-clip` is load-bearing, not cosmetic. Sections carry oversized
+ * decorative glows (600–700px ellipses positioned with `left-1/2` or negative
+ * offsets) which are wider than a phone viewport and would otherwise push the
+ * document wide and produce horizontal scroll. Clipping on the section contains
+ * them, and does it for any decoration added later too.
+ */
+export const SECTION = "relative z-[1] overflow-x-clip py-[clamp(5rem,11vh,9rem)]";
 export const EYEBROW = "font-display text-[0.68rem] font-bold tracking-[0.2em] uppercase";
 export const DISPLAY = "font-display font-extrabold tracking-[-0.02em] leading-[0.95] uppercase";
 export const DISPLAY_LG = "text-[clamp(2rem,8vw,3rem)] min-[769px]:text-[clamp(2.5rem,4vw,5rem)]";
@@ -23,7 +36,7 @@ export const DISPLAY_MD = "text-[clamp(1.8rem,2.5vw,3rem)]";
 // Arbitrary gradient (not bg-gradient-to-r) to keep the original sRGB interpolation —
 // Tailwind's gradient utilities interpolate in oklab, which alters a transparent→color ramp.
 export const DIVIDER =
-  "h-0.5 opacity-50 bg-[linear-gradient(to_right,transparent,#c8f135,transparent)]";
+  "h-0.5 opacity-50 bg-[linear-gradient(to_right,transparent,var(--accent-ink),transparent)]";
 
 /**
  * Pill base: layout / shape / weight only. bg, border-color, text-color and
