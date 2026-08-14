@@ -29,6 +29,20 @@ function registerDomMocks() {
     }),
   });
 
+  // jsdom doesn't implement ResizeObserver either. ScrollPet uses one to re-measure
+  // its perches when layout changes, so without this the whole page suite throws.
+  const _roObserve = vi.fn();
+  const _roUnobserve = vi.fn();
+  const _roDisconnect = vi.fn();
+
+  Object.defineProperty(window, "ResizeObserver", {
+    writable: true,
+    configurable: true,
+    value: vi.fn(function () {
+      return { observe: _roObserve, unobserve: _roUnobserve, disconnect: _roDisconnect };
+    }),
+  });
+
   // jsdom doesn't implement matchMedia; mock it so media-query-driven effects don't throw.
   Object.defineProperty(window, "matchMedia", {
     writable: true,

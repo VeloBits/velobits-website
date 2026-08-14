@@ -124,14 +124,23 @@ export default function ScrollPet() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     // ── perches ──────────────────────────────────────────────────────────
-    let perches: HTMLElement[] = [];
-    const collect = () => {
-      perches = Array.from(document.querySelectorAll<HTMLElement>(PERCH_SELECTOR)).filter(
-        (el) => el.offsetParent !== null
-      );
-    };
-    collect();
-    if (!perches.length) return;
+    /**
+     * Perches are cached in DOCUMENT space, not viewport space.
+     *
+     * The frame loop previously called getBoundingClientRect() every frame to
+     * follow the perch edge, which forces a synchronous layout on every frame
+     * of every scroll — the classic mobile jank source. Document-space `docTop`
+     * is stable while scrolling (reveals animate transform/opacity, neither of
+     * which affects layout), so the live edge is just `docTop - scrollY`: no
+     * layout read at all during scroll.
+     */
+    type Perch = { el: HTMLElement; docTop: number; left: number; width: number; frac: number };
+    let perches: Perch[] = [];
+
+    /* Landing fractions are keyed to the ELEMENT, so a perch keeps its spot for
+       the life of the page even when the list is re-measured. */
+    const fracIndex = new WeakMap<HTMLElement, number>();
+    let fracSeq = 0;
 
     /** Uniform scale for the whole pet, recomputed on resize. */
     let scale = 1;
@@ -141,51 +150,105 @@ export default function ScrollPet() {
     syncScale();
 
     /**
-     * The GROUND point the pet stands on: a spot along the top edge of a perch,
-     * clamped horizontally so the body stays on screen at any viewport width.
-     * Returned in ground coords (where the soles go), not box coords.
+     * Document-space box via the offset chain rather than getBoundingClientRect.
+     *
+     * This matters: getBoundingClientRect() includes TRANSFORMS. Perches that
+     * are still waiting to reveal are translated down (`.reveal` is
+     * translateY(28px)), so measuring them that way cached a position 28px below
+     * their real one — and once they revealed, the pet stood exactly 28px under
+     * the edge. offsetTop/offsetLeft report LAYOUT position and ignore
+     * transforms, which is what "where does this component actually sit" means.
      */
-    const groundOf = (el: HTMLElement, i: number) => {
-      const r = el.getBoundingClientRect();
+    const offsetBox = (el: HTMLElement) => {
+      let top = 0;
+      let left = 0;
+      let n: HTMLElement | null = el;
+      while (n) {
+        top += n.offsetTop;
+        left += n.offsetLeft;
+        n = n.offsetParent as HTMLElement | null;
+      }
+      return { top, left, width: el.offsetWidth };
+    };
+
+    const measure = () => {
       const table =
         document.documentElement.clientWidth < SMALL_SCREEN
           ? LANDING_FRACTIONS_SM
           : LANDING_FRACTIONS;
-      const frac = table[i % table.length];
-      const gx = r.left + r.width * frac;
+      perches = Array.from(document.querySelectorAll<HTMLElement>(PERCH_SELECTOR))
+        .filter((el) => el.offsetParent !== null)
+        .map((el) => {
+          let fi = fracIndex.get(el);
+          if (fi === undefined) {
+            fi = fracSeq++;
+            fracIndex.set(el, fi);
+          }
+          const box = offsetBox(el);
+          return {
+            el,
+            docTop: box.top,
+            left: box.left,
+            width: box.width,
+            frac: table[fi % table.length],
+          };
+        });
+    };
+    measure();
+    if (!perches.length) return;
+
+    /** Ground point for a perch at a given scroll offset. Pure arithmetic. */
+    const groundOf = (perch: Perch, sy: number) => {
       const halfW = PET_CENTER_X * scale;
+      const gx = perch.left + perch.width * perch.frac;
       return {
         // x is clamped so the body never leaves the viewport…
         gx: Math.max(halfW + 6, Math.min(gx, document.documentElement.clientWidth - halfW - 6)),
-        // …but y is NOT clamped. Clamping y is what made the pet float in
-        // mid-air: if the chosen edge had scrolled away, the clamp parked it at
-        // an arbitrary height standing on nothing. Only edges that are actually
-        // on screen are eligible (see chooseIndex), so no clamp is needed and
-        // the soles are always genuinely on a surface.
-        gy: r.top,
+        // …but y is NOT clamped. Clamping y made the pet float in mid-air when
+        // the chosen edge had scrolled away. Only edges actually on screen are
+        // eligible (see choosePerch), so no clamp is needed.
+        gy: perch.docTop - sy,
       };
     };
 
-    /** Is this perch's TOP EDGE somewhere the pet could actually stand? */
-    const edgeIsUsable = (r: DOMRect) =>
-      r.top >= NAV_SAFE_Y + PET_SOLE_Y * scale && r.top <= window.innerHeight - 24 && r.width >= 90;
+    /**
+     * Is this perch's TOP EDGE somewhere the pet could actually stand?
+     *
+     * The width floor is not arbitrary: on a narrow element the pet ends up
+     * overhanging the edge it is supposedly standing on, which reads as floating.
+     * Phones need a higher floor because the pet is a bigger share of the column.
+     */
+    const minPerchWidth = () => (document.documentElement.clientWidth < SMALL_SCREEN ? 180 : 90);
+    const edgeIsUsable = (top: number, width: number) =>
+      top >= NAV_SAFE_Y + PET_SOLE_Y * scale &&
+      top <= window.innerHeight - 24 &&
+      width >= minPerchWidth();
 
-    /** Returns -1 when nothing is standable, meaning "stay where you are". */
-    const chooseIndex = () => {
+    /**
+     * Returns the ELEMENT-identified perch, never a positional index.
+     *
+     * An index into a re-collected array is unstable: the theme toggle swaps its
+     * sun/moon <svg> children, which is a childList mutation, which re-measured
+     * the list — and any shift made the stored index point at a different
+     * element, teleporting the pet. Identity cannot drift that way.
+     */
+    const choosePerch = (sy: number): Perch | null => {
       const line = window.innerHeight * 0.4;
-      let best = -1;
+      let best: Perch | null = null;
       let bestD = Infinity;
-      for (let i = 0; i < perches.length; i++) {
-        const r = perches[i].getBoundingClientRect();
-        if (!edgeIsUsable(r)) continue;
-        const d = Math.abs(r.top - line);
+      for (const perch of perches) {
+        const top = perch.docTop - sy;
+        if (!edgeIsUsable(top, perch.width)) continue;
+        const d = Math.abs(top - line);
         if (d < bestD) {
           bestD = d;
-          best = i;
+          best = perch;
         }
       }
       return best;
     };
+
+    const perchFor = (el: HTMLElement) => perches.find((p) => p.el === el) ?? null;
 
     // ── animation state ──────────────────────────────────────────────────
     let fromX = 0,
@@ -193,7 +256,10 @@ export default function ScrollPet() {
       toX = 0,
       toY = 0;
     let hopStart = -1;
-    let currentIndex = -1;
+    let currentPerch: Perch | null = null;
+    /* Cached in the scroll listener. Reading window.scrollY inside the frame can
+       force a style flush; inside a scroll event it is already computed. */
+    let scrollY = window.scrollY;
     let facing = 1;
     let landedAt = -Infinity;
     let raf = 0;
@@ -248,8 +314,8 @@ export default function ScrollPet() {
       hopStart = now;
     };
 
-    const settleTo = (idx: number, instant: boolean, now: number) => {
-      const { gx, gy } = groundOf(perches[idx], idx);
+    const settleTo = (perch: Perch, instant: boolean, now: number) => {
+      const { gx, gy } = groundOf(perch, scrollY);
       if (instant) {
         fromX = toX = gx;
         fromY = toY = gy;
@@ -262,14 +328,16 @@ export default function ScrollPet() {
 
     /** Hop to an arbitrary element (used when you click a card/button). */
     const hopToElement = (el: HTMLElement, now: number) => {
-      const idx = perches.indexOf(el);
-      const { gx, gy } = groundOf(el, idx >= 0 ? idx : 0);
+      const perch = perchFor(el);
+      if (!perch) return;
+      const { gx, gy } = groundOf(perch, scrollY);
       launch(gx, gy, now);
-      currentIndex = -1; // let scroll re-decide afterwards
+      currentPerch = perch;
     };
 
     // ── input ────────────────────────────────────────────────────────────
     const onScroll = () => {
+      scrollY = window.scrollY;
       scrollDirty = true;
     };
 
@@ -319,20 +387,19 @@ export default function ScrollPet() {
 
       if (scrollDirty) {
         scrollDirty = false;
-        const idx = chooseIndex();
-        // -1 means nothing is standable right now: hold position rather than
+        const next = choosePerch(scrollY);
+        // null means nothing is standable right now: hold position rather than
         // hopping to somewhere the pet couldn't actually stand.
-        if (idx !== -1 && idx !== currentIndex) {
-          currentIndex = idx;
-          settleTo(idx, false, now);
+        if (next && next.el !== currentPerch?.el) {
+          currentPerch = next;
+          settleTo(next, false, now);
         }
       }
 
-      // RIDE the perch: re-read the live edge every frame so the pet travels
-      // with its component as the page scrolls, instead of standing at a stale
-      // coordinate the component has already moved away from.
-      if (currentIndex !== -1 && perches[currentIndex]) {
-        const live = groundOf(perches[currentIndex], currentIndex);
+      // RIDE the perch so the pet travels with its component as the page
+      // scrolls. Pure arithmetic off the cached docTop — no layout read.
+      if (currentPerch) {
+        const live = groundOf(currentPerch, scrollY);
         toX = live.gx;
         toY = live.gy;
         if (hopStart < 0) {
@@ -492,9 +559,10 @@ export default function ScrollPet() {
 
     /** Seat the pet immediately, tolerating "nothing standable yet". */
     const seat = () => {
-      const idx = chooseIndex();
-      currentIndex = idx;
-      if (idx === -1) {
+      scrollY = window.scrollY;
+      const perch = choosePerch(scrollY);
+      currentPerch = perch;
+      if (!perch) {
         // Nothing on screen to stand on (e.g. very short viewport): park it in
         // a sane visible spot and let the first usable edge pull it in.
         const gx = Math.min(120, window.innerWidth * 0.12);
@@ -505,7 +573,7 @@ export default function ScrollPet() {
         placeShadow(gx, gy, 0);
         return;
       }
-      settleTo(idx, true, performance.now());
+      settleTo(perch, true, performance.now());
     };
 
     seat();
@@ -526,26 +594,45 @@ export default function ScrollPet() {
     window.addEventListener("pointerover", onOver, { passive: true });
     window.addEventListener("pointerdown", onDown, { passive: true });
 
-    // Re-seat on resize AND on layout changes that don't fire resize (font
-    // load, image reflow, a card grid changing column count at a breakpoint).
+    /* Re-measure on layout changes, but only RE-SEAT when the viewport itself
+       changed size.
+       ResizeObserver on <body> also fires for content-height changes, and
+       re-seating on those is what made the pet visibly jump on a theme toggle.
+       Re-measuring is cheap and safe; re-seating is a visible teleport. */
+    let lastVW = document.documentElement.clientWidth;
+    let lastVH = window.innerHeight;
     let reseatTimer: ReturnType<typeof setTimeout>;
-    const onResize = () => {
+    const onLayoutChange = () => {
       clearTimeout(reseatTimer);
       reseatTimer = setTimeout(() => {
-        syncScale();
-        collect();
-        seat();
-      }, 90);
-    };
-    window.addEventListener("resize", onResize);
-    const ro = new ResizeObserver(onResize);
-    ro.observe(document.body);
+        const vw = document.documentElement.clientWidth;
+        const vh = window.innerHeight;
+        const viewportChanged = vw !== lastVW || vh !== lastVH;
+        lastVW = vw;
+        lastVH = vh;
 
-    // Cards can mount later (Suspense, client fetches) — keep perches fresh.
-    const mo = new MutationObserver(() => {
-      collect();
-      scrollDirty = true;
-    });
+        syncScale();
+        measure();
+
+        // The perch element survives re-measuring, so a content reflow just
+        // refreshes its cached geometry and the pet stays put.
+        if (viewportChanged) {
+          seat();
+        } else if (currentPerch) {
+          currentPerch = perchFor(currentPerch.el);
+        }
+      }, 120);
+    };
+    window.addEventListener("resize", onLayoutChange);
+    // Guarded: the pet is decoration, so on a runtime without ResizeObserver it
+    // should quietly lose re-measure-on-reflow, not throw and take the page down.
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(onLayoutChange) : null;
+    ro?.observe(document.body);
+
+    /* Cards can mount later (Suspense, client fetches) — keep perches fresh.
+       Debounced through the same path so a burst of mutations (the theme toggle
+       swapping its icon paths, for one) costs a single re-measure. */
+    const mo = new MutationObserver(onLayoutChange);
     mo.observe(document.body, { childList: true, subtree: true });
 
     const onVis = () => {
@@ -561,14 +648,14 @@ export default function ScrollPet() {
     return () => {
       if (raf) cancelAnimationFrame(raf);
       mo.disconnect();
-      ro.disconnect();
+      ro?.disconnect();
       clearTimeout(reseatTimer);
       clearTimeout(attentionTimer);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerover", onOver);
       window.removeEventListener("pointerdown", onDown);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", onLayoutChange);
       document.removeEventListener("visibilitychange", onVis);
     };
   }, []);
