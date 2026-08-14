@@ -34,6 +34,15 @@ import { useEffect, useRef } from "react";
 const MAX_POINTS = 7000; // keeps index buffers inside Uint16 and the GPU bored
 const TARGET_SPACING = 34; // css px between weave lines at 1x
 
+/* Phones pay for this background in fill rate and battery, and it is ambient
+   decoration behind content — nobody is studying it. Below this width the grid
+   is coarser, the buffer is 1x, and the sim runs at ~30fps. The undulation is
+   slow enough that half rate is imperceptible, and it halves the GPU work. */
+const SMALL_SCREEN = 640;
+const SMALL_SPACING = 52;
+const SMALL_MAX_POINTS = 2400;
+const SMALL_FRAME_MS = 33; // ~30fps
+
 const VERT = `#version 300 es
 precision highp float;
 
@@ -214,6 +223,7 @@ export default function FabricBackground() {
     let aspect = 1;
     let dpr = 1;
     let pointScale = 2;
+    let frameBudgetMs = 0; // 0 = draw every frame; set on small screens
 
     const readTheme = () => {
       if (!probe) return;
@@ -225,10 +235,13 @@ export default function FabricBackground() {
     };
 
     const buildGrid = (w: number, h: number) => {
-      let cols = Math.ceil(w / TARGET_SPACING) + 1;
-      let rows = Math.ceil(h / TARGET_SPACING) + 1;
+      const small = w < SMALL_SCREEN;
+      const spacing = small ? SMALL_SPACING : TARGET_SPACING;
+      const budget = small ? SMALL_MAX_POINTS : MAX_POINTS;
+      let cols = Math.ceil(w / spacing) + 1;
+      let rows = Math.ceil(h / spacing) + 1;
       // Thin the grid until it fits the budget rather than refusing to draw.
-      while (cols * rows > MAX_POINTS) {
+      while (cols * rows > budget) {
         cols = Math.max(8, Math.floor(cols * 0.9));
         rows = Math.max(8, Math.floor(rows * 0.9));
       }
@@ -288,7 +301,9 @@ export default function FabricBackground() {
       // the very horizontal overflow this background sits behind.
       const w = document.documentElement.clientWidth;
       const h = document.documentElement.clientHeight || window.innerHeight;
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      // 1x on phones: a full-viewport blended canvas at 2-3x DPR is pure fill
+      // rate, and this is a texture behind content, not an image being read.
+      dpr = w < SMALL_SCREEN ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       canvas.style.width = `${w}px`;
@@ -296,6 +311,7 @@ export default function FabricBackground() {
       gl.viewport(0, 0, canvas.width, canvas.height);
       aspect = w / Math.max(h, 1);
       pointScale = Math.max(1.6, 2.1 * dpr);
+      frameBudgetMs = w < SMALL_SCREEN ? SMALL_FRAME_MS : 0;
       buildGrid(w, h);
       readTheme();
     };
@@ -356,9 +372,17 @@ export default function FabricBackground() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let start = 0;
 
+    let lastDraw = 0;
     const frame = (ts: number) => {
       if (disposed) return;
+      raf = requestAnimationFrame(frame);
       if (!start) start = ts;
+
+      // Half-rate on phones. The rAF loop still ticks so input stays responsive,
+      // but the GPU only redraws every other frame.
+      if (frameBudgetMs && ts - lastDraw < frameBudgetMs) return;
+      lastDraw = ts;
+
       const t = (ts - start) / 1000;
 
       cur.x += (target.x - cur.x) * 0.06;
@@ -367,7 +391,6 @@ export default function FabricBackground() {
       scrollCur += (scrollTarget - scrollCur) * 0.08;
 
       draw(t);
-      raf = requestAnimationFrame(frame);
     };
 
     const stop = () => {
