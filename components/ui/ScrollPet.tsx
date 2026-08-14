@@ -12,8 +12,26 @@ import { useEffect, useRef } from "react";
  * Perches are real components — section wrappers (`[data-pet-perch]`) AND every
  * `.card`. It never tracks scroll position directly, because continuous
  * following reads as sliding rather than hopping. It picks the perch nearest a
- * reading line and launches a single parabolic hop only when that choice
- * changes, so fast scrolling gives a sequence of discrete jumps.
+ * reading line and launches a single parabolic hop when that choice changes.
+ *
+ * IT MOVES ONLY WHEN YOU ARE NOT SCROLLING
+ * ----------------------------------------
+ * While the page is moving the pet does nothing at all: it stays glued to its
+ * component and travels with it, even off the top of the screen. It re-chooses
+ * a perch and hops only once the scroll has settled.
+ *
+ * That single rule is what fixes fast scrolling. Nothing asks "which perch is
+ * nearest?" while you are moving, so a→b→c→d→e collapses to a→e — the perches
+ * that flew past are never candidates, because the question is not put until you
+ * stop. It is also why the pet never trails the page: zero relative motion reads
+ * as attached, whereas anything that tries to keep up reads as lag.
+ *
+ * The other half is continuity. There is exactly one position of truth —
+ * `posX/posY`, the pet's ACTUAL rendered spot — and every hop takes off from it.
+ * It is never re-derived from a perch, an index, or a previous hop's
+ * destination, so a teleport is not something this code can express. When its
+ * component has scrolled away entirely the takeoff is clamped to the viewport
+ * edge, so the pet leaps in from the edge rather than materialising mid-screen.
  *
  * WHAT IT REACTS TO
  * -----------------
@@ -21,8 +39,10 @@ import { useEffect, useRef } from "react";
  *   cursor near     looks up and waves
  *   hovering a
  *   link/button/card points at it with the near arm, mouth opens, bounces
- *   click           startles (squash + wide eyes + open mouth); clicking a
- *                   card or button makes it hop there
+ *   click           celebrates IN PLACE — double bounce, wiggle, arms up, wide
+ *                   eyes. It deliberately does not travel to what you clicked:
+ *                   a click-driven destination fights the scroll-driven one, and
+ *                   two authorities over one position is how the hopping started.
  *
  * All state is a handful of scalars lerped in ONE rAF loop, so adding reactions
  * costs no extra frames. Everything writes to `transform`/`opacity`/`d` only —
@@ -39,7 +59,53 @@ import { useEffect, useRef } from "react";
  * prefers-reduced-motion it sits still instead of hopping.
  */
 
-const HOP_MS = 620;
+/* Hop duration scales with distance — a step onto the next card and a leap
+   across the viewport cannot share a duration without one of them looking
+   wrong (the short one floats, the long one snaps). */
+const HOP_MIN_MS = 420;
+const HOP_MAX_MS = 900;
+
+/* Minimum time ON THE GROUND between hops. A dense run of cards would otherwise
+   fire the next hop the frame after landing, which is the machine-gun hopping
+   that fast scrolling produced. */
+const HOP_GAP_MS = 260;
+
+/* A rival perch must be this much closer to the reading line before the pet
+   bothers moving. Pure nearest-wins flip-flops between two adjacent cards on a
+   few pixels of scroll. */
+const PERCH_HYSTERESIS = 130;
+
+/* The pet moves only while the page is still. Below CALM_SCROLL px/s, held for
+   CALM_MS, counts as "you have stopped"; anything faster and the pet simply
+   stays glued to its component.
+
+   CALM_SCROLL is loose on purpose — a decaying flick is over long before it
+   reaches zero. CALM_MS then has to outlast the GAP BETWEEN WHEEL NOTCHES
+   (~300ms), or a steady wheel-scroll reads as a series of stops and the pet
+   launches a hop into each gap, still airborne when the next notch lands. That
+   is the "laggy" case: a run of notches is one gesture, not five stops.
+   Measured: at 120ms a six-notch scroll cost 3 hops and 231px of pet motion
+   during page motion; at 260ms it costs 1 hop, after you actually stop. */
+const CALM_SCROLL = 240;
+const CALM_MS = 260;
+
+/* Time constant of the scroll-velocity smoothing. Short enough that letting go
+   registers as a stop almost immediately, long enough that a single jittery
+   frame does not. */
+const VEL_TAU_MS = 70;
+
+/* Where the soles sit when the pet stands on the WINDOW rather than on a
+   component. A perch is only legal if its top edge is currently in a band below
+   the navbar and above the fold, and a page can be scrolled to a place where no
+   card or section starts inside that band — the foot of this page is one, a
+   180px stretch with nothing standable. Without a fallback the pet stays glued
+   to a component that has scrolled away and is simply gone; measured, it ended a
+   scroll-to-bottom 4323px above the viewport. The bottom edge of the window is a
+   real, visible surface, so it stands on that instead. */
+const FLOOR_MARGIN = 10;
+
+const CHEER_MS = 900;
+
 const PERCH_SELECTOR = "[data-pet-perch], .card";
 const INTERACTIVE_SELECTOR = "a, button, [role='button'], .card, input, textarea";
 const NEAR_DIST = 150; // px from pet before it notices you
@@ -177,7 +243,14 @@ export default function ScrollPet() {
           ? LANDING_FRACTIONS_SM
           : LANDING_FRACTIONS;
       perches = Array.from(document.querySelectorAll<HTMLElement>(PERCH_SELECTOR))
-        .filter((el) => el.offsetParent !== null)
+        /* HTMLElement, not just Element. `.card` also matches SVG nodes (one on
+           this page carries it), and SVGElement has no offsetTop/offsetWidth/
+           offsetParent — so it passed the visibility filter on `undefined !==
+           null` and produced a perch at NaN. It could never be chosen, because
+           every comparison against NaN is false, but it silently consumed a slot
+           in the landing-fraction sequence and shifted every later perch's
+           landing spot. */
+        .filter((el) => el instanceof HTMLElement && el.offsetParent !== null)
         .map((el) => {
           let fi = fracIndex.get(el);
           if (fi === undefined) {
@@ -197,19 +270,21 @@ export default function ScrollPet() {
     measure();
     if (!perches.length) return;
 
-    /** Ground point for a perch at a given scroll offset. Pure arithmetic. */
-    const groundOf = (perch: Perch, sy: number) => {
+    /** Keep the body inside the viewport horizontally. */
+    const clampX = (x: number) => {
       const halfW = PET_CENTER_X * scale;
-      const gx = perch.left + perch.width * perch.frac;
-      return {
-        // x is clamped so the body never leaves the viewport…
-        gx: Math.max(halfW + 6, Math.min(gx, document.documentElement.clientWidth - halfW - 6)),
-        // …but y is NOT clamped. Clamping y made the pet float in mid-air when
-        // the chosen edge had scrolled away. Only edges actually on screen are
-        // eligible (see choosePerch), so no clamp is needed.
-        gy: perch.docTop - sy,
-      };
+      return Math.max(halfW + 6, Math.min(x, document.documentElement.clientWidth - halfW - 6));
     };
+
+    /** Ground point for a perch at a given scroll offset. Pure arithmetic. */
+    const groundOf = (perch: Perch, sy: number) => ({
+      // x is clamped so the body never leaves the viewport…
+      gx: clampX(perch.left + perch.width * perch.frac),
+      // …but y is NOT clamped. Clamping y made the pet float in mid-air when
+      // the chosen edge had scrolled away. Only edges actually on screen are
+      // eligible (see choosePerch), so no clamp is needed.
+      gy: perch.docTop - sy,
+    });
 
     /**
      * Is this perch's TOP EDGE somewhere the pet could actually stand?
@@ -224,6 +299,15 @@ export default function ScrollPet() {
       top <= window.innerHeight - 24 &&
       width >= minPerchWidth();
 
+    /** Where on screen the pet prefers to stand — roughly where you are reading. */
+    const readingLine = () => window.innerHeight * 0.4;
+
+    /** Distance from the reading line, or Infinity if the pet couldn't stand there. */
+    const scoreOf = (perch: Perch, sy: number) => {
+      const top = perch.docTop - sy;
+      return edgeIsUsable(top, perch.width) ? Math.abs(top - readingLine()) : Infinity;
+    };
+
     /**
      * Returns the ELEMENT-identified perch, never a positional index.
      *
@@ -232,31 +316,48 @@ export default function ScrollPet() {
      * the list — and any shift made the stored index point at a different
      * element, teleporting the pet. Identity cannot drift that way.
      */
-    const choosePerch = (sy: number): Perch | null => {
-      const line = window.innerHeight * 0.4;
+    const choosePerch = (sy: number): { perch: Perch; score: number } | null => {
       let best: Perch | null = null;
       let bestD = Infinity;
       for (const perch of perches) {
-        const top = perch.docTop - sy;
-        if (!edgeIsUsable(top, perch.width)) continue;
-        const d = Math.abs(top - line);
+        const d = scoreOf(perch, sy);
         if (d < bestD) {
           bestD = d;
           best = perch;
         }
       }
-      return best;
+      return best ? { perch: best, score: bestD } : null;
     };
 
     const perchFor = (el: HTMLElement) => perches.find((p) => p.el === el) ?? null;
 
     // ── animation state ──────────────────────────────────────────────────
-    let fromX = 0,
-      fromY = 0,
-      toX = 0,
-      toY = 0;
+    /* THE position of truth: where the soles actually are, in viewport space.
+       Nothing else is allowed to define where the pet is. */
+    let posX = 0;
+    let posY = 0;
+
+    /* Hop takeoff. X is viewport space (the page does not scroll sideways), but
+       Y is DOCUMENT space, so the takeoff point rides the page exactly like the
+       destination does. Freezing the origin in viewport space while the
+       destination tracked `docTop - scrollY` is what stretched the arc whenever
+       you scrolled mid-hop. */
+    let fromX = 0;
+    let fromDocY = 0;
     let hopStart = -1;
+    let hopDur = HOP_MIN_MS;
+    let hopArc = 60;
+
     let currentPerch: Perch | null = null;
+
+    /* Standing on the window's bottom edge instead of on a component.
+       This needs its own stored destination because a hop's TARGET is re-read
+       live every frame from `currentPerch` — with no perch and no anchor the
+       target degenerates to the pet's own position, so it hops toward itself and
+       never arrives. Measured before this existed: 8 consecutive hops that each
+       ended where they started. */
+    let onFloor = false;
+    let floorX = 0;
     /* Cached in the scroll listener. Reading window.scrollY inside the frame can
        force a style flush; inside a scroll event it is already computed. */
     let scrollY = window.scrollY;
@@ -265,7 +366,17 @@ export default function ScrollPet() {
     let raf = 0;
     let blinkUntil = 0;
     let nextBlink = 0;
+    /* A scroll happened and nobody has re-chosen a perch for it yet. It is NOT
+       cleared while the pet is airborne — that pending flag surviving the hop is
+       precisely what makes the pet skip the perches it flew over. */
     let scrollDirty = true;
+
+    /* Smoothed scroll velocity in px/s, and the frame bookkeeping behind it.
+       `calmSince` is when the page last went quiet — -1 while it is moving. */
+    let scrollVel = 0;
+    let lastFrameAt = -1;
+    let lastFrameScroll = scrollY;
+    let calmSince = -1;
 
     // Interaction state — each is a 0..1 scalar lerped toward a target.
     const px = { cur: 0, tgt: 0 }; // pointer x, normalised -1..1 around pet
@@ -274,6 +385,7 @@ export default function ScrollPet() {
     const nearness = { cur: 0, tgt: 0 }; // cursor is close to the pet
     let startleAt = -Infinity;
     let cheerAt = -Infinity;
+    let cheerPower = 1; // clicking a real component celebrates harder than empty space
     let pointDir = 0; // -1 target left, +1 target right
 
     let mouseX = -9999;
@@ -304,35 +416,59 @@ export default function ScrollPet() {
       shadow.style.opacity = (0.95 - airborne * 0.62).toFixed(3);
     };
 
+    /**
+     * Begin a hop toward (gx,gy).
+     *
+     * The takeoff is ALWAYS the pet's real current position — the single rule
+     * that makes the motion continuous. The old code took off from the previous
+     * hop's DESTINATION, so interrupting a hop snapped the pet to a point it had
+     * never reached; that snap is what read as random hopping.
+     *
+     * The one adjustment is a clamp into the viewport: if the pet's perch has
+     * scrolled off screen, a literal takeoff would begin hundreds of pixels
+     * above the fold and the visible part of the arc would be a blur dropping in
+     * from nowhere. Clamping to just outside the edge turns that into the pet
+     * leaping in from the edge, which is legible.
+     */
     const launch = (gx: number, gy: number, now: number) => {
-      if (Math.hypot(gx - toX, gy - toY) < 6) return;
-      fromX = toX;
-      fromY = toY;
-      toX = gx;
-      toY = gy;
-      facing = toX >= fromX ? 1 : -1;
+      const vh = window.innerHeight;
+      const startX = posX;
+      const startY = Math.max(-70, Math.min(posY, vh + 70));
+      const dist = Math.hypot(gx - startX, gy - startY);
+      if (dist < 6) {
+        // Already there. Cancel any hop rather than leaving one running against
+        // the new target — a stale hop is how a "move" becomes a "twitch".
+        hopStart = -1;
+        landedAt = now;
+        posX = gx;
+        posY = gy;
+        return;
+      }
+      fromX = startX;
+      fromDocY = startY + scrollY;
       hopStart = now;
+      hopDur = Math.min(HOP_MAX_MS, HOP_MIN_MS + dist * 0.55);
+      hopArc = Math.min(150, 44 + dist * 0.16);
+      facing = gx >= startX ? 1 : -1;
     };
 
+    /** The window's own bottom edge — the surface used when no component qualifies. */
+    const floorY = () => window.innerHeight - FLOOR_MARGIN;
+
+    /** Adopt a perch and hop to it. Instant seating skips the arc entirely. */
     const settleTo = (perch: Perch, instant: boolean, now: number) => {
+      currentPerch = perch;
+      onFloor = false;
       const { gx, gy } = groundOf(perch, scrollY);
       if (instant) {
-        fromX = toX = gx;
-        fromY = toY = gy;
+        hopStart = -1;
+        posX = gx;
+        posY = gy;
         place(gx, gy, 0);
         placeShadow(gx, gy, 0);
         return;
       }
       launch(gx, gy, now);
-    };
-
-    /** Hop to an arbitrary element (used when you click a card/button). */
-    const hopToElement = (el: HTMLElement, now: number) => {
-      const perch = perchFor(el);
-      if (!perch) return;
-      const { gx, gy } = groundOf(perch, scrollY);
-      launch(gx, gy, now);
-      currentPerch = perch;
     };
 
     // ── input ────────────────────────────────────────────────────────────
@@ -357,7 +493,7 @@ export default function ScrollPet() {
       }
       attention.tgt = 1;
       const r = hit.getBoundingClientRect();
-      pointDir = r.left + r.width / 2 >= toX ? 1 : -1;
+      pointDir = r.left + r.width / 2 >= posX ? 1 : -1;
       // Touch fires pointerover on tap with no matching pointerout, so the
       // excited state would latch on forever. Time it out instead.
       if (isTouch) {
@@ -368,50 +504,108 @@ export default function ScrollPet() {
       }
     };
 
+    /**
+     * A click is a REACTION, never a move.
+     *
+     * Hopping to whatever you clicked gave the pet a second authority over its
+     * own position, competing with the scroll-driven one; clicking a card low on
+     * the page then scrolling immediately produced two hops racing each other.
+     * It now celebrates on the spot, harder if you hit an actual component.
+     */
     const onDown = (e: PointerEvent) => {
-      startleAt = performance.now();
+      const now = performance.now();
+      startleAt = now;
+      cheerAt = now;
       const t = e.target as HTMLElement | null;
-      const hit = t?.closest?.(".card, a, button, [role='button']") as HTMLElement | null;
-      if (hit) {
-        cheerAt = performance.now();
-        // Only chase real components, not every stray link in a paragraph.
-        if (hit.matches(".card, button, [role='button']") || hit.classList.contains("btn")) {
-          hopToElement(hit, performance.now());
-        }
-      }
+      cheerPower = t?.closest?.(".card, a, button, [role='button']") ? 1 : 0.7;
     };
 
     // ── frame ────────────────────────────────────────────────────────────
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
 
-      if (scrollDirty) {
+      // ── scroll velocity ────────────────────────────────────────────────
+      // Measured per frame off the cached scrollY, so it costs no layout read
+      // and cannot be skewed by a burst of scroll events in one frame.
+      const dt = lastFrameAt < 0 ? 16 : Math.max(6, Math.min(64, now - lastFrameAt));
+      if (lastFrameAt >= 0) {
+        const inst = ((scrollY - lastFrameScroll) * 1000) / dt;
+        // Time-based smoothing, not per-frame. A fixed `+= diff * 0.3` has a
+        // time constant that depends on the frame rate, so on a device dropping
+        // to ~13fps the estimate lagged far enough that the scroll never
+        // appeared to stop and the pet stopped hopping altogether. Expressed
+        // against a real time constant it behaves the same at any frame rate.
+        const alpha = 1 - Math.exp(-dt / VEL_TAU_MS);
+        scrollVel += (inst - scrollVel) * alpha;
+      }
+      lastFrameAt = now;
+      lastFrameScroll = scrollY;
+      const speed = Math.abs(scrollVel);
+      const grounded = hopStart < 0;
+
+      // Has the page been still long enough to count as "you stopped"? A short
+      // hold is required because the first slow frame of a decelerating fling is
+      // not a stop — committing there lands the pet on something that is still
+      // about to leave the screen.
+      if (speed < CALM_SCROLL) {
+        if (calmSince < 0) calmSince = now;
+      } else {
+        calmSince = -1;
+      }
+      const settled = calmSince >= 0 && now - calmSince >= CALM_MS;
+
+      // ── where should it be heading? ────────────────────────────────────
+      // Every condition here has to hold, and each one removes a class of the
+      // jumpiness this component used to have:
+      //   settled   — no decisions while the page moves, so it never trails you
+      //               and never picks a perch that is on its way past
+      //   grounded  — no decisions mid-air, so `scrollDirty` survives the flight
+      //               and is answered on landing with the CURRENT scroll: the
+      //               perches flown over are never candidates
+      //   HOP_GAP   — a floor on how often it may move at all
+      //   hysteresis— a rival perch must be clearly better, so two adjacent
+      //               cards cannot trade the pet back and forth
+      if (settled && (scrollDirty || !currentPerch) && grounded && now - landedAt > HOP_GAP_MS) {
         scrollDirty = false;
         const next = choosePerch(scrollY);
-        // null means nothing is standable right now: hold position rather than
-        // hopping to somewhere the pet couldn't actually stand.
-        if (next && next.el !== currentPerch?.el) {
-          currentPerch = next;
-          settleTo(next, false, now);
+        const curScore = currentPerch ? scoreOf(currentPerch, scrollY) : Infinity;
+        const stranded = curScore === Infinity; // its component has left the band
+        if (
+          next &&
+          next.perch.el !== currentPerch?.el &&
+          (stranded || next.score < curScore - PERCH_HYSTERESIS)
+        ) {
+          settleTo(next.perch, false, now);
+        } else if (!next && stranded) {
+          // Nothing standable anywhere and its own component is gone: come back
+          // to the bottom edge of the window. Dropping currentPerch is what
+          // keeps it there — with no perch to ride it holds still on screen
+          // while you scroll — and this branch re-runs every settled frame, so
+          // it hops back onto a real component the moment one is in range.
+          currentPerch = null;
+          if (!onFloor) floorX = clampX(posX);
+          onFloor = true;
+          launch(floorX, floorY(), now);
         }
       }
 
-      // RIDE the perch so the pet travels with its component as the page
-      // scrolls. Pure arithmetic off the cached docTop — no layout read.
+      // Live target: the perch's current edge. Rides scroll by arithmetic on the
+      // cached docTop — no layout read.
+      let tx = posX;
+      let ty = posY;
       if (currentPerch) {
         const live = groundOf(currentPerch, scrollY);
-        toX = live.gx;
-        toY = live.gy;
-        if (hopStart < 0) {
-          fromX = toX;
-          fromY = toY;
-        }
+        tx = live.gx;
+        ty = live.gy;
+      } else if (onFloor) {
+        // Anchored to the window, not the page: it holds this spot on screen
+        // while you scroll, and follows the edge if the window is resized.
+        tx = floorX;
+        ty = floorY();
       }
 
       // Ground position (where the soles are) and altitude above it, tracked
       // separately so the shadow can stay on the surface through the whole arc.
-      let gx = toX;
-      let gy = toY;
       let lift = 0;
       let squash = 1;
       let stretch = 1;
@@ -419,13 +613,18 @@ export default function ScrollPet() {
       let airborne = 0;
 
       if (hopStart >= 0) {
-        const t = Math.min(1, (now - hopStart) / HOP_MS);
-        const e = 1 - Math.pow(1 - t, 3);
-        gx = fromX + (toX - fromX) * e;
-        gy = fromY + (toY - fromY) * e;
+        const t = Math.min(1, (now - hopStart) / hopDur);
+        // Smoothstep, not ease-out: a hop that can be interrupted needs zero
+        // velocity at BOTH ends, or every landing hands off with a visible kink.
+        const e = t * t * (3 - 2 * t);
+        // The takeoff rides the page with the destination — both ends of the arc
+        // live in document space, so scrolling mid-hop translates the whole arc
+        // instead of stretching it.
+        const fy = fromDocY - scrollY;
+        posX = fromX + (tx - fromX) * e;
+        posY = fy + (ty - fy) * e;
         const arc = Math.sin(Math.PI * t);
-        const dist = Math.hypot(toX - fromX, toY - fromY);
-        lift = arc * Math.min(120, 46 + dist * 0.12);
+        lift = arc * hopArc;
         airborne = arc;
         stretch = 1 + arc * 0.16;
         squash = 1 - arc * 0.1;
@@ -433,11 +632,24 @@ export default function ScrollPet() {
         if (t >= 1) {
           hopStart = -1;
           landedAt = now;
-          gx = toX;
-          gy = toY;
+          posX = tx;
+          posY = ty;
           lift = 0;
+          airborne = 0;
         }
       } else {
+        // Grounded: ride the perch EXACTLY. Not a lerp, not a spring — any
+        // smoothing here means the pet slides against the component it is
+        // standing on while you scroll, and that trailing is precisely what
+        // reads as lag.
+        posX = tx;
+        posY = ty;
+      }
+
+      const gx = posX;
+      const gy = posY;
+
+      if (hopStart < 0) {
         const since = now - landedAt;
         if (since < 460) {
           const k = 1 - since / 460;
@@ -486,17 +698,41 @@ export default function ScrollPet() {
       attention.cur += (attention.tgt - attention.cur) * 0.1;
       nearness.cur += (nearness.tgt - nearness.cur) * 0.09;
 
-      const cheering = now - cheerAt < 700;
-      const cheer = cheering ? Math.sin(((now - cheerAt) / 700) * Math.PI * 3) : 0;
+      /* Click celebration — entirely in place. Two quick bounces (|sin| gives
+         the bounce its cusp at the ground, which a plain sine cannot), a wiggle
+         at a different frequency so the two never lock into one motion, and a
+         squared decay so it settles rather than tapering forever. */
+      const sinceCheer = now - cheerAt;
+      const cheering = sinceCheer < CHEER_MS;
+      let cheer = 0;
+      let cheerHop = 0;
+      let cheerWiggle = 0;
+      let cheerArm = 0;
+      if (cheering) {
+        const p = sinceCheer / CHEER_MS;
+        const decay = (1 - p) * (1 - p);
+        cheer = Math.sin(p * Math.PI * 3) * decay;
+        // The squared decay costs a lot of amplitude at the peak (decay is 0.56
+        // where the first bounce tops out), so the nominal height has to be well
+        // above the height you actually want to see. At 15 the bounce measured
+        // 5px, which reads as a twitch rather than a reaction.
+        cheerHop = Math.abs(Math.sin(p * Math.PI * 2)) * 30 * decay * cheerPower;
+        cheerWiggle = Math.sin(p * Math.PI * 7) * 11 * decay * cheerPower;
+        cheerArm = (0.35 + Math.abs(Math.sin(p * Math.PI * 2)) * 0.65) * 68 * decay * cheerPower;
+        // Squash on the way up, stretch at the peak — the bounce needs the
+        // deformation or it reads as the whole sprite being translated.
+        squash += cheerHop * 0.006;
+        stretch += cheerHop * 0.004;
+      }
 
       // Excited bob while hovering something or celebrating a click.
-      const bob = attention.cur * Math.sin(now / 220) * 1.6 + cheer * 2.2;
+      const bob = attention.cur * Math.sin(now / 220) * 1.6 + cheerHop;
 
       place(gx, gy, lift + bob);
       placeShadow(gx, gy, airborne);
 
       // Body leans toward the cursor; facing flips on hop direction.
-      const lean = px.cur * 4 * (1 - airborne);
+      const lean = px.cur * 4 * (1 - airborne) + cheerWiggle;
       body.setAttribute(
         "transform",
         `translate(24 30) rotate(${lean.toFixed(2)}) scale(${(squash * facing).toFixed(3)} ${stretch.toFixed(3)}) translate(-24 -30)`
@@ -508,11 +744,11 @@ export default function ScrollPet() {
       const pointR = attention.cur * (pointDir > 0 ? 62 : 0);
       armL?.setAttribute(
         "transform",
-        `rotate(${(-swing - airborne * 34 + pointL - wave).toFixed(1)} ${PIVOT.armL})`
+        `rotate(${(-swing - airborne * 34 + pointL - wave - cheerArm).toFixed(1)} ${PIVOT.armL})`
       );
       armR?.setAttribute(
         "transform",
-        `rotate(${(swing + airborne * 34 + pointR + wave).toFixed(1)} ${PIVOT.armR})`
+        `rotate(${(swing + airborne * 34 + pointR + wave + cheerArm).toFixed(1)} ${PIVOT.armR})`
       );
       legL?.setAttribute(
         "transform",
@@ -530,7 +766,12 @@ export default function ScrollPet() {
       pupilR?.setAttribute("transform", `translate(${pxo} ${pyo})`);
 
       // Eyes widen mid-hop, on click, and while paying attention.
-      const wide = EYE_R + airborne * 0.55 + (sinceClick < 380 ? 0.8 : 0) + attention.cur * 0.4;
+      const wide =
+        EYE_R +
+        airborne * 0.55 +
+        (sinceClick < 380 ? 0.8 : 0) +
+        attention.cur * 0.4 +
+        Math.abs(cheer) * 0.5;
       eyeL?.setAttribute("r", wide.toFixed(2));
       eyeR?.setAttribute("r", wide.toFixed(2));
 
@@ -540,7 +781,9 @@ export default function ScrollPet() {
       blushR?.setAttribute("opacity", blush);
 
       // Mouth: open when airborne or startled, grin when excited, else smile.
-      const open = airborne > 0.25 || sinceClick < 300;
+      // The cheerHop threshold puts the "o" at the top of each celebration
+      // bounce and the grin back on between them, so the face bounces too.
+      const open = airborne > 0.25 || sinceClick < 300 || cheerHop > 7;
       mouthOpen.setAttribute("opacity", open ? "1" : "0");
       mouth.setAttribute("opacity", open ? "0" : "1");
       if (!open)
@@ -560,20 +803,23 @@ export default function ScrollPet() {
     /** Seat the pet immediately, tolerating "nothing standable yet". */
     const seat = () => {
       scrollY = window.scrollY;
-      const perch = choosePerch(scrollY);
-      currentPerch = perch;
-      if (!perch) {
+      lastFrameScroll = scrollY;
+      scrollVel = 0;
+      const next = choosePerch(scrollY);
+      if (!next) {
         // Nothing on screen to stand on (e.g. very short viewport): park it in
         // a sane visible spot and let the first usable edge pull it in.
-        const gx = Math.min(120, window.innerWidth * 0.12);
-        const gy = NAV_SAFE_Y + PET_SOLE_Y;
-        fromX = toX = gx;
-        fromY = toY = gy;
-        place(gx, gy, 0);
-        placeShadow(gx, gy, 0);
+        currentPerch = null;
+        hopStart = -1;
+        onFloor = true;
+        floorX = clampX(Math.min(120, window.innerWidth * 0.12));
+        posX = floorX;
+        posY = floorY();
+        place(posX, posY, 0);
+        placeShadow(posX, posY, 0);
         return;
       }
-      settleTo(perch, true, performance.now());
+      settleTo(next.perch, true, performance.now());
     };
 
     seat();
@@ -640,6 +886,13 @@ export default function ScrollPet() {
         cancelAnimationFrame(raf);
         raf = 0;
       } else if (!raf) {
+        // Resume with the velocity estimator reset. The tab may have been hidden
+        // across a scroll restore, and differencing against a scroll position
+        // from minutes ago would read as an enormous velocity and throw the pet
+        // straight into chase mode on the first visible frame.
+        lastFrameAt = -1;
+        lastFrameScroll = window.scrollY;
+        scrollVel = 0;
         raf = requestAnimationFrame(frame);
       }
     };
