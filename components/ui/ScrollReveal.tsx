@@ -59,9 +59,7 @@ export default function ScrollReveal() {
     );
 
     const observe = () => {
-      document
-        .querySelectorAll("[data-reveal]:not(.is-in)")
-        .forEach((el) => io.observe(el));
+      document.querySelectorAll("[data-reveal]:not(.is-in)").forEach((el) => io.observe(el));
     };
     observe();
 

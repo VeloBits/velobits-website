@@ -785,12 +785,15 @@
       opacity var(--dur-reveal) var(--ease-expo),
       transform var(--dur-reveal) var(--ease-expo);
     transition-delay: calc(var(--reveal-i, 0) * 80ms);
-    will-change: opacity, transform;
+    /* Deliberately NO will-change. It promoted all ~20 pending reveals to their
+       own compositor layers for the whole time they were waiting off-screen,
+       which costs memory and raster work on phones for elements that may never
+       animate. Browsers already fast-path transform/opacity transitions; the
+       hint buys nothing here and measurably hurt scroll on a throttled phone. */
   }
   [data-reveal].is-in {
     opacity: 1;
     transform: none;
-    will-change: auto;
   }
   /* Variants */
   [data-reveal="rise"] {
@@ -935,7 +938,6 @@
       height: 76px;
     }
   }
-
 } /* end @layer components */
 
 /* ─────────────────────────────────────────────

@@ -22,7 +22,7 @@ export default function SectionHeader({
   titleLines,
   lede,
   align = "split",
-  className = ""
+  className = "",
 }: {
   index?: string;
   eyebrow: string;
@@ -48,10 +48,15 @@ export default function SectionHeader({
       >
         {index && <span className="label-mono text-accent">{index}</span>}
         {index && <span className="h-px w-8 bg-border-strong" aria-hidden="true" />}
-        <span data-pet-perch className="label-mono text-subtle">{eyebrow}</span>
+        <span data-pet-perch className="label-mono text-subtle">
+          {eyebrow}
+        </span>
       </div>
 
-      <h2 data-pet-perch className="font-display text-[length:var(--text-4xl)] leading-[0.9] font-extrabold tracking-[-0.04em] text-balance text-foreground uppercase">
+      <h2
+        data-pet-perch
+        className="font-display text-[length:var(--text-4xl)] leading-[0.9] font-extrabold tracking-[-0.04em] text-balance text-foreground uppercase"
+      >
         {titleLines.map((line) => (
           <span key={line} className="line-mask" data-reveal="line">
             <span>{line}</span>

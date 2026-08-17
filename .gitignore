@@ -48,6 +48,9 @@ next-env.d.ts
 # AI Files
 *.ai
 .claude/*
+.claude-flow/
+.swarm*
+*.db
 
 # Playwright
 .playwright-test/
