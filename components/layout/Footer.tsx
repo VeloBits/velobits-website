@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { CONTAINER } from "@/lib/ui-classes";
 
-
 export default function Footer() {
   const year = new Date().getFullYear();
 
@@ -72,9 +71,7 @@ export default function Footer() {
 
           {Object.entries(links).map(([group, items]) => (
             <div key={group}>
-              <div className="mb-4 label text-subtle">
-                {group}
-              </div>
+              <div className="mb-4 label text-subtle">{group}</div>
               <div className="flex flex-col gap-[0.6rem]">
                 {items.map((item) => (
                   <a

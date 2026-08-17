@@ -75,11 +75,7 @@ export default function Waitlist() {
                 <div className="text-[3rem] animate-[scale-pulse_2s_ease-in-out_infinite]">
                   Done
                 </div>
-                <h2
-                  className={`${DISPLAY} ${DISPLAY_MD} text-accent`}
-                >
-                  You&apos;re in!
-                </h2>
+                <h2 className={`${DISPLAY} ${DISPLAY_MD} text-accent`}>You&apos;re in!</h2>
                 <p className="max-w-[36ch] leading-[1.7] text-muted">
                   We&apos;ll be in touch with first-access details before the launch. Keep an eye on
                   your inbox.

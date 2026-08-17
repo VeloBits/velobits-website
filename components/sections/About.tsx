@@ -191,7 +191,12 @@ export default function About() {
                   title="FixMyText"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 20h9" stroke="var(--accent-ink)" strokeWidth="1.8" strokeLinecap="round" />
+                    <path
+                      d="M12 20h9"
+                      stroke="var(--accent-ink)"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                    />
                     <path
                       d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"
                       stroke="var(--accent-ink)"
@@ -215,9 +220,19 @@ export default function About() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
-                    <path d="M9 2h6" stroke="var(--accent-ink)" strokeWidth="1.8" strokeLinecap="round" />
+                    <path
+                      d="M9 2h6"
+                      stroke="var(--accent-ink)"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                    />
                     <circle cx="9.5" cy="16" r="1" fill="var(--accent-ink)" />
-                    <circle cx="13.5" cy="14" r="0.8" fill="rgb(from var(--accent-ink) r g b / 0.6)" />
+                    <circle
+                      cx="13.5"
+                      cy="14"
+                      r="0.8"
+                      fill="rgb(from var(--accent-ink) r g b / 0.6)"
+                    />
                   </svg>
                 </div>
               </div>

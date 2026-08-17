@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import { getFeaturedProduct } from "@/lib/site-content";
 import { CONTAINER } from "@/lib/ui-classes";
 
-
 export default function Hero() {
   const glowRef = useRef<HTMLDivElement>(null);
   const featured = getFeaturedProduct();

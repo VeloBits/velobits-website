@@ -176,7 +176,11 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
                 </div>
               )}
               {p.ctaLabel && (
-                <a href={p.ctaHref ?? "#"} className="btn btn-primary self-start text-[0.82rem]" data-pet-perch>
+                <a
+                  href={p.ctaHref ?? "#"}
+                  className="btn btn-primary self-start text-[0.82rem]"
+                  data-pet-perch
+                >
                   {p.ctaLabel}
                   <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                     <path
@@ -234,9 +238,7 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
         <h3 className="mb-[0.55rem] font-[var(--font-display)] text-[1.15rem] text-foreground/90 uppercase tracking-[-0.01em]">
           {p.name}
         </h3>
-        <p className="text-[0.83rem] leading-[1.72] text-foreground/62">
-          {p.longDescription}
-        </p>
+        <p className="text-[0.83rem] leading-[1.72] text-foreground/62">{p.longDescription}</p>
       </div>
 
       {/* Tags */}
