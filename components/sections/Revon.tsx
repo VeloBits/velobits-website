@@ -95,10 +95,17 @@ export default function Revon() {
           <p className="text-[0.8rem] text-subtle">
             Free for every rider. Read how Revon treats your data in the{" "}
             <Link
-              href="/revon/privacy"
+              href="/app/revon/privacy"
               className="font-semibold text-foreground underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
             >
               privacy policy
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/app/revon/terms"
+              className="font-semibold text-foreground underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
+            >
+              terms of service
             </Link>
             .
           </p>

@@ -54,7 +54,11 @@ describe("Revon", () => {
     render(<Revon />);
     expect(screen.getByRole("link", { name: /privacy policy/i })).toHaveAttribute(
       "href",
-      "/revon/privacy"
+      "/app/revon/privacy"
+    );
+    expect(screen.getByRole("link", { name: /terms of service/i })).toHaveAttribute(
+      "href",
+      "/app/revon/terms"
     );
     expect(screen.getByRole("link", { name: /Join the Revon Waitlist/i })).toHaveAttribute(
       "href",

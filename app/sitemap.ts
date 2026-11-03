@@ -11,7 +11,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: `${site}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
-    { url: `${site}/revon/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${site}/revon/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    {
+      url: `${site}/app/revon/privacy`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    { url: `${site}/app/revon/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
 }

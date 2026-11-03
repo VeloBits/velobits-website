@@ -79,12 +79,12 @@ test.describe("Legal route navigation", () => {
     await page.goto("/");
     const footer = page.getByRole("contentinfo");
     await footer.getByRole("link", { name: "Revon Privacy Policy" }).click();
-    await expect(page).toHaveURL(/\/revon\/privacy$/);
+    await expect(page).toHaveURL(/\/app\/revon\/privacy$/);
     await page
       .getByRole("contentinfo")
       .getByRole("link", { name: "Revon Terms of Service" })
       .click();
-    await expect(page).toHaveURL(/\/revon\/terms$/);
+    await expect(page).toHaveURL(/\/app\/revon\/terms$/);
   });
 
   test("the hidden blog redirects to the home page", async ({ page }) => {
@@ -97,7 +97,7 @@ test.describe("Legal route navigation", () => {
 
 test.describe("Cross-route: legal page to home sections", () => {
   test("logo from the privacy policy navigates to homepage", async ({ page }) => {
-    await page.goto("/revon/privacy");
+    await page.goto("/app/revon/privacy");
     await page.getByRole("link", { name: /Velobits home/i }).click();
     await expect(page).toHaveURL(/^http:\/\/localhost:3000\/$/);
   });
@@ -105,14 +105,14 @@ test.describe("Cross-route: legal page to home sections", () => {
   test("clicking Products from the privacy policy scrolls #products into view", async ({
     page,
   }) => {
-    await page.goto("/revon/privacy");
+    await page.goto("/app/revon/privacy");
     const nav = page.getByRole("navigation", { name: /Main navigation/i });
     await nav.getByRole("link", { name: "Products" }).click();
     await expect(page.locator("#products")).toBeInViewport({ timeout: 5000 });
   });
 
   test("clicking About from the privacy policy scrolls #about into view", async ({ page }) => {
-    await page.goto("/revon/privacy");
+    await page.goto("/app/revon/privacy");
     const nav = page.getByRole("navigation", { name: /Main navigation/i });
     await nav.getByRole("link", { name: "About" }).click();
     await expect(page.locator("#about")).toBeInViewport({ timeout: 5000 });
@@ -121,7 +121,7 @@ test.describe("Cross-route: legal page to home sections", () => {
   test("Join Waitlist CTA from the privacy policy scrolls #waitlist into view", async ({
     page,
   }) => {
-    await page.goto("/revon/privacy");
+    await page.goto("/app/revon/privacy");
     const nav = page.getByRole("navigation", { name: /Main navigation/i });
     await nav.getByRole("link", { name: /Join Waitlist/i }).click();
     await expect(page.locator("#waitlist")).toBeInViewport({ timeout: 5000 });
@@ -185,7 +185,7 @@ test.describe("Console errors during navigation", () => {
 
     await page.goto("/");
     await page.getByRole("contentinfo").getByRole("link", { name: "Revon Privacy Policy" }).click();
-    await page.waitForURL(/\/revon\/privacy/);
+    await page.waitForURL(/\/app\/revon\/privacy/);
     await page.getByRole("link", { name: /Velobits home/i }).click();
     await page.waitForURL(/^http:\/\/localhost:3000\/$/);
 

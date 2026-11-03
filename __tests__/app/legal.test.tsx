@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import PrivacyPage, { metadata as privacyMeta } from "../../app/revon/privacy/page";
-import TermsPage, { metadata as termsMeta } from "../../app/revon/terms/page";
+import PrivacyPage, { metadata as privacyMeta } from "../../app/app/revon/privacy/page";
+import TermsPage, { metadata as termsMeta } from "../../app/app/revon/terms/page";
 
 describe("Revon privacy policy", () => {
   it("has a title and a canonical URL on the public domain", () => {
     expect(privacyMeta.title).toMatch(/Revon Privacy Policy/);
-    expect(privacyMeta.alternates?.canonical).toBe("https://velobits.dev/revon/privacy");
+    expect(privacyMeta.alternates?.canonical).toBe("https://velobits.dev/app/revon/privacy");
   });
 
   it("renders a single h1, a date and a table of contents", () => {
@@ -52,7 +52,7 @@ describe("Revon privacy policy", () => {
 describe("Revon terms of service", () => {
   it("has a title and a canonical URL on the public domain", () => {
     expect(termsMeta.title).toMatch(/Revon Terms of Service/);
-    expect(termsMeta.alternates?.canonical).toBe("https://velobits.dev/revon/terms");
+    expect(termsMeta.alternates?.canonical).toBe("https://velobits.dev/app/revon/terms");
   });
 
   it("renders a single h1", () => {
@@ -71,7 +71,7 @@ describe("Revon terms of service", () => {
     render(<TermsPage />);
     expect(screen.getAllByRole("link", { name: /Privacy Policy/i })[0]).toHaveAttribute(
       "href",
-      "/revon/privacy"
+      "/app/revon/privacy"
     );
   });
 });

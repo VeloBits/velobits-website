@@ -19,8 +19,8 @@ export default function Footer() {
       { label: "Contact", href: `mailto:${brand.contactEmail}` },
     ],
     Legal: [
-      { label: "Revon Privacy Policy", href: "/revon/privacy" },
-      { label: "Revon Terms of Service", href: "/revon/terms" },
+      { label: "Revon Privacy Policy", href: "/app/revon/privacy" },
+      { label: "Revon Terms of Service", href: "/app/revon/terms" },
     ],
   };
 

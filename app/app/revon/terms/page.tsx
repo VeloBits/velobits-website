@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Revon Terms of Service | Velobits",
   description:
     "The terms for using the Revon group motorcycle ride app, including safety, location sharing and acceptable use.",
-  alternates: { canonical: `${brand.domain}/revon/terms` },
+  alternates: { canonical: `${brand.domain}/app/revon/terms` },
   robots: { index: true, follow: true },
 };
 
@@ -27,8 +27,8 @@ const sections: LegalSectionData[] = [
           Revon you agree to them. If you do not agree, please do not use the app.
         </P>
         <P>
-          Our <A href="/revon/privacy">Privacy Policy</A> explains how we handle your data and is
-          part of this agreement.
+          Our <A href="/app/revon/privacy">Privacy Policy</A> explains how we handle your data and
+          is part of this agreement.
         </P>
       </>
     ),
@@ -258,7 +258,7 @@ export default function RevonTermsPage() {
         </>
       }
       sections={sections}
-      sibling={{ label: "← Privacy Policy", href: "/revon/privacy" }}
+      sibling={{ label: "← Privacy Policy", href: "/app/revon/privacy" }}
     />
   );
 }

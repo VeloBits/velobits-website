@@ -161,7 +161,7 @@ export default function Waitlist() {
                 <p className="reveal reveal-delay-3 mt-4 text-[0.75rem] text-subtle animate-[fade-in_0.8s_ease_0.4s_both]">
                   No spam. Unsubscribe anytime. See our{" "}
                   <Link
-                    href="/revon/privacy#website"
+                    href="/app/revon/privacy#website"
                     className="underline decoration-accent/50 underline-offset-4 hover:text-foreground"
                   >
                     privacy policy

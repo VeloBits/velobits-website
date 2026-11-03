@@ -63,7 +63,7 @@ describe("Waitlist", () => {
     render(<Waitlist />);
     expect(screen.getByRole("link", { name: /privacy policy/i })).toHaveAttribute(
       "href",
-      "/revon/privacy#website"
+      "/app/revon/privacy#website"
     );
   });
 

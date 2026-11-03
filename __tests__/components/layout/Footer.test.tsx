@@ -49,8 +49,8 @@ describe("Footer", () => {
   it("renders Legal link group", () => {
     render(<Footer />);
     expect(screen.getByText("Legal")).toBeInTheDocument();
-    expect(screen.getByText("Revon Privacy Policy")).toHaveAttribute("href", "/revon/privacy");
-    expect(screen.getByText("Revon Terms of Service")).toHaveAttribute("href", "/revon/terms");
+    expect(screen.getByText("Revon Privacy Policy")).toHaveAttribute("href", "/app/revon/privacy");
+    expect(screen.getByText("Revon Terms of Service")).toHaveAttribute("href", "/app/revon/terms");
   });
 
   it("renders social links with aria labels", () => {

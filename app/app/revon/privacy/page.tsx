@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   title: "Revon Privacy Policy | Velobits",
   description:
     "How the Revon group motorcycle ride app collects, uses and shares your data, including location, profile and ride information.",
-  alternates: { canonical: `${brand.domain}/revon/privacy` },
+  alternates: { canonical: `${brand.domain}/app/revon/privacy` },
   robots: { index: true, follow: true },
 };
 
@@ -363,7 +363,7 @@ export default function RevonPrivacyPage() {
         </>
       }
       sections={sections}
-      sibling={{ label: "Terms of Service →", href: "/revon/terms" }}
+      sibling={{ label: "Terms of Service →", href: "/app/revon/terms" }}
     />
   );
 }
