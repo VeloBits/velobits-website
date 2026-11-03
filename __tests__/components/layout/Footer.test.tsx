@@ -31,24 +31,26 @@ describe("Footer", () => {
   it("renders Products link group with links", () => {
     render(<Footer />);
     expect(screen.getByText("Products")).toBeInTheDocument();
-    expect(screen.getByText("FixMyText")).toBeInTheDocument();
+    expect(screen.getByText("Revon")).toHaveAttribute("href", "/#revon");
+    expect(screen.getByText("FixMyText")).toHaveAttribute("href", "https://fixmytext.velobits.dev");
     expect(screen.getByText("Community Pulse")).toBeInTheDocument();
-    expect(screen.getByText("Roadmap")).toBeInTheDocument();
+    expect(screen.queryByText("Roadmap")).not.toBeInTheDocument();
   });
 
   it("renders Company link group", () => {
     render(<Footer />);
     expect(screen.getByText("Company")).toBeInTheDocument();
     expect(screen.getByText("About")).toBeInTheDocument();
-    expect(screen.getByText("Blog")).toBeInTheDocument();
+    expect(screen.queryByText("Blog")).not.toBeInTheDocument();
     expect(screen.getByText("Join Waitlist")).toBeInTheDocument();
+    expect(screen.getByText("Contact")).toHaveAttribute("href", "mailto:hello@velobits.dev");
   });
 
   it("renders Legal link group", () => {
     render(<Footer />);
     expect(screen.getByText("Legal")).toBeInTheDocument();
-    expect(screen.getByText("Privacy Policy")).toBeInTheDocument();
-    expect(screen.getByText("Terms of Service")).toBeInTheDocument();
+    expect(screen.getByText("Revon Privacy Policy")).toHaveAttribute("href", "/app/revon/privacy");
+    expect(screen.getByText("Revon Terms of Service")).toHaveAttribute("href", "/app/revon/terms");
   });
 
   it("renders social links with aria labels", () => {

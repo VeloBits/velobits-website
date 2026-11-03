@@ -36,8 +36,10 @@ describe("Waitlist", () => {
 
   it("renders the description text", () => {
     render(<Waitlist />);
-    expect(screen.getByText(/Join early believers/i)).toBeInTheDocument();
-    expect(screen.getByText(/first access to every Velobits launch/i)).toBeInTheDocument();
+    expect(screen.getByText(/Be first on the road/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/early access to Revon and every Velobits launch/i)
+    ).toBeInTheDocument();
   });
 
   it("renders the email input field with placeholder", () => {
@@ -55,6 +57,14 @@ describe("Waitlist", () => {
   it("renders the disclaimer text 'No spam. Unsubscribe anytime.'", () => {
     render(<Waitlist />);
     expect(screen.getByText(/No spam. Unsubscribe anytime/i)).toBeInTheDocument();
+  });
+
+  it("links to the privacy policy next to the email field", () => {
+    render(<Waitlist />);
+    expect(screen.getByRole("link", { name: /privacy policy/i })).toHaveAttribute(
+      "href",
+      "/app/revon/privacy#website"
+    );
   });
 
   it("updates email state when user types", async () => {

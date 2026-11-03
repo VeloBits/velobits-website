@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import Products from "@/components/sections/Products";
+import { products } from "@/lib/site-content";
 
 describe("Products", () => {
   it("renders the section with id 'products'", () => {
@@ -13,44 +14,40 @@ describe("Products", () => {
     expect(screen.getByText(/Our Products/i)).toBeInTheDocument();
   });
 
-  it("renders the featured product name FixMyText", () => {
+  it("features Revon first, as the coming-soon product", () => {
     render(<Products />);
-    expect(screen.getByText("FixMyText")).toBeInTheDocument();
+    expect(products[0].id).toBe("revon");
+    expect(screen.getByRole("heading", { name: "Revon" })).toBeInTheDocument();
+    expect(screen.getByText("Coming Soon", { selector: "span" })).toBeInTheDocument();
   });
 
-  it("renders the featured product description", () => {
+  it("renders the Revon description, features, tags and waitlist CTA", () => {
     render(<Products />);
+    expect(screen.getByText(/puts every rider in a group on one live map/i)).toBeInTheDocument();
+    expect(screen.getByText(/One-tap SOS that alerts the whole group/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Join the Revon Waitlist/i })).toHaveAttribute(
+      "href",
+      "#waitlist"
+    );
+    expect(screen.getByText("#Motorcycles")).toBeInTheDocument();
+  });
+
+  it("keeps FixMyText as a live product with its demo and link", () => {
+    render(<Products />);
+    expect(screen.getByRole("heading", { name: "FixMyText" })).toBeInTheDocument();
+    expect(screen.getByText("Live Now")).toBeInTheDocument();
     expect(screen.getByText(/all-in-one text-transformation/i)).toBeInTheDocument();
-  });
-
-  it("renders the featured product status badge", () => {
-    render(<Products />);
-    expect(screen.getByText(/Launching Soon/i)).toBeInTheDocument();
-  });
-
-  it("renders the featured product CTA link", () => {
-    render(<Products />);
-    const cta = screen.getByRole("link", { name: /Join FixMyText Waitlist/i });
-    expect(cta).toHaveAttribute("href", "#waitlist");
-  });
-
-  it("renders the Coming Soon product card", () => {
-    render(<Products />);
-    expect(screen.getByText(/Coming Soon/i)).toBeInTheDocument();
-  });
-
-  it("renders the Velobits Suite product card", () => {
-    render(<Products />);
-    expect(screen.getByText(/Velobits Suite/i)).toBeInTheDocument();
-  });
-
-  it("renders feature list items for featured product", () => {
-    render(<Products />);
     expect(screen.getByText(/254 tools across 12 categories/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Open FixMyText/i })).toHaveAttribute(
+      "href",
+      "https://fixmytext.velobits.dev"
+    );
+    expect(screen.getByText(/I writed this email yesterday/i)).toBeInTheDocument();
   });
 
-  it("renders tags for featured product", () => {
+  it("renders the In the Lab and Velobits Suite cards", () => {
     render(<Products />);
-    expect(screen.getByText("#AI")).toBeInTheDocument();
+    expect(screen.getByText(/In the Lab/i)).toBeInTheDocument();
+    expect(screen.getByText(/Velobits Suite/i)).toBeInTheDocument();
   });
 });

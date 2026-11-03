@@ -30,7 +30,7 @@ describe("About", () => {
 
   it("renders all three stat cards", () => {
     render(<About />);
-    expect(screen.getByText(/Product Launching/i)).toBeInTheDocument();
+    expect(screen.getByText(/Products Built/i)).toBeInTheDocument();
     expect(screen.getByText(/Community-First Roadmap/i)).toBeInTheDocument();
     expect(screen.getByText(/Ideas Driven by Community/i)).toBeInTheDocument();
   });

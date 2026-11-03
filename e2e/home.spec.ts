@@ -20,27 +20,27 @@ test.describe("Homepage", () => {
     await expect(footer).toContainText("Velobits");
   });
 
-  test("hero heading contains FixMyText and Velobits", async ({ page }) => {
+  test("hero heading contains Revon and Velobits", async ({ page }) => {
     await page.goto("/");
     const h1 = page.getByRole("heading", { level: 1 });
-    await expect(h1).toContainText("FixMyText");
+    await expect(h1).toContainText("Revon");
     await expect(h1).toContainText("Velobits");
   });
 
   test("hero waitlist CTA is visible and links to #waitlist", async ({ page }) => {
     await page.goto("/");
     const hero = page.locator("#hero");
-    const cta = hero.getByRole("link", { name: /Join FixMyText Waitlist/i });
+    const cta = hero.getByRole("link", { name: /Join the Revon Waitlist/i });
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "#waitlist");
   });
 
-  test("hero preview CTA links to #products", async ({ page }) => {
+  test("hero how-it-works CTA links to #revon", async ({ page }) => {
     await page.goto("/");
     const hero = page.locator("#hero");
-    const cta = hero.getByRole("link", { name: /See Product Preview/i });
+    const cta = hero.getByRole("link", { name: /See How It Works/i });
     await expect(cta).toBeVisible();
-    await expect(cta).toHaveAttribute("href", "#products");
+    await expect(cta).toHaveAttribute("href", "#revon");
   });
 
   test("navbar has main navigation landmark", async ({ page }) => {
@@ -75,8 +75,19 @@ test.describe("Homepage", () => {
 
   test("homepage renders all expected section IDs", async ({ page }) => {
     await page.goto("/");
-    for (const id of ["hero", "products", "community", "about", "roadmap", "updates", "waitlist"]) {
+    for (const id of ["hero", "revon", "products", "community", "about", "updates", "waitlist"]) {
       await expect(page.locator(`#${id}`)).toBeAttached();
     }
+  });
+
+  test("the roadmap section is gone", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("#roadmap")).toHaveCount(0);
+  });
+
+  test("FixMyText is linked to its live URL", async ({ page }) => {
+    await page.goto("/");
+    const link = page.locator("#products").getByRole("link", { name: /Open FixMyText/i });
+    await expect(link).toHaveAttribute("href", "https://fixmytext.velobits.dev");
   });
 });
