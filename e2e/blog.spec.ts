@@ -1,65 +1,19 @@
 import { test, expect } from "@playwright/test";
 
-// CI runs without Notion credentials, so getAllPosts() returns [] and /blog
-// renders its empty state. These tests assert the page shell + chrome render and
-// the Blog nav link is wired — independent of whether any posts exist.
-test.describe("Blog", () => {
-  test("blog index has a Velobits title", async ({ page }) => {
-    await page.goto("/blog");
-    await expect(page).toHaveTitle(/Blog|Velobits/);
-  });
-
-  test("renders the header and footer chrome", async ({ page }) => {
-    await page.goto("/blog");
-    await expect(page.getByRole("banner")).toBeVisible();
-    await expect(page.getByRole("contentinfo")).toBeVisible();
-  });
-
-  test("renders the blog index heading even with no posts", async ({ page }) => {
-    await page.goto("/blog");
-    await expect(page.getByRole("heading", { level: 1 })).toContainText(/Writing/i);
-  });
-
-  test("navbar Blog link points to /blog and is not marked 'Soon'", async ({ page }) => {
-    await page.goto("/");
-    const nav = page.getByRole("navigation", { name: /Main navigation/i });
-    const blogLink = nav.getByRole("link", { name: "Blog" });
-    await expect(blogLink).toHaveAttribute("href", "/blog");
-    await expect(nav).not.toContainText(/Soon/i);
-  });
-
-  test("has no console errors on load", async ({ page }) => {
-    const errors: string[] = [];
-    page.on("console", (msg) => {
-      if (msg.type() === "error") errors.push(msg.text());
+// The blog is hidden for now: next.config.ts redirects every /blog URL to the
+// home page. The blog code is untouched, so when it comes back, restore the
+// original assertions from git history (page shell, empty state, nav link).
+test.describe("Blog (hidden)", () => {
+  for (const path of ["/blog", "/blog/some-post", "/blog/tag/anything", "/blog/rss.xml"]) {
+    test(`${path} redirects to the home page`, async ({ page }) => {
+      await page.goto(path);
+      await expect(page).toHaveURL(/^http:\/\/localhost:3000\/$/);
     });
-    await page.goto("/blog");
-    expect(errors).toHaveLength(0);
-  });
+  }
 
-  test("blog page logo links to '/'", async ({ page }) => {
-    await page.goto("/blog");
-    const logo = page.getByRole("link", { name: /Velobits home/i });
-    await expect(logo).toHaveAttribute("href", "/");
-  });
-
-  test("section nav links on /blog use root-relative hash hrefs", async ({ page }) => {
-    await page.goto("/blog");
-    const nav = page.getByRole("navigation", { name: /Main navigation/i });
-    await expect(nav.getByRole("link", { name: "Products" })).toHaveAttribute("href", "/#products");
-    await expect(nav.getByRole("link", { name: "Community" })).toHaveAttribute(
-      "href",
-      "/#community"
-    );
-    await expect(nav.getByRole("link", { name: "About" })).toHaveAttribute("href", "/#about");
-  });
-
-  test("Join Waitlist CTA on /blog has '/#waitlist' href", async ({ page }) => {
-    await page.goto("/blog");
-    const nav = page.getByRole("navigation", { name: /Main navigation/i });
-    await expect(nav.getByRole("link", { name: /Join Waitlist/i })).toHaveAttribute(
-      "href",
-      "/#waitlist"
-    );
+  test("the blog is not in the sitemap", async ({ request }) => {
+    const res = await request.get("/sitemap.xml");
+    expect(res.ok()).toBe(true);
+    expect(await res.text()).not.toContain("/blog");
   });
 });

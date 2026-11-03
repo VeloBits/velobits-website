@@ -28,25 +28,26 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "Velobits: FixMyText AI Writing Assistant",
+  title: "Velobits: Revon Group Motorcycle Ride App",
   description:
-    "Velobits builds FixMyText, an AI writing assistant for grammar fixes, sentence rewriting, and tone improvement. Join the FixMyText waitlist.",
+    "Revon puts your whole riding group on one live map, with rider hand signals, SOS and regroup points. By Velobits, makers of FixMyText. Join the Revon waitlist.",
   keywords: [
     "Velobits",
+    "Revon",
+    "group motorcycle ride app",
+    "live location for riders",
+    "motorcycle convoy",
+    "rider SOS",
     "FixMyText",
-    "AI writing assistant",
-    "grammar fixer",
-    "sentence rewriter",
-    "tone improvement",
     "waitlist",
   ],
   alternates: {
     canonical: "https://velobits.dev/",
   },
   openGraph: {
-    title: "Velobits: FixMyText AI Writing Assistant",
+    title: "Velobits: Revon Group Motorcycle Ride App",
     description:
-      "Velobits builds FixMyText, an AI writing assistant for grammar fixes, sentence rewriting, and tone improvement. Join the FixMyText waitlist.",
+      "Revon puts your whole riding group on one live map, with rider hand signals, SOS and regroup points. By Velobits, makers of FixMyText. Join the Revon waitlist.",
     url: "https://velobits.dev/",
     siteName: "Velobits",
     type: "website",
@@ -54,9 +55,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Velobits: FixMyText AI Writing Assistant",
+    title: "Velobits: Revon Group Motorcycle Ride App",
     description:
-      "Velobits builds FixMyText, an AI writing assistant for grammar fixes, sentence rewriting, and tone improvement. Join the FixMyText waitlist.",
+      "Revon puts your whole riding group on one live map, with rider hand signals, SOS and regroup points. By Velobits, makers of FixMyText. Join the Revon waitlist.",
   },
   metadataBase: new URL("https://velobits.dev"),
 };

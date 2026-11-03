@@ -5,6 +5,7 @@ import { products, type Product } from "@/lib/site-content";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 import ProductIcon from "@/components/ui/ProductIcon";
 import SectionHeader from "@/components/ui/SectionHeader";
+import FeatureIcon from "@/components/ui/FeatureIcon";
 import { CONTAINER, SECTION, PILL_BASE } from "@/lib/ui-classes";
 
 export default function Products() {
@@ -34,7 +35,7 @@ export default function Products() {
     <section id="products" className={SECTION} ref={sectionRef}>
       <div className={`container ${CONTAINER}`}>
         <SectionHeader
-          index="01"
+          index="02"
           eyebrow="Our Products"
           titleLines={["Tools that", "actually work."]}
           lede="Every Velobits product starts with a real problem. No bloat. No vaporware. Just bits that matter."
@@ -75,6 +76,11 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
   };
 
   const delayClass = `reveal-delay-${idx + 1}`;
+
+  /* ── FixMyText: live, shown wide with its original before/after demo ── */
+  if (p.id === "fixmytext" && p.preview) {
+    return <FixMyTextCard product={p} preview={p.preview} delayClass={delayClass} />;
+  }
 
   /* ── Featured card ── */
   if (p.featured) {
@@ -263,6 +269,136 @@ function ProductCard({ product: p, idx }: { product: Product; idx: number }) {
           </a>
         </div>
       )}
+    </div>
+  );
+}
+
+function FixMyTextCard({
+  product: p,
+  preview,
+  delayClass,
+}: {
+  product: Product;
+  preview: NonNullable<Product["preview"]>;
+  delayClass: string;
+}) {
+  return (
+    <div
+      className={`card card-glow reveal ${delayClass} col-span-1 md:col-span-2 relative flex flex-col gap-8 overflow-hidden p-8 md:flex-row md:p-10`}
+    >
+      <GlowingEffect spread={40} proximity={64} inactiveZone={0.01} />
+
+      <div className="relative flex flex-col gap-[1.2rem] md:w-[50%]">
+        <div className="flex items-center justify-between">
+          <span
+            className={`pill ${PILL_BASE} text-[0.73rem] bg-accent/9 border-accent/25 text-accent`}
+          >
+            <span className="pill-dot" />
+            &nbsp;{p.status}
+          </span>
+          <div
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-accent/8 to-transparent"
+            aria-hidden="true"
+          >
+            <ProductIcon id={p.id} size={20} />
+          </div>
+        </div>
+
+        <div>
+          <h3 className="mb-[0.55rem] font-[var(--font-display)] text-[1.5rem] text-foreground uppercase tracking-[-0.01em]">
+            {p.name}
+          </h3>
+          <p className="text-[0.88rem] leading-[1.72] text-muted">{p.longDescription}</p>
+        </div>
+
+        <div className="flex flex-col gap-[0.5rem]">
+          {p.features.map((feat) => (
+            <div key={feat} className="flex items-center gap-[0.65rem]">
+              <span
+                className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[var(--accent-dim)]"
+                aria-hidden="true"
+              >
+                <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+                  <path
+                    d="M2 5l2.5 2.5L8 3"
+                    stroke="var(--accent)"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+              <span className="text-[0.78rem] leading-[1.4] text-foreground/70">{feat}</span>
+            </div>
+          ))}
+        </div>
+
+        {p.ctaLabel && p.ctaHref && (
+          <a
+            href={p.ctaHref}
+            className="btn btn-primary mt-auto self-start text-[0.82rem]"
+            data-pet-perch
+          >
+            {p.ctaLabel}
+            <FeatureIcon name="external" size={13} />
+          </a>
+        )}
+      </div>
+
+      {/* The original demo: a browser frame with a before/after fix. */}
+      <div
+        className="relative flex flex-1 flex-col gap-3 rounded-[14px] border border-border-subtle bg-card-alt/40 px-5 pt-4 pb-5"
+        aria-label="FixMyText product preview"
+      >
+        <div className="flex items-center gap-[0.35rem] border-b border-border-subtle pb-3">
+          <span className="inline-block h-2 w-2 rounded-full bg-[#ff5f57]" aria-hidden="true" />
+          <span className="inline-block h-2 w-2 rounded-full bg-[#febc2e]" aria-hidden="true" />
+          <span className="inline-block h-2 w-2 rounded-full bg-[#28c840]" aria-hidden="true" />
+          <span className="ml-2 flex-1 rounded-[5px] bg-card-alt px-[0.65rem] py-[0.2rem] text-[0.67rem] tracking-[0.02em] text-subtle">
+            {preview.url}
+          </span>
+        </div>
+
+        <div className="flex flex-col gap-[0.3rem]">
+          <div className="text-[0.6rem] font-bold tracking-[0.14em] text-muted uppercase">
+            Original
+          </div>
+          <div className="rounded-[8px] border border-border-subtle bg-card-alt px-4 py-[0.65rem]">
+            <p className="text-[0.78rem] leading-relaxed text-muted">{preview.originalText}</p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-[0.35rem]">
+          {preview.actions.map((action, i) => (
+            <span
+              key={action}
+              className={`whitespace-nowrap rounded-full border px-3 py-1 text-[0.67rem] font-semibold ${
+                i === 0
+                  ? "border-accent/30 bg-[var(--accent-dim)] text-accent"
+                  : "border-border-subtle bg-card-alt text-muted"
+              }`}
+            >
+              {action}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex flex-col gap-[0.3rem]">
+          <div className="text-[0.6rem] font-bold tracking-[0.14em] text-accent uppercase">
+            ✓ Fixed
+          </div>
+          <div className="rounded-[8px] border border-accent/16 bg-accent/5 px-4 py-[0.65rem]">
+            <p className="text-[0.78rem] leading-relaxed text-foreground">{preview.fixedText}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between pt-[0.3rem]">
+          <div className="text-[0.6rem] font-bold tracking-[0.14em] text-muted uppercase">
+            {preview.accuracyLabel}
+          </div>
+          <div className="text-[0.9rem] font-bold text-accent">{preview.accuracy}</div>
+        </div>
+      </div>
     </div>
   );
 }

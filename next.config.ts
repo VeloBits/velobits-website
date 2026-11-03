@@ -13,6 +13,17 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  // The blog is hidden for now: every /blog URL (pages, tags and the RSS feed)
+  // goes back to the home page. The code under app/blog is untouched, so removing
+  // this block brings the blog back. Temporary (307) so search engines and
+  // browsers do not cache the move.
+  async redirects() {
+    return [
+      { source: "/blog", destination: "/", permanent: false },
+      { source: "/blog/:path*", destination: "/", permanent: false },
+    ];
+  },
+
   async headers() {
     const cspFrameAncestors = [
       "'self'",
