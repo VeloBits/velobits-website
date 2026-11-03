@@ -7,10 +7,10 @@ import Navbar from "@/components/layout/Navbar";
 import ScrollToHash from "@/components/layout/ScrollToHash";
 import Hero from "@/components/sections/Hero";
 import Marquee from "@/components/ui/Marquee";
+import Revon from "@/components/sections/Revon";
 import Products from "@/components/sections/Products";
 import CommunityPulse from "@/components/sections/CommunityPulse";
 import About from "@/components/sections/About";
-import Roadmap from "@/components/sections/Roadmap";
 import LatestUpdates from "@/components/sections/LatestUpdates";
 import Waitlist from "@/components/sections/Waitlist";
 import Footer from "@/components/layout/Footer";
@@ -40,11 +40,13 @@ export default function Home() {
         </div>
         <Marquee />
         <div data-pet-perch>
+          <Revon />
+        </div>
+        <div data-pet-perch>
           <Products />
         </div>
         <CommunityPulse />
         <About />
-        <Roadmap />
         <Suspense fallback={<div className={SECTION} aria-hidden="true" />}>
           <div data-pet-perch>
             <LatestUpdates />

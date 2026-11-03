@@ -6,7 +6,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { CONTAINER } from "@/lib/ui-classes";
 
 const stats = [
-  { value: 1, suffix: "", label: "Product Launching", display: null },
+  { value: 2, suffix: "", label: "Products Built", display: null },
   { value: 100, suffix: "%", label: "Community-First Roadmap", display: null },
   { value: 0, suffix: "", label: "Ideas Driven by Community", display: "∞" },
 ];
@@ -61,7 +61,7 @@ export default function About() {
 
       <div className={`container ${CONTAINER}`}>
         <SectionHeader
-          index="03"
+          index="04"
           eyebrow="Our Mission"
           titleLines={["Built with", "purpose."]}
           lede="We listen first and build second. Every product starts with a problem someone actually has."

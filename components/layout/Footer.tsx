@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { brand } from "@/lib/site-content";
 import { CONTAINER } from "@/lib/ui-classes";
 
 export default function Footer() {
@@ -8,18 +9,18 @@ export default function Footer() {
 
   const links = {
     Products: [
-      { label: "FixMyText", href: "https://app.velobits.dev" },
+      { label: "Revon", href: "/#revon" },
+      { label: "FixMyText", href: brand.fixmytextUrl },
       { label: "Community Pulse", href: "/#community" },
-      { label: "Roadmap", href: "/#roadmap" },
     ],
     Company: [
       { label: "About", href: "/#about" },
-      { label: "Blog", href: "/blog" },
       { label: "Join Waitlist", href: "/#waitlist" },
+      { label: "Contact", href: `mailto:${brand.contactEmail}` },
     ],
     Legal: [
-      { label: "Privacy Policy", href: "#" },
-      { label: "Terms of Service", href: "#" },
+      { label: "Revon Privacy Policy", href: "/app/revon/privacy" },
+      { label: "Revon Terms of Service", href: "/app/revon/terms" },
     ],
   };
 

@@ -4,6 +4,24 @@ export default function ProductIcon({ id, size = 22 }: { id: string; size?: numb
   const stroke = "var(--accent)";
   const sw = "1.6";
 
+  if (id === "revon") {
+    // Motorcycle icon
+    return (
+      <svg {...props} aria-hidden="true">
+        <circle cx="18.5" cy="17.5" r="3.5" stroke={stroke} strokeWidth={sw} />
+        <circle cx="5.5" cy="17.5" r="3.5" stroke={stroke} strokeWidth={sw} />
+        <circle cx="15" cy="5" r="1" stroke={stroke} strokeWidth={sw} />
+        <path
+          d="M12 17.5V14l-3-3 4-3 2 3h2"
+          stroke={stroke}
+          strokeWidth={sw}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
   if (id === "fixmytext") {
     // Pencil / edit icon
     return (
