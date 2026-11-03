@@ -37,9 +37,14 @@ describe("Navbar", () => {
     });
   });
 
-  it("links Blog to the blog index", () => {
+  it("links Revon to its home page section", () => {
     render(<Navbar />);
-    expect(screen.getByText("Blog").closest("a")).toHaveAttribute("href", "/blog");
+    expect(screen.getByText("Revon").closest("a")).toHaveAttribute("href", "/#revon");
+  });
+
+  it("does not show a Blog link while the blog is hidden", () => {
+    render(<Navbar />);
+    expect(screen.queryByText("Blog")).not.toBeInTheDocument();
   });
 
   it("renders the Join Waitlist CTA", () => {

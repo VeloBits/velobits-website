@@ -1,13 +1,13 @@
 "use client";
 
 const items = [
-  "254 Text Tools",
-  "AI-Powered",
-  "Privacy First",
-  "Case · Encode · Hash",
-  "Free to Start",
-  "Real-Time Preview",
-  "Open Roadmap",
+  "Live Group Map",
+  "One-Tap SOS",
+  "Rider Hand Signals",
+  "Regroup Points",
+  "Ride Cards",
+  "Built for Riders",
+  "FixMyText Is Live",
   "Zero Bloat",
 ];
 

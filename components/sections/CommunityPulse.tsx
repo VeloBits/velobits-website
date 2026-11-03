@@ -156,7 +156,7 @@ export default function CommunityPulse() {
 
       <div className={`container ${CONTAINER} relative`}>
         <SectionHeader
-          index="02"
+          index="03"
           eyebrow="Community Pulse"
           titleLines={["You decide what we", "build next."]}
           align="center"

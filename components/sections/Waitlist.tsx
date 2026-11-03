@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 import AsciiField from "@/components/ui/AsciiField";
 import { CONTAINER, SECTION, DISPLAY_LG, DISPLAY_MD, DISPLAY } from "@/lib/ui-classes";
@@ -91,8 +92,8 @@ export default function Waitlist() {
                     what&apos;s next.
                   </h2>
                   <p className="mx-auto mt-4 max-w-[46ch] leading-[1.7] text-muted">
-                    Join early believers. Get first access to every Velobits launch before anyone
-                    else. No spam - ever.
+                    Be first on the road. Get early access to Revon and every Velobits launch before
+                    anyone else. No spam - ever.
                   </p>
                 </div>
 
@@ -158,7 +159,14 @@ export default function Waitlist() {
                 )}
 
                 <p className="reveal reveal-delay-3 mt-4 text-[0.75rem] text-subtle animate-[fade-in_0.8s_ease_0.4s_both]">
-                  No spam. Unsubscribe anytime.
+                  No spam. Unsubscribe anytime. See our{" "}
+                  <Link
+                    href="/revon/privacy#website"
+                    className="underline decoration-accent/50 underline-offset-4 hover:text-foreground"
+                  >
+                    privacy policy
+                  </Link>
+                  .
                 </p>
               </>
             )}

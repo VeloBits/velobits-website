@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, beforeEach } from "vitest";
 import Hero from "@/components/sections/Hero";
-import { getFeaturedProduct } from "@/lib/site-content";
+import { brand, getFeaturedProduct } from "@/lib/site-content";
 
 describe("Hero", () => {
   beforeEach(() => {
@@ -13,75 +13,54 @@ describe("Hero", () => {
     expect(document.getElementById("hero")).toBeInTheDocument();
   });
 
-  it("renders the main h1 heading 'FixMyText by Velobits'", () => {
+  it("renders the main h1 heading 'Revon' with the Velobits attribution", () => {
     render(<Hero />);
     const h1 = screen.getByRole("heading", { level: 1 });
-    expect(h1).toBeInTheDocument();
-    expect(h1).toHaveTextContent(/FixMyText/i);
+    expect(h1).toHaveTextContent(/Revon/i);
     expect(h1).toHaveTextContent(/Velobits/i);
   });
 
-  it("renders the eyebrow 'FixMyText is launching soon'", () => {
+  it("renders the coming-soon eyebrow", () => {
     render(<Hero />);
-    expect(screen.getByText(/FixMyText is launching soon/i)).toBeInTheDocument();
+    expect(screen.getByText(/Coming soon to Android and iOS/i)).toBeInTheDocument();
   });
 
   it("renders the supporting description copy", () => {
     render(<Hero />);
-    // Phrases unique to the platform-positioning description paragraph
-    // (both fall in the text node before the inline "Velobits" span)
-    expect(screen.getByText(/254 text tools in one editor/i)).toBeInTheDocument();
-    expect(screen.getByText(/rewriting, summarizing, and analysis/i)).toBeInTheDocument();
+    expect(screen.getByText(/One live map for your whole riding group/i)).toBeInTheDocument();
   });
 
-  it("renders the 'Join FixMyText Waitlist' CTA linking to #waitlist", () => {
+  it("renders the waitlist CTA linking to #waitlist", () => {
     render(<Hero />);
-    const cta = screen.getByRole("link", { name: /Join FixMyText Waitlist/i });
-    expect(cta).toBeInTheDocument();
+    const cta = screen.getByRole("link", { name: /Join the Revon Waitlist/i });
     expect(cta).toHaveAttribute("href", "#waitlist");
   });
 
-  it("renders the 'See Product Preview' CTA linking to #products", () => {
+  it("renders the 'See How It Works' CTA linking to #revon", () => {
     render(<Hero />);
-    const cta = screen.getByRole("link", { name: /See Product Preview/i });
-    expect(cta).toBeInTheDocument();
-    expect(cta).toHaveAttribute("href", "#products");
+    const cta = screen.getByRole("link", { name: /See How It Works/i });
+    expect(cta).toHaveAttribute("href", "#revon");
   });
 
-  it("renders trust tags from featured product config", () => {
+  it("features Revon and lists its features", () => {
     render(<Hero />);
     const featured = getFeaturedProduct();
+    expect(featured.id).toBe("revon");
     featured.features.forEach((tag) => {
       expect(screen.getByText(tag)).toBeInTheDocument();
     });
   });
 
-  it("renders the product preview browser frame", () => {
+  it("describes the app illustration for assistive tech", () => {
     render(<Hero />);
-    const featured = getFeaturedProduct();
-    expect(screen.getByText(featured.preview!.url)).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /Revon ride screen/i })).toBeInTheDocument();
   });
 
-  it("renders the original and fixed preview text", () => {
+  it("keeps FixMyText one click away on its live URL", () => {
     render(<Hero />);
-    const featured = getFeaturedProduct();
-    expect(screen.getByText(featured.preview!.originalText)).toBeInTheDocument();
-    expect(screen.getByText(featured.preview!.fixedText)).toBeInTheDocument();
-  });
-
-  it("renders the accuracy stat from config", () => {
-    render(<Hero />);
-    const featured = getFeaturedProduct();
-    expect(screen.getByText(featured.preview!.accuracy)).toBeInTheDocument();
-    expect(screen.getByText(featured.preview!.accuracyLabel)).toBeInTheDocument();
-  });
-
-  it("renders action chips from preview config", () => {
-    render(<Hero />);
-    const featured = getFeaturedProduct();
-    featured.preview!.actions.forEach((action) => {
-      expect(screen.getByText(action)).toBeInTheDocument();
-    });
+    const link = screen.getByRole("link", { name: /FixMyText is live/i });
+    expect(link).toHaveAttribute("href", brand.fixmytextUrl);
+    expect(brand.fixmytextUrl).toBe("https://fixmytext.velobits.dev");
   });
 
   it("renders the scroll hint", () => {

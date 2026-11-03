@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { getFeaturedProduct } from "@/lib/site-content";
+import { brand, getFeaturedProduct } from "@/lib/site-content";
 import { CONTAINER } from "@/lib/ui-classes";
+import RevonPhone from "@/components/ui/RevonPhone";
+import FeatureIcon from "@/components/ui/FeatureIcon";
 
 export default function Hero() {
   const glowRef = useRef<HTMLDivElement>(null);
   const featured = getFeaturedProduct();
-  const preview = featured.preview!;
 
   useEffect(() => {
     const onScroll = () => {
@@ -23,11 +24,7 @@ export default function Hero() {
       id="hero"
       className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden pt-[7rem] pb-16 max-[960px]:pt-[5.5rem]"
     >
-      {/* One ambient element, not eight.
-          Previously: three coloured radial glows (lime + purple + blue) and five
-          floating particles. The purple/blue were off-brand and went muddy on a
-          light ground, and eight competing movements meant none of them read.
-          The reference studios all commit to a single ambient gesture. */}
+      {/* One ambient element, not eight: a single soft accent glow behind the copy. */}
       <div ref={glowRef} className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
         <div className="absolute top-[-14%] left-[-8%] h-[680px] w-[680px] rounded-full bg-[radial-gradient(circle,var(--accent-a08)_0%,transparent_62%)] blur-[90px]" />
       </div>
@@ -47,37 +44,30 @@ export default function Hero() {
                 <span className="absolute inset-0 rounded-full bg-accent opacity-50 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]" />
                 <span className="inline-block h-[7px] w-[7px] rounded-full bg-accent" />
               </span>
-              <span className="label-mono text-accent">FixMyText is launching soon</span>
+              <span className="label-mono text-accent">Coming soon to Android and iOS</span>
             </div>
 
-            {/* H1.
-                Was two equal-weight lines with the second in accent — which made
-                two-thirds of the headline an accent colour, so nothing read as
-                emphasis. Now the product name carries the scale and the
-                attribution steps down in size, weight and tone. The accent is
-                spent on the CTA instead, where it converts. */}
+            {/* The product name carries the scale; the attribution steps down in
+                size, weight and tone. The clamp minimum has to fit the narrowest
+                supported viewport. */}
             <h1 className="animate-[pop-in_0.6s_ease_0.2s_both] font-[var(--font-display)] leading-[0.9] font-extrabold tracking-[-0.035em] text-foreground uppercase">
-              {/* The clamp MINIMUM has to fit the narrowest supported viewport.
-                  At 2.9rem, "FIXMYTEXT" measured 451px wide inside a 390px
-                  phone — the floor, not the vw term, was the overflow. */}
-              <span className="block text-[clamp(2rem,6.2vw,5.6rem)]">FixMyText</span>
+              <span className="block text-[clamp(2.6rem,9vw,7rem)]">Revon</span>
               <span className="mt-[0.55rem] block text-[clamp(0.95rem,1.35vw,1.25rem)] font-semibold tracking-[0.16em] text-muted">
-                by Velobits
+                Ride together · by Velobits
               </span>
             </h1>
 
             {/* Description */}
-            <p className="max-w-[42ch] animate-[pop-in_0.6s_ease_0.32s_both] text-[0.97rem] leading-[1.8] text-muted">
-              254 text tools in one editor — case conversion, encoding, formatting, and 50+ AI tools
-              for rewriting, summarizing, and analysis. Built by{" "}
-              <span className="font-semibold text-foreground">Velobits</span>, runs right in your
-              browser.
+            <p className="max-w-[44ch] animate-[pop-in_0.6s_ease_0.32s_both] text-[0.97rem] leading-[1.8] text-muted">
+              One live map for your whole riding group. See who is ahead, who has stopped and who
+              needs help, without pulling over to check a chat. Built for motorcyclists by{" "}
+              <span className="font-semibold text-foreground">Velobits</span>.
             </p>
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-3 animate-[pop-in_0.6s_ease_0.42s_both] max-[960px]:justify-center">
               <a href="#waitlist" className="btn btn-primary" data-pet-perch>
-                Join FixMyText Waitlist
+                Join the Revon Waitlist
                 <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                   <path
                     d="M3 8h10M9 4l4 4-4 4"
@@ -88,18 +78,14 @@ export default function Hero() {
                   />
                 </svg>
               </a>
-              <a href="#products" className="btn btn-ghost">
-                See Product Preview
+              <a href="#revon" className="btn btn-ghost">
+                See How It Works
               </a>
             </div>
 
-            {/* Feature list.
-                Was four accent-bordered pills with a pulsing dot, wrapping to two
-                rows directly under the CTA — four objects competing with the one
-                thing that should win. Now a quiet hairline-ruled list: same
-                information, no colour, no motion, reads as spec rather than
-                decoration. */}
-            <ul className="mt-2 flex flex-col gap-0 animate-[pop-in_0.6s_ease_0.52s_both] max-[960px]:mx-auto max-[960px]:max-w-[34ch]">
+            {/* Feature list: a quiet hairline-ruled spec, no colour or motion, so
+                the one CTA above stays the thing that wins. */}
+            <ul className="mt-2 flex flex-col gap-0 animate-[pop-in_0.6s_ease_0.52s_both] max-[960px]:mx-auto max-[960px]:max-w-[38ch]">
               {featured.features.map((tag) => (
                 <li
                   key={tag}
@@ -112,86 +98,27 @@ export default function Hero() {
                 </li>
               ))}
             </ul>
+
+            {/* The older product stays one click away. */}
+            <p className="animate-[pop-in_0.6s_ease_0.6s_both] text-[0.8rem] text-subtle">
+              Also from Velobits:{" "}
+              <a
+                href={brand.fixmytextUrl}
+                className="inline-flex items-center gap-1 font-semibold text-foreground underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
+              >
+                FixMyText is live
+                <FeatureIcon name="external" size={12} />
+              </a>
+            </p>
           </div>
 
-          {/* Right: product preview */}
-          <div
-            className="relative animate-[pop-in_0.75s_ease_0.4s_both] [transform:perspective(1200px)_rotateY(-4deg)_rotateX(2deg)] [transition:transform_0.4s_ease] max-[960px]:mx-auto max-[960px]:w-full max-[960px]:max-w-[480px] max-[960px]:[transform:none] max-[480px]:max-w-full"
-            aria-label="FixMyText product preview"
-          >
-            {/* Browser frame */}
-            <div className="card relative mt-8 flex flex-col gap-3 px-5 pt-4 pb-5 bg-gradient-to-br from-accent/3 to-transparent transition-all duration-300 hover:-translate-y-2">
-              {/* Browser chrome */}
-              <div className="flex items-center gap-[0.35rem] border-b border-border-subtle pb-3">
-                <span
-                  className="inline-block h-2 w-2 rounded-full bg-[#ff5f57]"
-                  aria-hidden="true"
-                />
-                <span
-                  className="inline-block h-2 w-2 rounded-full bg-[#febc2e]"
-                  aria-hidden="true"
-                />
-                <span
-                  className="inline-block h-2 w-2 rounded-full bg-[#28c840]"
-                  aria-hidden="true"
-                />
-                <span className="ml-2 flex-1 rounded-[5px] bg-card-alt px-[0.65rem] py-[0.2rem] text-[0.67rem] tracking-[0.02em] text-subtle">
-                  {preview.url}
-                </span>
-              </div>
-
-              {/* Original text */}
-              <div className="flex flex-col gap-[0.3rem]">
-                <div className="text-[0.6rem] font-bold tracking-[0.14em] text-muted uppercase">
-                  Original
-                </div>
-                <div className="rounded-[8px] border border-border-subtle bg-card-alt px-4 py-[0.65rem]">
-                  <p className="text-[0.78rem] leading-relaxed text-muted">
-                    {preview.originalText}
-                  </p>
-                </div>
-              </div>
-
-              {/* Action chips */}
-              <div className="flex flex-wrap gap-[0.35rem] max-[960px]:justify-center">
-                {preview.actions.map((action, i) => (
-                  <span
-                    key={action}
-                    className={`whitespace-nowrap rounded-full border px-3 py-1 text-[0.67rem] font-semibold ${
-                      i === 0
-                        ? "border-accent/30 bg-[var(--accent-dim)] text-accent"
-                        : "border-border-subtle bg-card-alt text-muted"
-                    }`}
-                  >
-                    {action}
-                  </span>
-                ))}
-              </div>
-
-              {/* Fixed text */}
-              <div className="flex flex-col gap-[0.3rem]">
-                <div className="text-[0.6rem] font-bold tracking-[0.14em] text-accent uppercase">
-                  ✓ Fixed
-                </div>
-                <div className="relative overflow-hidden rounded-[8px] border border-accent/16 bg-accent/5 px-4 py-[0.65rem]">
-                  <div
-                    className="pointer-events-none absolute inset-0 animate-[shimmer-sweep_3.5s_ease-in-out_infinite] bg-[linear-gradient(110deg,transparent_20%,rgb(from_var(--accent-ink)_r_g_b/0.06)_50%,transparent_80%)]"
-                    aria-hidden="true"
-                  />
-                  <p className="relative text-[0.78rem] leading-relaxed text-foreground">
-                    {preview.fixedText}
-                  </p>
-                </div>
-              </div>
-
-              {/* Accuracy stat */}
-              <div className="flex items-center justify-between pt-[0.3rem]">
-                <div className="text-[0.6rem] font-bold tracking-[0.14em] text-muted uppercase">
-                  {preview.accuracyLabel}
-                </div>
-                <div className="text-[0.9rem] font-bold text-accent">{preview.accuracy}</div>
-              </div>
-            </div>
+          {/* Right: the app */}
+          <div className="relative animate-[pop-in_0.75s_ease_0.4s_both] max-[960px]:mx-auto">
+            <div
+              className="pointer-events-none absolute inset-[-8%] rounded-full bg-[radial-gradient(circle,var(--accent-a12)_0%,transparent_65%)] blur-[50px]"
+              aria-hidden="true"
+            />
+            <RevonPhone className="relative mx-auto block h-auto w-[min(300px,72vw)] [transform:rotate(3deg)] drop-shadow-[0_30px_60px_var(--shadow-color-strong)] [transition:transform_0.4s_ease] hover:[transform:rotate(0deg)_translateY(-6px)] max-[960px]:[transform:none]" />
           </div>
         </div>
       </div>
