@@ -116,3 +116,27 @@ describe("embed mode script", () => {
     expect(EMBED_SCRIPT).toContain('addEventListener("click"');
   });
 });
+
+describe("Velobits privacy policy", () => {
+  it("is the company website policy at /legal/privacy, separate from Revon and FixMyText", async () => {
+    const { default: VelobitsPrivacyPage, metadata } = await import("../../app/legal/privacy/page");
+    expect(metadata.alternates?.canonical).toBe("https://velobits.dev/legal/privacy");
+    const { container } = render(<VelobitsPrivacyPage />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(/Privacy Policy/i);
+    const text = container.textContent ?? "";
+    for (const needle of [
+      "Velobits website",
+      "waitlist",
+      "Google Sheet",
+      "Vercel",
+      "no cookies",
+      "Revon Privacy Policy",
+      "FixMyText",
+      "support@velobits.dev",
+    ]) {
+      expect(text).toContain(needle);
+    }
+    expect(text).not.toContain("precise location");
+    expect(text).not.toContain("emergency contacts");
+  });
+});

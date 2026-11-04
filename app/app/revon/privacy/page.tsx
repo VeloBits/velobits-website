@@ -29,8 +29,7 @@ const sections: LegalSectionData[] = [
           Revon is a group motorcycle ride app made by Velobits (&quot;Velobits&quot;,
           &quot;we&quot;, &quot;us&quot;). This policy explains what the Revon mobile app collects,
           why, who it is shared with and what control you have. It covers the Revon app on Android
-          and iOS and, in section 11, the Velobits website at {brand.domain.replace("https://", "")}
-          .
+          and iOS only. The Velobits website and FixMyText have their own policies (see section 11).
         </P>
         <P>
           Questions or requests: <A href={`mailto:${MAIL}`}>{MAIL}</A>.
@@ -292,32 +291,14 @@ const sections: LegalSectionData[] = [
     ),
   },
   {
-    id: "website",
-    title: "This website",
+    id: "other-policies",
+    title: "Other Velobits policies",
     body: (
-      <>
-        <P>The Velobits website ({brand.domain.replace("https://", "")}) collects little:</P>
-        <UL>
-          <li>
-            <strong className="text-foreground">Waitlist:</strong> the email address you enter, the
-            time, and your browser&apos;s user agent, stored in a Google Sheet we control. We send
-            you a welcome message and launch updates, and you can unsubscribe by replying to any
-            email.
-          </li>
-          <li>
-            <strong className="text-foreground">Community poll and ideas:</strong> your vote with a
-            random anonymous ID, and any idea you submit with your user agent.
-          </li>
-          <li>
-            <strong className="text-foreground">Page-view statistics:</strong> aggregate visit
-            counts from Vercel Web Analytics, which does not use cookies to track you across sites.
-          </li>
-        </UL>
-        <P>
-          FixMyText at {brand.fixmytextUrl.replace("https://", "")} is a separate product. This
-          policy does not cover it.
-        </P>
-      </>
+      <P>
+        This policy covers the Revon app only. The Velobits website has its own{" "}
+        <A href="/legal/privacy">Privacy Policy</A>, and FixMyText (
+        {brand.fixmytextUrl.replace("https://", "")}) is a separate product with its own policy.
+      </P>
     ),
   },
   {

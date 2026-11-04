@@ -19,6 +19,7 @@ export default function Footer() {
       { label: "Contact", href: `mailto:${brand.contactEmail}` },
     ],
     Legal: [
+      { label: "Velobits Privacy Policy", href: "/legal/privacy" },
       { label: "Revon Privacy Policy", href: "/app/revon/privacy" },
       { label: "Revon Terms of Service", href: "/app/revon/terms" },
       { label: "Revon Account Deletion", href: "/app/revon/delete-account" },

@@ -49,6 +49,7 @@ describe("Footer", () => {
   it("renders Legal link group", () => {
     render(<Footer />);
     expect(screen.getByText("Legal")).toBeInTheDocument();
+    expect(screen.getByText("Velobits Privacy Policy")).toHaveAttribute("href", "/legal/privacy");
     expect(screen.getByText("Revon Privacy Policy")).toHaveAttribute("href", "/app/revon/privacy");
     expect(screen.getByText("Revon Terms of Service")).toHaveAttribute("href", "/app/revon/terms");
     expect(screen.getByText("Revon Account Deletion")).toHaveAttribute(

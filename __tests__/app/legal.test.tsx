@@ -34,10 +34,14 @@ describe("Revon privacy policy", () => {
     }
   });
 
-  it("has anchors for the website section and for account deletion", () => {
+  it("has an anchor for account deletion and points to the other policies", () => {
     const { container } = render(<PrivacyPage />);
-    expect(container.querySelector("#website")).not.toBeNull();
     expect(container.querySelector("#delete-account")).not.toBeNull();
+    expect(container.querySelector("#website")).toBeNull();
+    expect(screen.getByRole("link", { name: "Privacy Policy" })).toHaveAttribute(
+      "href",
+      "/legal/privacy"
+    );
   });
 
   it("gives a way to reach us", () => {
