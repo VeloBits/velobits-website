@@ -87,11 +87,23 @@ describe("Payment policy", () => {
       "Razorpay",
       "Prices and billing",
       "Cancellation",
-      "Refunds",
+      "No refunds",
       "5 to 7 business days",
     ]) {
       expect(text).toContain(needle);
     }
+  });
+
+  it("makes every purchase final, covers future Revon payments and requires verified payments", () => {
+    const { container } = render(<PaymentsPage />);
+    const text = container.textContent ?? "";
+    expect(text).toMatch(/final and non-refundable/);
+    expect(text).toMatch(
+      /If paid\s+features are added to Revon|If paid features are added to Revon/
+    );
+    expect(text).toMatch(/verified with our payment provider/);
+    expect(text).toMatch(/FixMyText can be used by anyone/);
+    expect(text).not.toMatch(/we will refund the extra payment/i);
   });
 });
 

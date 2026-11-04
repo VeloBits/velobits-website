@@ -21,11 +21,16 @@ const sections: LegalSectionData[] = [
     body: (
       <>
         <P>
-          This policy covers payments for every Velobits product. Today, only FixMyText (
+          This policy covers payments for every Velobits app. Today only FixMyText (
           {brand.fixmytextUrl.replace("https://", "")}) takes payments.{" "}
           <strong className={strong}>Revon is free</strong>: it has no purchases, subscriptions or
-          ads. If we add paid features to Revon or another product, they will follow this policy and
-          we will update it first.
+          ads. If paid features are added to Revon or another app, they follow this policy,
+          including the no-refund rule below, and we will update this page before they launch.
+        </P>
+        <P>
+          <strong className={strong}>All purchases are final and non-refundable</strong>, in every
+          Velobits app, except where the law requires otherwise or where a payment could not be
+          applied to your account (see Refunds).
         </P>
       </>
     ),
@@ -63,6 +68,16 @@ const sections: LegalSectionData[] = [
     title: "Prices and billing",
     body: (
       <UL>
+        <li>
+          <strong className={strong}>Who can buy:</strong> FixMyText can be used by anyone, and free
+          use needs no payment. To buy, you need to be signed in. If you are not old enough to make
+          a purchase in your country, a parent or guardian must make it for you.
+        </li>
+        <li>
+          <strong className={strong}>Verified payments:</strong> a purchase is applied to your
+          account only after the payment has been verified with our payment provider. If
+          verification fails, nothing is added and nothing is kept.
+        </li>
         <li>
           <strong className={strong}>Currency:</strong> prices are shown in the currency of your
           region: Indian rupees (INR), US dollars (USD), pounds (GBP) or euros (EUR). The amount you
@@ -119,28 +134,30 @@ const sections: LegalSectionData[] = [
   },
   {
     id: "refunds",
-    title: "Refunds",
+    title: "No refunds",
     body: (
       <>
+        <P>
+          Because FixMyText is a digital service that is delivered as soon as you pay, every
+          purchase (pass, credit pack or Pro) is{" "}
+          <strong className={strong}>final and non-refundable</strong>. This applies to unused time,
+          unused daily uses and unused credits, and it is the same in every Velobits app.
+        </P>
         <UL>
           <li>
-            <strong className={strong}>Automatic refund:</strong> if you are charged and we cannot
-            apply the purchase to your account (for example the payment cannot be matched to a valid
-            order), we refund it to your original payment method. It usually reaches you in 5 to 7
-            business days, depending on your bank.
+            <strong className={strong}>One exception, payments we could not apply:</strong> if you
+            are charged and we cannot add the purchase to your account (for example the payment
+            cannot be matched to a valid order), the payment is returned to your original payment
+            method automatically. It usually reaches you in 5 to 7 business days, depending on your
+            bank. This is a reversal of a payment that did not buy anything, not a refund of a
+            purchase.
           </li>
           <li>
-            <strong className={strong}>Charged twice, or charged by mistake:</strong> tell us and we
-            will refund the extra payment.
-          </li>
-          <li>
-            <strong className={strong}>Other cases:</strong> because the service is delivered
-            straight away, we generally do not refund a pass, credit pack or Pro period once it has
-            been used. If something is wrong with what you bought, contact us and we will look at it
-            fairly.
+            <strong className={strong}>The law:</strong> nothing here limits any right you have
+            under the consumer law where you live.
           </li>
         </UL>
-        <P>Nothing here limits any rights you have under the consumer law where you live.</P>
+        <P>Please check what you are buying before you pay. The details are shown at checkout.</P>
       </>
     ),
   },
@@ -150,10 +167,9 @@ const sections: LegalSectionData[] = [
     body: (
       <>
         <P>
-          For a payment problem, a refund request or a question, email{" "}
-          <A href={`mailto:${MAIL}`}>{MAIL}</A> from the address on your account, and include the
-          date and amount of the payment and the payment reference from your receipt. We will reply
-          as soon as we can.
+          For a payment problem or a question, email <A href={`mailto:${MAIL}`}>{MAIL}</A> from the
+          address on your account, and include the date and amount of the payment and the payment
+          reference from your receipt. We will reply as soon as we can.
         </P>
         <P>
           Related: <A href="/legal/cookies">Cookie Policy</A> ·{" "}
@@ -174,9 +190,12 @@ export default function PaymentPolicyPage() {
         <>
           <p className="text-[0.95rem] font-semibold text-foreground">The short version</p>
           <UL>
-            <li>Revon is free. Only FixMyText takes payments, through Razorpay.</li>
-            <li>Every purchase is one-time. Nothing renews by itself.</li>
-            <li>If a payment cannot be applied to your account, it is refunded automatically.</li>
+            <li>Revon is free today. Only FixMyText takes payments, through Razorpay.</li>
+            <li>Every purchase is one-time and final: no refunds, in every Velobits app.</li>
+            <li>
+              A purchase is applied only after the payment is verified. A payment that cannot be
+              applied is returned automatically.
+            </li>
           </UL>
         </>
       }

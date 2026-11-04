@@ -167,9 +167,11 @@ const sections: LegalSectionData[] = [
     title: "Changes and availability",
     body: (
       <P>
-        Revon is provided free of charge and is still growing. We may add, change or remove
-        features, and we cannot promise it will always be available or error free. We may update the
-        app and these terms.
+        Revon is provided free of charge and is still growing. If paid features are added later,
+        purchases will be final and non-refundable under our{" "}
+        <A href="/legal/payments">Payment Policy</A>, and we will tell you before they launch. We
+        may add, change or remove features, and we cannot promise it will always be available or
+        error free. We may update the app and these terms.
       </P>
     ),
   },
@@ -256,7 +258,7 @@ export default function RevonTermsPage() {
               first.
             </li>
             <li>Only share a ride with people you trust, and treat other riders with respect.</li>
-            <li>Revon is free, and you can delete your account at any time.</li>
+            <li>Revon is free today, and you can delete your account at any time.</li>
           </UL>
         </>
       }
