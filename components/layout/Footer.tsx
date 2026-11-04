@@ -21,6 +21,9 @@ export default function Footer() {
     Legal: [
       { label: "Revon Privacy Policy", href: "/app/revon/privacy" },
       { label: "Revon Terms of Service", href: "/app/revon/terms" },
+      { label: "Revon Account Deletion", href: "/app/revon/delete-account" },
+      { label: "Cookie Policy", href: "/legal/cookies" },
+      { label: "Payment Policy", href: "/legal/payments" },
     ],
   };
 

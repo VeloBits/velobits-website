@@ -81,7 +81,10 @@ const sections: LegalSectionData[] = [
           You are responsible for activity under your account.
         </li>
         <li>You may not share an account or impersonate another person.</li>
-        <li>You can delete your account at any time in Settings → Account.</li>
+        <li>
+          You can delete your account at any time by email, as explained on the{" "}
+          <A href="/app/revon/delete-account">account deletion page</A>.
+        </li>
       </UL>
     ),
   },

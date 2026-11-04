@@ -36,6 +36,8 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
   const [theme, setTheme] = useState<Theme>(DEFAULT_THEME);
 
   useEffect(() => {
+    // Embedded legal pages (?embed=1) follow the OS scheme, not a stored choice.
+    if (document.documentElement.hasAttribute("data-embed")) return;
     let stored: string | null = null;
     try {
       stored = localStorage.getItem(THEME_STORAGE_KEY);

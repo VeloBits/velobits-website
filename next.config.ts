@@ -43,6 +43,18 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // The legal pages are public, read-only documents that the Revon app shows
+      // in a WebView and, on its web build, in an iframe, so any site may frame
+      // them. These come after the site-wide rule on purpose: when several rules
+      // match, the later value for the same header wins.
+      {
+        source: "/app/revon/:path*",
+        headers: [{ key: "Content-Security-Policy", value: "frame-ancestors *" }],
+      },
+      {
+        source: "/legal/:path*",
+        headers: [{ key: "Content-Security-Policy", value: "frame-ancestors *" }],
+      },
     ];
   },
 };

@@ -43,7 +43,7 @@ describe("Footer", () => {
     expect(screen.getByText("About")).toBeInTheDocument();
     expect(screen.queryByText("Blog")).not.toBeInTheDocument();
     expect(screen.getByText("Join Waitlist")).toBeInTheDocument();
-    expect(screen.getByText("Contact")).toHaveAttribute("href", "mailto:hello@velobits.dev");
+    expect(screen.getByText("Contact")).toHaveAttribute("href", "mailto:support@velobits.dev");
   });
 
   it("renders Legal link group", () => {
@@ -51,6 +51,12 @@ describe("Footer", () => {
     expect(screen.getByText("Legal")).toBeInTheDocument();
     expect(screen.getByText("Revon Privacy Policy")).toHaveAttribute("href", "/app/revon/privacy");
     expect(screen.getByText("Revon Terms of Service")).toHaveAttribute("href", "/app/revon/terms");
+    expect(screen.getByText("Revon Account Deletion")).toHaveAttribute(
+      "href",
+      "/app/revon/delete-account"
+    );
+    expect(screen.getByText("Cookie Policy")).toHaveAttribute("href", "/legal/cookies");
+    expect(screen.getByText("Payment Policy")).toHaveAttribute("href", "/legal/payments");
   });
 
   it("renders social links with aria labels", () => {

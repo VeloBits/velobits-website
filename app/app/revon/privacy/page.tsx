@@ -265,16 +265,17 @@ const sections: LegalSectionData[] = [
     body: (
       <>
         <P>
-          In the app, open{" "}
-          <strong className="text-foreground">Settings → Account → Delete my account</strong>. This
-          removes your profile and your sign-in. Rides you took part in may keep a record of your
-          name and route points, as explained in section 7.
+          To delete your account, email{" "}
+          <A href={`mailto:${MAIL}?subject=Delete%20my%20Revon%20account`}>{MAIL}</A> with the
+          subject &quot;Delete my Revon account&quot;. Your account and its data are deleted within
+          14 days of us receiving it, and you can cancel by sending another email. The{" "}
+          <strong className="text-foreground">Delete my account</strong> button in the app opens the
+          page that explains this, with sample emails, what is deleted and what is kept:{" "}
+          <A href="/app/revon/delete-account">velobits.dev/app/revon/delete-account</A>.
         </P>
         <P>
-          You can also email{" "}
-          <A href={`mailto:${MAIL}?subject=Delete%20my%20Revon%20account`}>{MAIL}</A> from the
-          address on your account, and we will delete your account and erase your part of any ride.
-          If you cannot open the app, include your mobile number so we can find your account.
+          Rides you took part in may keep a record of your name and route points, as explained in
+          section 7. Ask us to erase these in the same email and we will.
         </P>
       </>
     ),
@@ -358,7 +359,7 @@ export default function RevonPrivacyPage() {
               you.
             </li>
             <li>We do not sell your data and Revon has no ads or tracking software.</li>
-            <li>You can delete your account in the app at any time.</li>
+            <li>You can delete your account by email, and it is gone within 14 days.</li>
           </UL>
         </>
       }

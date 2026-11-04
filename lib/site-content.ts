@@ -4,7 +4,7 @@ export const brand = {
   description:
     "Velobits builds Revon, the group motorcycle ride app with one live map, rider hand signals, SOS and regroup points, and FixMyText, a 254-tool text-transformation platform that is live today.",
   domain: "https://velobits.dev",
-  contactEmail: "hello@velobits.dev",
+  contactEmail: "support@velobits.dev",
   fixmytextUrl: "https://fixmytext.velobits.dev",
   logo: {
     src: "/velobits-white-png.png",

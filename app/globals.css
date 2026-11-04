@@ -1159,3 +1159,20 @@
     display: none !important;
   }
 }
+
+/* ── Embedded legal pages (?embed=1) ─────────────────────────────────────────
+   The Revon app shows the legal pages inside a WebView. The embed script in
+   components/legal/LegalChrome.tsx sets data-embed on <html> before paint; the
+   site chrome, any cookie banner and the pinned theme then drop away so only the
+   document shows, in the OS colour scheme. */
+html[data-embed] {
+  color-scheme: light dark;
+}
+html[data-embed] [data-site-chrome],
+html[data-embed] [data-cookie-banner] {
+  display: none !important;
+}
+html[data-embed] .legal-doc {
+  padding-top: 1.25rem;
+  padding-bottom: 2.5rem;
+}

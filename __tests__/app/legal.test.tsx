@@ -42,9 +42,9 @@ describe("Revon privacy policy", () => {
 
   it("gives a way to reach us", () => {
     render(<PrivacyPage />);
-    expect(screen.getAllByRole("link", { name: "hello@velobits.dev" })[0]).toHaveAttribute(
+    expect(screen.getAllByRole("link", { name: "support@velobits.dev" })[0]).toHaveAttribute(
       "href",
-      "mailto:hello@velobits.dev"
+      "mailto:support@velobits.dev"
     );
   });
 });

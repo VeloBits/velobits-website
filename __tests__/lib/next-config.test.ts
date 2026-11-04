@@ -12,3 +12,17 @@ describe("next.config redirects", () => {
     });
   });
 });
+
+describe("next.config headers", () => {
+  it("lets the legal pages be framed, after the site-wide rule so it wins", async () => {
+    const headers = await nextConfig.headers!();
+    const sources = headers.map((h) => h.source);
+    const general = sources.indexOf("/(.*)");
+    for (const source of ["/app/revon/:path*", "/legal/:path*"]) {
+      const i = sources.indexOf(source);
+      expect(i).toBeGreaterThan(general);
+      expect(headers[i].headers[0].value).toBe("frame-ancestors *");
+    }
+    expect(headers[general].headers[0].value).not.toContain("*");
+  });
+});

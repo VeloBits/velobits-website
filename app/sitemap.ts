@@ -17,6 +17,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    {
+      url: `${site}/app/revon/delete-account`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    { url: `${site}/legal/cookies`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${site}/legal/payments`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${site}/app/revon/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
 }

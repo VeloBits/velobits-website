@@ -64,6 +64,40 @@ export function Table({ head, rows }: { head: string[]; rows: ReactNode[][] }) {
   );
 }
 
+/** A ready-to-copy email, with a link that opens it in the reader's mail app. */
+export function SampleMail({
+  label,
+  to,
+  subject,
+  body,
+}: {
+  label: string;
+  to: string;
+  subject: string;
+  body: string;
+}) {
+  const href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  return (
+    <figure className="overflow-hidden rounded-[12px] border border-border-subtle bg-card-alt">
+      <figcaption className="label-mono border-b border-border-subtle px-4 py-2 text-subtle">
+        {label}
+      </figcaption>
+      <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 px-4 pt-3 text-[0.85rem]">
+        <dt className="text-subtle">To</dt>
+        <dd className="m-0 break-all text-foreground">{to}</dd>
+        <dt className="text-subtle">Subject</dt>
+        <dd className="m-0 break-words font-medium text-foreground">{subject}</dd>
+      </dl>
+      <pre className="m-0 whitespace-pre-wrap break-words px-4 py-3 font-[inherit] text-[0.85rem] leading-[1.7] text-muted">
+        {body}
+      </pre>
+      <div className="border-t border-border-subtle px-4 py-2 text-[0.8rem]">
+        <A href={href}>Open in your mail app</A>
+      </div>
+    </figure>
+  );
+}
+
 export default function LegalDocument({
   eyebrow,
   title,
@@ -80,7 +114,7 @@ export default function LegalDocument({
   sibling: { label: string; href: string };
 }) {
   return (
-    <div className={`${CONTAINER} pt-[8rem] pb-24`}>
+    <div className={`${CONTAINER} legal-doc pt-[8rem] pb-24`}>
       <article className="mx-auto max-w-[780px]">
         <p className="label-mono mb-5 text-accent">{eyebrow}</p>
         <h1 className="font-display text-[clamp(2rem,6vw,3.4rem)] leading-[0.95] font-extrabold tracking-[-0.03em] text-foreground uppercase">
@@ -119,7 +153,7 @@ export default function LegalDocument({
         </div>
 
         <div className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-border-subtle pt-6 text-[0.85rem]">
-          <Link href="/" className="text-muted no-underline hover:text-foreground">
+          <Link href="/" data-site-chrome className="text-muted no-underline hover:text-foreground">
             ← Back to velobits.dev
           </Link>
           <Link
