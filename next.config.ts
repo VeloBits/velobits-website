@@ -19,6 +19,14 @@ const nextConfig: NextConfig = {
   // browsers do not cache the move.
   async redirects() {
     return [
+      // The bare Revon subdomain (the host of the app's invite links) has no page of its
+      // own: send visitors to the Revon section of the main site.
+      {
+        source: "/",
+        has: [{ type: "host", value: "revon.velobits.dev" }],
+        destination: "https://velobits.dev/#revon",
+        permanent: false,
+      },
       { source: "/blog", destination: "/", permanent: false },
       { source: "/blog/:path*", destination: "/", permanent: false },
     ];
