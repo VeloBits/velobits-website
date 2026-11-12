@@ -108,7 +108,7 @@ export const revonRiderNotes: { icon: string; title: string; body: string }[] = 
   {
     icon: "shield",
     title: "You decide what the group sees",
-    body: "Your phone number is shared only if you allow it. Emergency details stay private to you.",
+    body: "Your phone number is shared only if you allow it. Your Medical ID reaches your group only during an SOS, or on a card you share.",
   },
   {
     icon: "phone",

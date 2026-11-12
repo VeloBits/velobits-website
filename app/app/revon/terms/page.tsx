@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalDocument, { A, P, UL, type LegalSectionData } from "@/components/legal/LegalDocument";
 import { brand } from "@/lib/site-content";
 
-const UPDATED = "4 November 2026";
+const UPDATED = "12 November 2026";
 const MAIL = brand.contactEmail;
 
 export const metadata: Metadata = {
@@ -132,11 +132,20 @@ const sections: LegalSectionData[] = [
     id: "your-content",
     title: "Your content",
     body: (
-      <P>
-        You keep ownership of what you add to Revon, such as your name and photo. You give us
-        permission to store, process and show it to the riders you ride with, only as needed to run
-        the app.
-      </P>
+      <>
+        <P>
+          You keep ownership of what you add to Revon, such as your name and photo. You give us
+          permission to store, process and show it to the riders you ride with, only as needed to
+          run the app.
+        </P>
+        <P>
+          <strong className={strong}>Medical ID.</strong> Your Medical ID is information you choose
+          to enter. You are responsible for keeping it accurate and up to date. Revon only shows it
+          as you entered it, to the riders in your group while you have an SOS active and on a card
+          you choose to share. It is not medical advice, and Revon cannot promise that anyone will
+          see or act on it. Add only what you are comfortable sharing in an emergency.
+        </P>
+      </>
     ),
   },
   {
