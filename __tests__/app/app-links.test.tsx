@@ -82,13 +82,24 @@ describe("join page", () => {
     );
   });
 
-  it("offers the waitlist while the app is not in the stores", async () => {
+  it("offers the Google Play listing and the iPhone waitlist until there is an App Store link", async () => {
     await render_("K7M2QX");
+    expect(screen.getByRole("link", { name: /Google Play/i })).toHaveAttribute(
+      "href",
+      "https://play.google.com/store/apps/details?id=com.velobits.Revon"
+    );
+    expect(screen.queryByRole("link", { name: /App Store/i })).not.toBeInTheDocument();
+    expect(screen.getByText(/iPhone version is coming soon/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Join the waitlist/i })).toHaveAttribute(
       "href",
       "/#waitlist"
     );
-    expect(screen.queryByText(/Google Play/i)).not.toBeInTheDocument();
+  });
+
+  it("speaks to people who scanned a QR code and shows the code large", async () => {
+    await render_("K7M2QX");
+    expect(screen.getByText(/Scanned a QR code or tapped a link/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Ride code K 7 M 2 Q X/i)).toHaveTextContent("K7M2QX");
   });
 
   it("explains a malformed code instead of offering a broken link", async () => {

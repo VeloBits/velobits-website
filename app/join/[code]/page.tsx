@@ -38,51 +38,59 @@ export default async function JoinPage({ params }: { params: Promise<{ code: str
         {valid ? (
           <>
             <p className="max-w-[40ch] text-[0.95rem] leading-[1.8] text-muted">
-              Open Revon on your phone and join with this code. Everyone in the ride shows up on one
-              live map.
+              Scanned a QR code or tapped a link? Open Revon and join with this code. Everyone in
+              the ride shows up on one live map.
             </p>
 
             <div className="card w-full px-6 py-6">
               <p className="label-mono mb-2 text-subtle">Ride code</p>
               <p
-                className="font-mono text-[clamp(2rem,10vw,2.8rem)] font-bold tracking-[0.3em] text-foreground"
+                className="font-mono text-[clamp(2.2rem,12vw,3.4rem)] font-bold tracking-[0.3em] text-foreground"
                 aria-label={`Ride code ${code.split("").join(" ")}`}
               >
                 {code}
               </p>
             </div>
 
-            <div className="flex w-full flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <a href={`revon://join/${code}`} className={btn}>
-                Open in Revon
-              </a>
-              {revonStores.android && (
-                <a
-                  href={revonStores.android}
-                  className="btn btn-ghost w-full justify-center sm:w-auto"
-                >
-                  Get it on Google Play
-                </a>
-              )}
-              {revonStores.ios && (
-                <a href={revonStores.ios} className="btn btn-ghost w-full justify-center sm:w-auto">
-                  Get it on the App Store
-                </a>
+            <a href={`revon://join/${code}`} className={`${btn} sm:w-full`}>
+              Open in Revon
+            </a>
+
+            <div className="flex w-full flex-col items-center gap-3">
+              <p className="label-mono text-subtle">Don&apos;t have Revon yet?</p>
+              <div className="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
+                {revonStores.android && (
+                  <a
+                    href={revonStores.android}
+                    className="btn btn-ghost w-full justify-center sm:w-auto"
+                  >
+                    Get it on Google Play
+                  </a>
+                )}
+                {revonStores.ios && (
+                  <a
+                    href={revonStores.ios}
+                    className="btn btn-ghost w-full justify-center sm:w-auto"
+                  >
+                    Get it on the App Store
+                  </a>
+                )}
+              </div>
+              {(!revonStores.android || !revonStores.ios) && (
+                <p className="text-[0.85rem] leading-[1.7] text-muted">
+                  {!revonStores.ios && revonStores.android
+                    ? "The iPhone version is coming soon. "
+                    : "Revon is coming soon to Android and iOS. "}
+                  <Link
+                    href="/#waitlist"
+                    className="font-medium text-foreground underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
+                  >
+                    Join the waitlist
+                  </Link>{" "}
+                  and keep your code: type it in the app under Join a ride.
+                </p>
               )}
             </div>
-
-            {!revonStores.android && !revonStores.ios && (
-              <p className="text-[0.85rem] leading-[1.7] text-muted">
-                Don&apos;t have Revon yet? It is coming soon to Android and iOS.{" "}
-                <Link
-                  href="/#waitlist"
-                  className="font-medium text-foreground underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
-                >
-                  Join the waitlist
-                </Link>{" "}
-                and keep your code: type it in the app under Join a ride.
-              </p>
-            )}
           </>
         ) : (
           <p className="max-w-[40ch] text-[0.95rem] leading-[1.8] text-muted">

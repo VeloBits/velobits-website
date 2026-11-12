@@ -39,10 +39,14 @@ export function appleTeamId(env: NodeJS.ProcessEnv = process.env): string | null
   return /^[A-Z0-9]{10}$/.test(id) ? id : null;
 }
 
-/** Where to get Revon. Null until the app is published; the join page then offers the waitlist. */
+/**
+ * Where to get Revon. Play is the app's listing (it only resolves once the app is published,
+ * so merge and deploy after the Play release). The App Store link is not known yet: set it
+ * here when the iOS app has a listing, and the join page shows the button on its own.
+ */
 export const revonStores: { android: string | null; ios: string | null } = {
-  android: null,
-  ios: null,
+  android: `https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`,
+  ios: null, // TODO: App Store link, e.g. https://apps.apple.com/app/revon/id<ascAppId>
 };
 
 /** The characters a ride code can contain (see app/src/lib/rides.ts in the Revon repo). */
