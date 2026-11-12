@@ -170,6 +170,7 @@ describe("Revon privacy policy: account-stored data", () => {
       "Bike model suggestions",
       "brand and model name",
       "asks before changing it",
+      "account ID and the time you sent it",
     ]) {
       expect(text).toContain(needle);
     }

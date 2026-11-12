@@ -77,9 +77,9 @@ const sections: LegalSectionData[] = [
               "Your account in Firebase Realtime Database, and a copy on your phone",
             ],
             [
-              "Bike model suggestions: if you add a bike that is not in the list, the brand and model name you typed. Nothing else about the bike is sent: not the vehicle number, registration number or photo.",
+              "Bike model suggestions: if you add a bike that is not in the list, the brand and model name you typed. Nothing else about the bike is sent: not the vehicle number, registration number or photo. The suggestion is stored with your account ID and the time you sent it, so abuse can be traced and the entry removed with your account.",
               "So the model can be reviewed and added to the shared bike list for all riders.",
-              "A review queue in Firebase Realtime Database. Once approved, the brand and model name can appear in the bike list shown to every rider.",
+              "A review queue in Firebase Realtime Database. Once approved, the brand and model name can appear in the bike list shown to every rider, without your account ID.",
             ],
             [
               "Medical ID (optional health information): medications, allergies, medical conditions, organ donor choice, insurance policy number, notes, and the primary emergency contact you choose.",
@@ -176,8 +176,8 @@ const sections: LegalSectionData[] = [
         <P>
           <strong className="text-foreground">Bike suggestions.</strong> Your bikes are private to
           you. The only exception is a bike model you suggest because it is missing from the list:
-          its brand and model name alone are reviewed, and if approved they become part of the bike
-          list that every rider sees.
+          its brand and model name alone are reviewed (we can see which account sent it, to deal
+          with abuse), and if approved they become part of the bike list that every rider sees.
         </P>
         <P>
           <strong className="text-foreground">Invite links and QR codes.</strong> An invite contains
@@ -274,6 +274,12 @@ const sections: LegalSectionData[] = [
           </strong>{" "}
           kept on your account until you remove them or delete your account. Deleting your account
           through the deletion request deletes them too.
+        </li>
+        <li>
+          <strong className="text-foreground">Bike model suggestions:</strong> a suggestion waiting
+          in the review queue is kept with your account ID and the time you sent it, and is deleted
+          with your account when you ask us to delete it. A model that has already been approved is
+          part of the shared bike list and holds only its brand and model name.
         </li>
         <li>
           <strong className="text-foreground">On your phone:</strong> the copy Revon keeps on your
