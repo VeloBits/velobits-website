@@ -167,6 +167,9 @@ describe("Revon privacy policy: account-stored data", () => {
       "https://revon.velobits.dev/join/CODE",
       "QR code",
       "Summary for app store listings",
+      "Bike model suggestions",
+      "brand and model name",
+      "asks before changing it",
     ]) {
       expect(text).toContain(needle);
     }
@@ -179,6 +182,8 @@ describe("Revon privacy policy: account-stored data", () => {
     expect(text).toMatch(/only while an SOS from you is active/);
     expect(text).toMatch(/only when you choose to share that card/);
     expect(text).toMatch(/Your ride history, your bikes/);
+    expect(text).toMatch(/Nothing else about the bike is sent/);
+    expect(text).toMatch(/insurance policy number/);
     expect(text).not.toMatch(/Emergency details stay private/);
     expect(text).not.toMatch(/Emergency details are not shown to the group/);
     expect(text).not.toMatch(/They are not uploaded/);

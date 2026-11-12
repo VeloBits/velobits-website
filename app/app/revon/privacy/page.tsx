@@ -63,7 +63,7 @@ const sections: LegalSectionData[] = [
             ],
             [
               "App settings: the country you ride in, your units (distance, fuel economy, temperature), your theme and your map icon size.",
-              "So Revon looks and measures the way you want, on every phone you sign in on. Revon may use your device location to suggest your riding country.",
+              "So Revon looks and measures the way you want, on every phone you sign in on. Your riding country starts from your phone's region. When you ride in another country, Revon may use your device location to suggest your riding country, and it asks before changing it.",
               "Your account in Firebase Realtime Database, and a copy on your phone",
             ],
             [
@@ -75,6 +75,11 @@ const sections: LegalSectionData[] = [
               "Bikes: for each bike a name, vehicle number, RC number, a hidden registration number and, if you add one, a photo.",
               "To keep your garage and your riding profile.",
               "Your account in Firebase Realtime Database, and a copy on your phone",
+            ],
+            [
+              "Bike model suggestions: if you add a bike that is not in the list, the brand and model name you typed. Nothing else about the bike is sent: not the vehicle number, registration number or photo.",
+              "So the model can be reviewed and added to the shared bike list for all riders.",
+              "A review queue in Firebase Realtime Database. Once approved, the brand and model name can appear in the bike list shown to every rider.",
             ],
             [
               "Medical ID (optional health information): medications, allergies, medical conditions, organ donor choice, insurance policy number, notes, and the primary emergency contact you choose.",
@@ -168,6 +173,12 @@ const sections: LegalSectionData[] = [
             ],
           ]}
         />
+        <P>
+          <strong className="text-foreground">Bike suggestions.</strong> Your bikes are private to
+          you. The only exception is a bike model you suggest because it is missing from the list:
+          its brand and model name alone are reviewed, and if approved they become part of the bike
+          list that every rider sees.
+        </P>
         <P>
           <strong className="text-foreground">Invite links and QR codes.</strong> An invite contains
           only the ride code, in a link like https://revon.velobits.dev/join/CODE or in a QR code
@@ -374,8 +385,8 @@ const sections: LegalSectionData[] = [
             ["Photos", "Profile and bike photos you choose.", "Optional."],
             [
               "App activity",
-              "Ride history, rides you join, SOS alerts, hand signals, app settings.",
-              "Ride history is private to your account.",
+              "Ride history, rides you join, SOS alerts, hand signals, app settings, and the brand and model of a bike you suggest for the shared list.",
+              "Ride history is private to your account. A suggested bike model, with nothing else about the bike, may be added to a list every rider sees.",
             ],
             [
               "Not collected",
