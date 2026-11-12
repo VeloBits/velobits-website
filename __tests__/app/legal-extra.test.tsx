@@ -168,6 +168,8 @@ describe("Revon privacy policy: account-stored data", () => {
       "QR code",
       "Summary for app store listings",
       "Bike model suggestions",
+      "Saved places",
+      "not shared",
       "brand and model name",
       "asks before changing it",
       "account ID and the time you sent it",
@@ -182,7 +184,7 @@ describe("Revon privacy policy: account-stored data", () => {
     const text = container.textContent ?? "";
     expect(text).toMatch(/only while an SOS from you is active/);
     expect(text).toMatch(/only when you choose to share that card/);
-    expect(text).toMatch(/Your ride history, your bikes/);
+    expect(text).toMatch(/Your ride history, your saved places, your bikes/);
     expect(text).toMatch(/Nothing else about the bike is sent/);
     expect(text).toMatch(/insurance policy number/);
     expect(text).not.toMatch(/Emergency details stay private/);

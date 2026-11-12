@@ -82,6 +82,11 @@ const sections: LegalSectionData[] = [
               "A review queue in Firebase Realtime Database. Once approved, the brand and model name can appear in the bike list shown to every rider, without your account ID.",
             ],
             [
+              "Saved places: when you star a destination, its name, address, coordinates and which map provider it came from.",
+              "So you can go back to places you use often. Optional: nothing is saved unless you choose to.",
+              "Your account in Firebase Realtime Database, and a copy on your phone",
+            ],
+            [
               "Medical ID (optional health information): medications, allergies, medical conditions, organ donor choice, insurance policy number, notes, and the primary emergency contact you choose.",
               "To help the people riding with you, and anyone who helps you, if you need help. See who sees it in section 4.",
               "Your account in Firebase Realtime Database, and a copy on your phone",
@@ -169,7 +174,7 @@ const sections: LegalSectionData[] = [
             ],
             [
               "Only you",
-              "Your ride history, your bikes (including the vehicle, RC and registration numbers and any bike photo), your settings, your email address, your blood group and date of birth, and your emergency contacts other than the primary contact you choose to put on your Medical ID.",
+              "Your ride history, your saved places, your bikes (including the vehicle, RC and registration numbers and any bike photo), your settings, your email address, your blood group and date of birth, and your emergency contacts other than the primary contact you choose to put on your Medical ID.",
             ],
           ]}
         />
@@ -270,7 +275,7 @@ const sections: LegalSectionData[] = [
         </li>
         <li>
           <strong className="text-foreground">
-            Settings, ride history, bikes, Medical ID and emergency contacts:
+            Settings, saved places, ride history, bikes, Medical ID and emergency contacts:
           </strong>{" "}
           kept on your account until you remove them or delete your account. Deleting your account
           through the deletion request deletes them too.
@@ -306,6 +311,7 @@ const sections: LegalSectionData[] = [
             Turn off location permission. The group will then not see you, and Revon will tell you
             so.
           </li>
+          <li>Remove a saved place one by one in Settings under Saved places.</li>
           <li>Leave a ride at any time.</li>
         </UL>
         <P>
@@ -375,8 +381,8 @@ const sections: LegalSectionData[] = [
           rows={[
             [
               "Location",
-              "Precise location, speed and heading while you use Revon, in the background during a group ride.",
-              "Shown to the riders in your ride. Needed to run the app.",
+              "Precise location, speed and heading while you use Revon, in the background during a group ride. Places you choose to save, with their coordinates.",
+              "Live location is shown to the riders in your ride and is needed to run the app. Saved places are optional, added by you, private to your account and not shared.",
             ],
             [
               "Personal info",

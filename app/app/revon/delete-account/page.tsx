@@ -155,6 +155,7 @@ const sections: LegalSectionData[] = [
           (routes, distances, times, speeds and stops).
         </li>
         <li>Your app settings (riding country, units, theme and map icon size).</li>
+        <li>Your saved places (names, addresses and coordinates).</li>
         <li>Any bike model suggestions of yours that are still waiting for review.</li>
         <li>The link between your account and any ride you were in.</li>
       </UL>
