@@ -8,7 +8,7 @@ import LegalDocument, {
 } from "@/components/legal/LegalDocument";
 import { brand } from "@/lib/site-content";
 
-const UPDATED = "4 November 2026";
+const UPDATED = "12 November 2026";
 const MAIL = brand.contactEmail;
 const strong = "text-foreground";
 
@@ -143,9 +143,20 @@ const sections: LegalSectionData[] = [
           number.
         </li>
         <li>
-          Your profile: name, photo, blood group, date of birth, medical notes, up to three
-          emergency contacts, your profile banner, and your privacy and sharing settings.
+          Your profile: name, photo, blood group, date of birth, up to three emergency contacts,
+          your profile banner, and your privacy and sharing settings.
         </li>
+        <li>
+          Your Medical ID: medications, allergies, medical conditions, organ donor choice, insurance
+          policy number, notes and your primary emergency contact.
+        </li>
+        <li>
+          Your bikes (names, vehicle, RC and registration numbers, and photos) and your ride history
+          (routes, distances, times, speeds and stops).
+        </li>
+        <li>Your app settings (riding country, units, theme and map icon size).</li>
+        <li>Your saved places (names, addresses and coordinates).</li>
+        <li>Any bike model suggestions of yours that are still waiting for review.</li>
         <li>The link between your account and any ride you were in.</li>
       </UL>
     ),
@@ -159,9 +170,10 @@ const sections: LegalSectionData[] = [
           <li>
             <strong className={strong}>Your name in rides you joined.</strong> Each ride keeps a
             record of its riders (name, marker colour, status, and your phone number only if you
-            chose to share it). Revon tells you that rides you joined keep your name in their
-            history. Add <em>&quot;also erase my ride history&quot;</em> to your email and we will
-            remove your part of those rides as well.
+            chose to share it), and the ride history of riders who rode with you lists your name.
+            Revon tells you that rides you joined keep your name in their history. Add{" "}
+            <em>&quot;also erase my ride history&quot;</em> to your email and we will remove your
+            part of those rides as well.
           </li>
           <li>
             <strong className={strong}>Our correspondence</strong> about your request, and anything
@@ -169,9 +181,10 @@ const sections: LegalSectionData[] = [
           </li>
         </UL>
         <P>
-          Ride recordings (your routes, distances and speeds) are stored only on your phone, never
-          on our servers. Delete them in the app or remove Revon from your phone. Revon has no
-          payments, advertising or analytics, so there is nothing to delete on those fronts.
+          Your ride history is stored on your account, so it is deleted with the account. A copy
+          kept on your phone, and any cards or invite images you saved to your photos, stay on your
+          phone until you delete them or remove Revon. Revon has no payments, advertising or
+          analytics, so there is nothing to delete on those fronts.
         </P>
       </>
     ),

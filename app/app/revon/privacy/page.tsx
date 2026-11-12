@@ -8,7 +8,7 @@ import LegalDocument, {
 } from "@/components/legal/LegalDocument";
 import { brand } from "@/lib/site-content";
 
-const UPDATED = "4 November 2026";
+const UPDATED = "12 November 2026";
 const MAIL = brand.contactEmail;
 
 export const metadata: Metadata = {
@@ -57,14 +57,49 @@ const sections: LegalSectionData[] = [
               "Firebase Authentication and your profile",
             ],
             [
-              "Profile: display name, profile photo, and optional blood group, date of birth, medical notes and up to three emergency contacts (name, number, relationship). Preferences such as whether riders may call you.",
-              "To show who you are in a group and to hold emergency details you choose to add.",
-              "Your profile in Firebase Realtime Database, and a copy on your phone",
+              "Profile: display name, profile photo, and whether riders may call you.",
+              "To show who you are in a group.",
+              "Your account in Firebase Realtime Database, and a copy on your phone",
+            ],
+            [
+              "App settings: the country you ride in, your units (distance, fuel economy, temperature), your theme and your map icon size.",
+              "So Revon looks and measures the way you want, on every phone you sign in on. Your riding country starts from your phone's region. When you ride in another country, Revon may use your device location to suggest your riding country, and it asks before changing it.",
+              "Your account in Firebase Realtime Database, and a copy on your phone",
+            ],
+            [
+              "Ride history: the path, distance, time, speeds and stops of each ride you take, and the names of the riders you rode with.",
+              "So you can look back on your rides, and see them on any phone you sign in on.",
+              "Your account in Firebase Realtime Database, and a copy on your phone",
+            ],
+            [
+              "Bikes: for each bike a name, vehicle number, RC number, a hidden registration number and, if you add one, a photo.",
+              "To keep your garage and your riding profile.",
+              "Your account in Firebase Realtime Database, and a copy on your phone",
+            ],
+            [
+              "Bike model suggestions: if you add a bike that is not in the list, the brand and model name you typed. Nothing else about the bike is sent: not the vehicle number, registration number or photo. The suggestion is stored with your account ID and the time you sent it, so abuse can be traced and the entry removed with your account.",
+              "So the model can be reviewed and added to the shared bike list for all riders.",
+              "A review queue in Firebase Realtime Database. Once approved, the brand and model name can appear in the bike list shown to every rider, without your account ID.",
+            ],
+            [
+              "Saved places: when you star a destination, its name, address, coordinates and which map provider it came from.",
+              "So you can go back to places you use often. Optional: nothing is saved unless you choose to.",
+              "Your account in Firebase Realtime Database, and a copy on your phone",
+            ],
+            [
+              "Medical ID (optional health information): medications, allergies, medical conditions, organ donor choice, insurance policy number, notes, and the primary emergency contact you choose.",
+              "To help the people riding with you, and anyone who helps you, if you need help. See who sees it in section 4.",
+              "Your account in Firebase Realtime Database, and a copy on your phone",
+            ],
+            [
+              "Emergency contacts: up to three (name, number, relationship). Blood group and date of birth if you add them.",
+              "To hold emergency details you choose to add.",
+              "Your account in Firebase Realtime Database, and a copy on your phone",
             ],
             [
               "Precise location, including speed and heading, while you use Revon. During a group ride this continues in the background, and your phone shows a notification or indicator while it does.",
               "To show you on the group map, work out who is ahead or behind, detect a missed turn and arrival, and navigate.",
-              "Firebase Realtime Database for group rides. On your phone only for solo rides.",
+              "Firebase Realtime Database for group rides. For solo rides it is used on your phone and saved to your ride history.",
             ],
             [
               "Ride activity: ride code, destination, regroup point, who is in the ride, rider status (for example fuel stop), SOS alerts and their type, hand signals and ride alerts, with timestamps.",
@@ -77,14 +112,9 @@ const sections: LegalSectionData[] = [
               "Sent to the map provider you choose, see section 5",
             ],
             [
-              "Photos you pick or take for your profile picture or ride card background, and ride cards you save to your photo library.",
-              "To personalise your profile and let you keep and share ride cards.",
-              "Profile photo: your profile. Ride cards: your phone.",
-            ],
-            [
-              "Ride recordings: the path, distance, time and speeds of each ride, and who rode.",
-              "So you can look back on your rides.",
-              "Your phone only. They are not uploaded.",
+              "Photos you pick or take for your profile picture, a bike or a ride card background, and cards and invite images you save to your photo library.",
+              "To personalise your profile and bikes and let you keep and share cards.",
+              "Profile and bike photos: your account. Saved cards and invite images: your phone.",
             ],
             [
               "Technical data such as IP address, device and app version.",
@@ -93,6 +123,12 @@ const sections: LegalSectionData[] = [
             ],
           ]}
         />
+        <P>
+          <strong className="text-foreground">Medical ID is sensitive health information.</strong>{" "}
+          It is optional: you add only what you want, and you can change or remove any of it at any
+          time. We use it only for the purposes in section 4, and we handle it on the basis of your
+          consent, which you withdraw by removing it or by deleting your account.
+        </P>
         <P>
           Revon does not read your contacts or microphone, does not use an advertising ID, and does
           not include advertising, analytics or crash-reporting software. The app asks permission
@@ -122,26 +158,42 @@ const sections: LegalSectionData[] = [
     body: (
       <>
         <P>
-          Other riders only see you when you share a ride with them. Joining a ride is by a code or
-          an invite link, and the host can lock a ride.
+          Other riders only see you when you share a ride with them. Joining a ride is by a code, an
+          invite link or a QR code, and the host can lock a ride.
         </P>
         <Table
-          head={["Other riders in your ride can see", "Only you can see"]}
+          head={["Who", "What they can see"]}
           rows={[
             [
+              "Riders in your ride",
               "Your name, your colour on the map, your status, your live position, speed and heading, whether you are off the route or have arrived, your SOS alert and type, and the hand signals you send. Your mobile number only if you allow riders to call you.",
-              "Your profile photo, blood group, date of birth, medical notes, emergency contacts, email address and your ride history.",
+            ],
+            [
+              "Riders in your ride, only while you have an SOS active, and anyone you share your card with",
+              "Your Medical ID: medications, allergies, medical conditions, organ donor choice, insurance policy number, notes and your primary emergency contact. It is shown to the riders in the same group only while an SOS from you is active, and on a Medical ID card only when you choose to share that card.",
+            ],
+            [
+              "Only you",
+              "Your ride history, your saved places, your bikes (including the vehicle, RC and registration numbers and any bike photo), your settings, your email address, your blood group and date of birth, and your emergency contacts other than the primary contact you choose to put on your Medical ID.",
             ],
           ]}
         />
         <P>
-          Each rider&apos;s phone keeps its own recording of a group ride. Another rider&apos;s
-          recording can contain your name and, if you allow it, your number. You control this in
-          Settings under Privacy (&quot;Show my details in recorded rides&quot;).
+          <strong className="text-foreground">Bike suggestions.</strong> Your bikes are private to
+          you. The only exception is a bike model you suggest because it is missing from the list:
+          its brand and model name alone are reviewed (we can see which account sent it, to deal
+          with abuse), and if approved they become part of the bike list that every rider sees.
         </P>
         <P>
-          Emergency details are not shown to the group in this version of Revon. If a future version
-          shares them during an SOS, we will tell you and update this policy first.
+          <strong className="text-foreground">Invite links and QR codes.</strong> An invite contains
+          only the ride code, in a link like https://revon.velobits.dev/join/CODE or in a QR code
+          that holds the same link. Anyone who has it can ask to join an unlocked ride and will then
+          see what the first row above describes, so share it only with people you trust. A shared
+          invite image holds the code, the link and the QR code, and nothing else about you.
+        </P>
+        <P>
+          Your ride history lists the names of the riders you rode with, and their histories list
+          yours. Rides you take part in keep your name in their record, as explained in section 7.
         </P>
       </>
     ),
@@ -222,8 +274,21 @@ const sections: LegalSectionData[] = [
           You can ask us to erase your part of any ride at any time.
         </li>
         <li>
-          <strong className="text-foreground">On your phone:</strong> ride recordings, ride cards
-          and settings stay until you delete them or uninstall Revon.
+          <strong className="text-foreground">
+            Settings, saved places, ride history, bikes, Medical ID and emergency contacts:
+          </strong>{" "}
+          kept on your account until you remove them or delete your account. Deleting your account
+          through the deletion request deletes them too.
+        </li>
+        <li>
+          <strong className="text-foreground">Bike model suggestions:</strong> a suggestion waiting
+          in the review queue is kept with your account ID and the time you sent it, and is deleted
+          with your account when you ask us to delete it. A model that has already been approved is
+          part of the shared bike list and holds only its brand and model name.
+        </li>
+        <li>
+          <strong className="text-foreground">On your phone:</strong> the copy Revon keeps on your
+          phone, saved cards and invite images stay until you delete them or uninstall Revon.
         </li>
       </UL>
     ),
@@ -246,6 +311,7 @@ const sections: LegalSectionData[] = [
             Turn off location permission. The group will then not see you, and Revon will tell you
             so.
           </li>
+          <li>Remove a saved place one by one in Settings under Saved places.</li>
           <li>Leave a ride at any time.</li>
         </UL>
         <P>
@@ -302,6 +368,54 @@ const sections: LegalSectionData[] = [
     ),
   },
   {
+    id: "store-summary",
+    title: "Summary for app store listings",
+    body: (
+      <>
+        <P>
+          The same information as above, grouped the way app stores ask for it. The sections above
+          are the full policy.
+        </P>
+        <Table
+          head={["Category", "What Revon collects", "Notes"]}
+          rows={[
+            [
+              "Location",
+              "Precise location, speed and heading while you use Revon, in the background during a group ride. Places you choose to save, with their coordinates.",
+              "Live location is shown to the riders in your ride and is needed to run the app. Saved places are optional, added by you, private to your account and not shared.",
+            ],
+            [
+              "Personal info",
+              "Name, email address, mobile number, date of birth, emergency contacts, vehicle and registration numbers.",
+              "Optional parts can be removed at any time.",
+            ],
+            [
+              "Health info",
+              "Medications, allergies, medical conditions, organ donor choice, insurance policy number, blood group, notes.",
+              "Optional. Shown to your group only during your SOS, or on a card you share.",
+            ],
+            ["Photos", "Profile and bike photos you choose.", "Optional."],
+            [
+              "App activity",
+              "Ride history, rides you join, SOS alerts, hand signals, app settings, and the brand and model of a bike you suggest for the shared list.",
+              "Ride history is private to your account. A suggested bike model, with nothing else about the bike, may be added to a list every rider sees.",
+            ],
+            [
+              "Not collected",
+              "Contacts, microphone, advertising ID, payments, advertising or analytics data.",
+              "Revon has no ads and no payments today.",
+            ],
+            [
+              "Security and control",
+              "Data is encrypted in transit.",
+              "You can delete your account and data, see section 9.",
+            ],
+          ]}
+        />
+      </>
+    ),
+  },
+  {
     id: "changes",
     title: "Changes to this policy",
     body: (
@@ -336,8 +450,8 @@ export default function RevonPrivacyPage() {
               Revon shares your live location with the riders in your ride, and with nobody else.
             </li>
             <li>
-              Your phone number is shared only if you allow it. Emergency details stay private to
-              you.
+              Your phone number is shared only if you allow it. Your Medical ID is shown to your
+              group only while you have an SOS active, or on a card you choose to share.
             </li>
             <li>We do not sell your data and Revon has no ads or tracking software.</li>
             <li>You can delete your account by email, and it is gone within 14 days.</li>
